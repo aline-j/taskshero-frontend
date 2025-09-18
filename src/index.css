@@ -1,0 +1,19 @@
+/* Custom Properties */
+:root {
+  --card-width: 200px;
+  --card-height: 220px;
+  --gap-big: 40px;
+  --gap-small: 20px;
+  --card-radius: 14px;
+  --card-bg: #fff;
+  --shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  --border: rgba(0, 0, 0, 0.08);
+  --font: "Roboto", sans-serif;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
