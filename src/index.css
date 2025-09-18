@@ -7,7 +7,11 @@
   --card-radius: 14px;
   --card-bg: #fff;
   --button-bg: #0077ff;
-  --shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  --dark-button-bg: #0044bb;
+  --dark-button-hover-bg: #0044bb;
+  --light-button-bg: #bbb;
+  --light-button-hover-bg: #999;
+  --shadow: 0 6px 20px rgba(5, 4, 4, 0.12);
   --border: rgba(0, 0, 0, 0.08);
   --font: "Roboto", sans-serif;
 }
