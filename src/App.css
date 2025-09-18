@@ -99,6 +99,22 @@ h1 {
   font-weight: 600;
 }
 
+.add-task > button {
+  font-family: var(--font);
+  font-size: 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 12px;
+  margin-bottom: 30px;
+}
+
+.add-task > button:hover {
+  background: var(--hover-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+}
+
 @media (min-width: 480px) {
   .cards {
     grid-template-columns: repeat(2, 1fr);
