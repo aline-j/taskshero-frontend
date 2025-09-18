@@ -55,7 +55,7 @@ export function Tasks() {
     <div>
       <h1>Tasks Pool</h1>
 
-      <div className="add-task">
+      <div className="task-form">
         {/* Button to display the Add Task form */}
         {!showForm && (
           <button onClick={() => setShowForm(true)}>
