@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Task } from "./Task";
+import { AddTaskForm } from "./AddTaskForm";
 import "./Tasks.css";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -7,23 +8,42 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 export function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [groupFilter, setGroupFilter] = useState("all");
+  const [showForm, setShowForm] = useState(false);
 
-  // Get tasks from the API when loading the component
   useEffect(() => {
-    async function getTasks() {
-      try {
-        const res = await fetch(`${BASE_URL}/tasks`);
-        if (!res.ok) throw new Error("HTTP error " + res.status);
-
-        const data = await res.json();
-        setTasks(data);
-      } catch (err) {
-        console.error("Error:", err);
-      }
-    }
-
     getTasks();
   }, []);
+
+  // Get tasks from the API when loading the component
+  async function getTasks() {
+    try {
+      const res = await fetch(`${BASE_URL}/tasks`);
+      if (!res.ok) throw new Error("HTTP error " + res.status);
+
+      const data = await res.json();
+      setTasks(data);
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  }
+
+  // Callback form AddTaskForm
+  async function handleAddTask(newTask) {
+    try {
+      const res = await fetch(`${BASE_URL}/tasks`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTask),
+      });
+
+      if (!res.ok) throw new Error("HTTP error " + res.status);
+
+      await getTasks();
+      setShowForm(false);
+    } catch (err) {
+      console.error("Error adding task:", err);
+    }
+  }
 
   // Filter logic: if "all", show all tasks, otherwise filter by group
   const filteredTasks =
@@ -34,6 +54,23 @@ export function Tasks() {
   return (
     <div>
       <h1>Tasks Pool</h1>
+
+      <div className="add-task">
+        {/* Button to display the Add Task form */}
+        {!showForm && (
+          <button onClick={() => setShowForm(true)}>
+            Neue Task hinzufügen
+          </button>
+        )}
+
+        {/* AddTaskForm component */}
+        {showForm && (
+          <AddTaskForm
+            onAdd={handleAddTask}
+            onCancel={() => setShowForm(false)}
+          />
+        )}
+      </div>
 
       {/* Filter buttons for age groups */}
       <div className="filters">
