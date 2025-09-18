@@ -1,7 +1,12 @@
 import "./App.css";
+import { Tasks } from "./components/Tasks";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <Tasks />
+    </>
+  );
 }
 
 export default App;
