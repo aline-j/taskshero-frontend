@@ -92,6 +92,15 @@ export function Tasks() {
             title={task.title}
             points={task.points}
             group={task.group}
+            task_id={task.task_id}
+            onTaskDeleted={(task_id) => {
+              console.log(
+                "Task",
+                task_id,
+                "has been deleted! I will fetch the fresh data..."
+              );
+              getTasks();
+            }}
           />
         ))}
       </div>
