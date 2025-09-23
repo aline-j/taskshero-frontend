@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Task } from "./Task";
-import { AddTaskForm } from "./AddTaskForm";
+import { AddTaskForm } from "../../components/AddTaskForm/AddTaskForm";
 import "./Tasks.css";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -85,7 +85,7 @@ export function Tasks() {
       </div>
 
       {/* Grid with the filtered tasks */}
-      <div className="cards">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {filteredTasks.map((task) => (
           <Task
             key={task.task_id}
