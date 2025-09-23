@@ -1,0 +1,41 @@
+.task-form {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.task-form input,
+.task-form select {
+  padding: 0.5rem;
+  border-radius: var(--card-radius);
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 150px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.task-form button {
+  padding: 0.5rem 1rem;
+  background-color: var(--button-bg);
+  font-family: var(--font);
+  font-size: 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 12px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.task-form button:hover {
+  background: var(--dark-button-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
