@@ -27,24 +27,28 @@ export function Task({ title, points, task_id, onTaskDeleted = () => {} }) {
 
   return (
     <>
-      <div className="card">
-        {/* Points display */}
-        <div className="points">{points}</div>
+      <div className="relative w-card-width h-card-height bg-white shadow rounded p-4 flex flex-col sm:card-width-md">
+        {/* Points badge */}
+        <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
+          {points} Punkte
+        </div>
 
-        {/* Placeholder image */}
+        {/* Image */}
         <img
-          className="card-image"
+          className="w-full h-[160px] object-cover rounded-[10px]"
           src="/images/tasks/Task-Zimmer-aufraeumen.png"
           alt="Zimmer aufräumen"
         />
 
-        {/* Task title */}
-        <h3>{title}</h3>
+        {/* Title */}
+        <h3 className="mt-3 mb-1 text-[1.1rem] text-center">{title}</h3>
 
-        <div className="card-actions">
+        {/* Action button */}
+        <div className="absolute bottom-2 right-2">
           <button
-            className="icon-btn delete"
+            className="text-red-500 hover:text-red-700 text-lg"
             onClick={() => setShowConfirm(true)}
+            title="Löschen"
           >
             🗑️
           </button>
