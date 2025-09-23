@@ -1,10 +1,20 @@
 import { useState } from "react";
 import "./Task.css";
+import { UpdateTaskForm } from "../../components/UpdateTaskForm/UpdateTaskForm";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export function Task({ title, points, task_id, onTaskDeleted = () => {} }) {
+export function Task({
+  initialTask,
+  title,
+  points,
+  group,
+  task_id,
+  onTaskDeleted = () => {},
+  onTaskEdit = () => {},
+}) {
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
 
   async function handleDelete(task_id) {
     try {
@@ -15,7 +25,7 @@ export function Task({ title, points, task_id, onTaskDeleted = () => {} }) {
         },
       });
       if (!response.ok) {
-        alert("Something went wrong");
+        throw new Error("HTTP error " + response.status);
       } else {
         onTaskDeleted(task_id);
       }
@@ -25,9 +35,29 @@ export function Task({ title, points, task_id, onTaskDeleted = () => {} }) {
     }
   }
 
+  async function handleEdit(updateTask) {
+    try {
+      const response = await fetch(`${BASE_URL}/task/${updateTask.task_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateTask),
+      });
+      if (!response.ok) {
+        throw new Error("HTTP error " + response.status);
+      }
+      // notify parent to refresh tasks
+      onTaskEdit(updateTask);
+      setShowEditForm(false);
+    } catch (err) {
+      alert("Something went wrong");
+    }
+  }
+
   return (
     <>
-      <div className="relative w-card-width h-card-height bg-white shadow rounded p-4 flex flex-col sm:card-width-md">
+      <div className="relative w-card-width h-[300px] bg-white shadow rounded p-4 flex flex-col sm:w-card-width-md">
         {/* Points badge */}
         <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
           {points} Punkte
@@ -45,13 +75,20 @@ export function Task({ title, points, task_id, onTaskDeleted = () => {} }) {
 
         {/* Action button */}
         <div className="absolute bottom-2 right-2">
-          <button
-            className="text-red-500 hover:text-red-700 text-lg"
-            onClick={() => setShowConfirm(true)}
-            title="Löschen"
-          >
-            🗑️
-          </button>
+          <div className="card-actions">
+            <button
+              className="icon-btn edit"
+              onClick={() => setShowEditForm(true)}
+            >
+              ✏️
+            </button>
+            <button
+              className="icon-btn delete"
+              onClick={() => setShowConfirm(true)}
+            >
+              🗑️
+            </button>
+          </div>
         </div>
       </div>
 
@@ -65,6 +102,19 @@ export function Task({ title, points, task_id, onTaskDeleted = () => {} }) {
               <button onClick={() => handleDelete(task_id)}>Ja, löschen</button>
               <button onClick={() => setShowConfirm(false)}>Abbrechen</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Task edit modal */}
+      {showEditForm && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <UpdateTaskForm
+              initialTask={{ title, points, group, task_id }}
+              onEdit={handleEdit}
+              onCancel={() => setShowEditForm(false)}
+            />
           </div>
         </div>
       )}

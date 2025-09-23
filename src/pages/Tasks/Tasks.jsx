@@ -101,6 +101,14 @@ export function Tasks() {
               );
               getTasks();
             }}
+            onTaskEdit={(updateTask) => {
+              console.log(
+                "Task",
+                updateTask,
+                "has been updated! I will fetch the fresh data..."
+              );
+              getTasks();
+            }}
           />
         ))}
       </div>

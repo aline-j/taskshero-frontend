@@ -15,13 +15,7 @@ module.exports = {
       spacing: {
         "card-width": "200px",
         "card-width-md": "100px",
-        "card-height": "280px",
-      },
-      borderRadius: {
-        "card-radius": "14px",
-      },
-      boxShadow: {
-        custom: "0 6px 20px rgba(5, 4, 4, 0.12)",
+        "card-height": "320px",
       },
       fontFamily: {
         roboto: ["Roboto", "sans-serif"],

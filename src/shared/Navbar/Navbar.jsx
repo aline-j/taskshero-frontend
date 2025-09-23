@@ -9,7 +9,7 @@ export function Navbar() {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img
-            src="/public/images/icons/TaskHero-Text.png"
+            src="/images/icons/TaskHero-Text.png"
             className="h-8"
             alt="TaskHero Logo"
           />
