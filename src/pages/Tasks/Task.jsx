@@ -12,16 +12,19 @@ export function Task({
   task_id,
   onTaskDeleted = () => {},
   onTaskEdit = () => {},
+  getToken,
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
 
   async function handleDelete(task_id) {
     try {
+      const token = getToken ? await getToken() : null;
       const response = await fetch(`${BASE_URL}/tasks/${task_id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
       });
       if (!response.ok) {
@@ -37,10 +40,12 @@ export function Task({
 
   async function handleEdit(updateTask) {
     try {
-      const response = await fetch(`${BASE_URL}/task/${updateTask.task_id}`, {
+      const token = getToken ? await getToken() : null;
+      const response = await fetch(`${BASE_URL}/tasks/${updateTask.task_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(updateTask),
       });
