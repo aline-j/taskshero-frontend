@@ -1,3 +1,4 @@
+import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { Task } from "./Task";
 import { AddTaskForm } from "../../components/AddTaskForm/AddTaskForm";
@@ -6,33 +7,48 @@ import "./Tasks.css";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export function Tasks() {
+  const { userId, sessionId, getToken, isLoaded, isSignedIn, signOut } =
+    useAuth();
   const [tasks, setTasks] = useState([]);
   const [groupFilter, setGroupFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
-
-  useEffect(() => {
-    getTasks();
-  }, []);
-
-  // Get tasks from the API when loading the component
+  // Get tasks from the API (defined in component scope so it can be reused)
   async function getTasks() {
     try {
-      const res = await fetch(`${BASE_URL}/tasks`);
+      const token = await getToken();
+      const res = await fetch(`${BASE_URL}/tasks`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
       if (!res.ok) throw new Error("HTTP error " + res.status);
 
       const data = await res.json();
       setTasks(data);
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error fetching tasks:", err);
     }
   }
+
+  // Fetch when Clerk is loaded and the user is signed in
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      getTasks();
+    }
+  }, [isLoaded, isSignedIn]);
 
   // Callback form AddTaskForm
   async function handleAddTask(newTask) {
     try {
+      const token = await getToken();
       const res = await fetch(`${BASE_URL}/tasks`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(newTask),
       });
 
@@ -93,6 +109,7 @@ export function Tasks() {
             points={task.points}
             group={task.group}
             task_id={task.task_id}
+            getToken={getToken}
             onTaskDeleted={(task_id) => {
               console.log(
                 "Task",
