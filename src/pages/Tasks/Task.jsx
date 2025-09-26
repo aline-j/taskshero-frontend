@@ -41,7 +41,7 @@ export function Task({
   async function handleEdit(updateTask) {
     try {
       const token = getToken ? await getToken() : null;
-      const response = await fetch(`${BASE_URL}/tasks/${updateTask.task_id}`, {
+      const response = await fetch(`${BASE_URL}/task/${updateTask.task_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
