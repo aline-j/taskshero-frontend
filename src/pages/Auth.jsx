@@ -1,9 +1,8 @@
-// auth.jsx
 import { useState } from "react";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
-import Login from "../../components/Login.jsx";
-import Registration from "../../components/Registration.jsx";
+import Login from "../components/Login.jsx";
+import Registration from "../components/Registration.jsx";
 
 export default function Auth() {
   const [showRegistration, setShowRegistration] = useState(false);

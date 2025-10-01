@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./UpdateTaskForm.css";
 
-export function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
+export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
   const [editedTask, setEditedTask] = useState(initialTask);
 
   function handleSubmit(e) {
