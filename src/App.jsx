@@ -10,14 +10,33 @@ function App() {
   return (
     <>
       <Navbar />
-      <div>
-        <Routes>
-          <Route path="/login" element={<Auth />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/rewards" element={<Rewards />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/login" element={<Auth />} />
+        <Route
+          path="/profile"
+          element={
+            <div className="max-w-screen-xl mx-auto p-4">
+              <Profile />
+            </div>
+          }
+        />
+        <Route
+          path="/tasks"
+          element={
+            <div className="max-w-screen-xl mx-auto p-4">
+              <Tasks />
+            </div>
+          }
+        />
+        <Route
+          path="/rewards"
+          element={
+            <div className="max-w-screen-xl mx-auto p-4">
+              <Rewards />
+            </div>
+          }
+        />
+      </Routes>
     </>
   );
 }
