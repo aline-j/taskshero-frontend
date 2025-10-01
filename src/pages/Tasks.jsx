@@ -1,7 +1,8 @@
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import Task from "./Task";
 import AddTaskForm from "../components/AddTaskForm";
+import Filter from "../components/Filter";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -68,66 +69,69 @@ export default function Tasks() {
 
   return (
     <div>
-      <h1>Tasks Pool</h1>
+      <SignedIn>
+        <h1 className="text-5xl font-bold text-center my-20">Aufgaben Pool</h1>
 
-      <div className="task-form">
-        {/* Button to display the Add Task form */}
-        {!showForm && (
-          <button onClick={() => setShowForm(true)}>
-            Neue Task hinzufügen
-          </button>
-        )}
+        <div className="flex flex-col md:flex-row justify-end items-center gap-4 mb-8 px-4">
+          {/* Button to display the Add Task form */}
+          {!showForm && (
+            <button
+              onClick={() => setShowForm(true)}
+              className="w-full md:w-auto px-6 py-3 text-lg border rounded-lg hover:shadow-md hover:bg-white"
+            >
+              Neue Aufgabe hinzufügen
+            </button>
+          )}
 
-        {/* AddTaskForm component */}
-        {showForm && (
-          <AddTaskForm
-            onAdd={handleAddTask}
-            onCancel={() => setShowForm(false)}
-          />
-        )}
-      </div>
+          {/* AddTaskForm component */}
+          {showForm && (
+            <AddTaskForm
+              onAdd={handleAddTask}
+              onCancel={() => setShowForm(false)}
+              className="w-full md:w-auto"
+            />
+          )}
+        </div>
 
-      {/* Filter buttons for age groups */}
-      <div className="filters">
-        <button onClick={() => setGroupFilter("all")}>Alle Altersgrupen</button>
-        <button onClick={() => setGroupFilter("Kindergartenalter")}>
-          Kindergartenalter
-        </button>
-        <button onClick={() => setGroupFilter("Grundschulalter")}>
-          Grundschulalter
-        </button>
-        <button onClick={() => setGroupFilter("Teenager")}>Teenager</button>
-      </div>
+        {/* Dropdown-Filter */}
+        <Filter groupFilter={groupFilter} setGroupFilter={setGroupFilter} />
 
-      {/* Grid with the filtered tasks */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-        {filteredTasks.map((task) => (
-          <Task
-            key={task.task_id}
-            title={task.title}
-            points={task.points}
-            group={task.group}
-            task_id={task.task_id}
-            getToken={getToken}
-            onTaskDeleted={(task_id) => {
-              console.log(
-                "Task",
-                task_id,
-                "has been deleted! I will fetch the fresh data..."
-              );
-              getTasks();
-            }}
-            onTaskEdit={(updateTask) => {
-              console.log(
-                "Task",
-                updateTask,
-                "has been updated! I will fetch the fresh data..."
-              );
-              getTasks();
-            }}
-          />
-        ))}
-      </div>
+        {/* Grid with the filtered tasks */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {filteredTasks.map((task) => (
+            <Task
+              key={task.task_id}
+              title={task.title}
+              points={task.points}
+              group={task.group}
+              task_id={task.task_id}
+              getToken={getToken}
+              onTaskDeleted={(task_id) => {
+                console.log(
+                  "Task",
+                  task_id,
+                  "has been deleted! I will fetch the fresh data..."
+                );
+                getTasks();
+              }}
+              onTaskEdit={(updateTask) => {
+                console.log(
+                  "Task",
+                  updateTask,
+                  "has been updated! I will fetch the fresh data..."
+                );
+                getTasks();
+              }}
+            />
+          ))}
+        </div>
+      </SignedIn>
+
+      <SignedOut>
+        <p className="text-center text-lg text-gray-600 mt-20">
+          Bitte melde dich an, um Aufgaben zu sehen.
+        </p>
+      </SignedOut>
     </div>
   );
 }
