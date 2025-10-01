@@ -1,12 +1,11 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
-import { Task } from "./Task";
-import { AddTaskForm } from "../../components/AddTaskForm/AddTaskForm";
-import "./Tasks.css";
+import Task from "./Task";
+import AddTaskForm from "../components/AddTaskForm";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export function Tasks() {
+export default function Tasks() {
   const { userId, sessionId, getToken, isLoaded, isSignedIn, signOut } =
     useAuth();
   const [tasks, setTasks] = useState([]);

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./Task.css";
-import { UpdateTaskForm } from "../../components/UpdateTaskForm/UpdateTaskForm";
+import UpdateTaskForm from "../components/UpdateTaskForm";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export function Task({
+export default function Task({
   initialTask,
   title,
   points,

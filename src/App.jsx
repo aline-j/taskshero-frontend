@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import { Navbar } from "./shared/Navbar/Navbar";
-import Auth from "./pages/Auth/Auth";
-import { Profile } from "./pages/Profile/Profile";
-import { Tasks } from "./pages/Tasks/Tasks";
-import { Rewards } from "./pages/Rewards/Rewards";
+import Navbar from "./shared/Navbar";
+import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
+import Tasks from "./pages/Tasks";
+import Rewards from "./pages/Rewards";
 import "./App.css";
 
 function App() {

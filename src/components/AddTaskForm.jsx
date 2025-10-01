@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./AddTaskForm.css";
 
-export function AddTaskForm({ onAdd, onCancel }) {
+export default function AddTaskForm({ onAdd, onCancel }) {
   const [newTask, setNewTask] = useState({
     title: "",
     points: "",
