@@ -77,7 +77,7 @@ export default function Tasks() {
           {!showForm && (
             <button
               onClick={() => setShowForm(true)}
-              className="w-full md:w-auto px-6 py-3 text-lg border rounded-lg hover:shadow-md hover:bg-white"
+              className="w-full md:w-auto px-6 py-3 text-md border rounded-md hover:shadow-md hover:bg-white"
             >
               Neue Aufgabe hinzufügen
             </button>

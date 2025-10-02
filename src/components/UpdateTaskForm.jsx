@@ -17,7 +17,7 @@ export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
         onChange={(e) =>
           setEditedTask({ ...editedTask, title: e.target.value })
         }
-        className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
       />
 
       <input
@@ -27,7 +27,7 @@ export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
         onChange={(e) =>
           setEditedTask({ ...editedTask, points: e.target.value })
         }
-        className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
       />
 
       <select
@@ -35,7 +35,7 @@ export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
         onChange={(e) =>
           setEditedTask({ ...editedTask, group: e.target.value })
         }
-        className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
       >
         <option value="Kindergartenalter">Kindergartenalter</option>
         <option value="Grundschulalter">Grundschulalter</option>
@@ -45,14 +45,14 @@ export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
       <div className="flex gap-2 mt-2">
         <button
           type="submit"
-          className="px-4 py-2 rounded-lg bg-blue-600 text-white text-lg hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow transition"
+          className="px-4 py-2 rounded-md bg-blue-600 text-white text-lg hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow transition"
         >
           Ändern
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 rounded-lg bg-gray-300 text-gray-800 text-lg hover:bg-gray-400 hover:-translate-y-0.5 hover:shadow transition"
+          className="px-4 py-2 rounded-md bg-gray-300 text-gray-800 text-lg hover:bg-gray-400 hover:-translate-y-0.5 hover:shadow transition"
         >
           Abbrechen
         </button>

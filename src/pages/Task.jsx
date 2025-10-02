@@ -55,7 +55,7 @@ export default function Task({
 
   return (
     <>
-      <div className="relative w-card-width h-[300px] bg-white shadow rounded-lg p-4 flex flex-col sm:w-card-width-md">
+      <div className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md">
         {/* Points Badge */}
         <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
           {points} Punkte
@@ -63,7 +63,7 @@ export default function Task({
 
         {/* Image */}
         <img
-          className="w-full h-[160px] object-cover rounded-lg"
+          className="w-full h-[160px] object-cover rounded-md"
           src="/images/tasks/Task-Zimmer-aufraeumen.png"
           alt={title}
         />
@@ -91,7 +91,7 @@ export default function Task({
       {/* Delete Modal */}
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+          <div className="bg-white p-6 rounded-md shadow-lg w-80 text-center">
             <p className="font-semibold">
               Bist du sicher, dass du diese Aufgabe löschen möchtest?
             </p>
@@ -119,7 +119,7 @@ export default function Task({
       {/* Edit Modal */}
       {showEditForm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <div className="bg-white p-6 rounded-md shadow-lg w-96">
             <UpdateTaskForm
               initialTask={{ title, points, group, task_id }}
               onEdit={handleEdit}
