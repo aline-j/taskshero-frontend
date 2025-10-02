@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useSignUp, SignedOut, useAuth } from "@clerk/clerk-react";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export default function Registration() {
   const { getToken } = useAuth();
   const { signUp, setActive } = useSignUp();
@@ -34,7 +36,7 @@ export default function Registration() {
         await setActive({ session: signUpState.createdSessionId });
 
         const token = await getToken();
-        await fetch("http://localhost:5005/sync-user", {
+        await fetch(`${BASE_URL}/sync-user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -59,7 +61,7 @@ export default function Registration() {
         await setActive({ session: attempt.createdSessionId });
 
         const token = await getToken();
-        await fetch("http://localhost:5005/sync-user", {
+        await fetch(`${BASE_URL}/sync-user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -144,7 +146,7 @@ export default function Registration() {
 
             <button
               type="submit"
-              className="focus:outline-none text-white bg-amber-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5"
+              className="focus:outline-none text-white bg-amber-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5"
             >
               Account erstellen
             </button>
@@ -162,7 +164,7 @@ export default function Registration() {
             />
             <button
               type="submit"
-              className="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5"
+              className="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-md text-sm px-5 py-2.5"
             >
               Code bestätigen
             </button>

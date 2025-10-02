@@ -31,7 +31,7 @@ export default function Filter({ groupFilter, setGroupFilter }) {
           onClick={() => setIsOpen(!isOpen)}
           className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 
                    focus:outline-none focus:ring-blue-300 font-medium 
-                   rounded-lg text-lg px-5 py-2.5 inline-flex items-center"
+                   rounded-md text-md px-5 py-2.5 inline-flex items-center"
         >
           {getLabel(groupFilter)}
           <svg
@@ -52,8 +52,8 @@ export default function Filter({ groupFilter, setGroupFilter }) {
         </button>
 
         {isOpen && (
-          <div className="absolute mt-2 bg-white rounded-lg shadow z-10">
-            <ul className="py-2 text-lg text-gray-700">
+          <div className="absolute mt-2 bg-white rounded-md shadow z-10">
+            <ul className="py-2 text-md text-gray-700">
               <li>
                 <button
                   onClick={() => handleSelect("all")}
@@ -81,7 +81,7 @@ export default function Filter({ groupFilter, setGroupFilter }) {
               <li>
                 <button
                   onClick={() => handleSelect("Teenager")}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  className="w-full text-left px-4 py-2 hover:bg-cyan-600 hover:text-white"
                 >
                   Teenager
                 </button>

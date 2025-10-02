@@ -9,7 +9,7 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg flex flex-col overflow-hidden p-8">
+      <div className="w-full max-w-2xl bg-white shadow-lg rounded-md flex flex-col overflow-hidden p-8">
         {/* If registration form should be displayed */}
         {showRegistration ? (
           <>
