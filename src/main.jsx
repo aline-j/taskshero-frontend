@@ -13,7 +13,12 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <ClerkProvider
+      publishableKey={PUBLISHABLE_KEY}
+      signInUrl="/login"
+      signUpUrl="/login"
+      afterSignOutUrl="/login"
+    >
       <BrowserRouter>
         <App />
       </BrowserRouter>

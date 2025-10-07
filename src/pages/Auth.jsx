@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { Link } from "react-router-dom";
+import { SignedOut } from "@clerk/clerk-react";
 import Login from "../components/Login.jsx";
 import Registration from "../components/Registration.jsx";
 
@@ -40,15 +39,6 @@ export default function Auth() {
                 </button>
               </p>
             </SignedOut>
-
-            <SignedIn>
-              <p className="text-sm text-gray-600 mt-4">
-                Erfolgreich eingeloggt.{" "}
-                <Link to="/profile" className="text-amber-500 hover:underline">
-                  Hier geht es zu deinem Profil
-                </Link>
-              </p>
-            </SignedIn>
           </>
         )}
       </div>

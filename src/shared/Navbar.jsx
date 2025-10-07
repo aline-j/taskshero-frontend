@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -68,26 +69,63 @@ export default function Navbar() {
           id="navbar-default"
         >
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-md bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
-            {[
-              { path: "/login", label: "Einloggen" },
-              { path: "/profile", label: "Profil" },
-              { path: "/tasks", label: "Aufgaben" },
-              { path: "/rewards", label: "Rewards" },
-            ].map((link) => (
-              <li key={link.path}>
+            <SignedOut>
+              <li>
                 <NavLink
-                  to={link.path}
-                  onClick={() => setIsMenuOpen(false)} // Close menu
+                  to="/login"
+                  onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) =>
                     `block py-2 px-3 rounded-sm md:p-0 ${
                       isActive ? "text-cyan-600 font-bold" : "text-gray-900"
                     } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
                   }
                 >
-                  {link.label}
+                  Einloggen
                 </NavLink>
               </li>
-            ))}
+            </SignedOut>
+
+            <SignedIn>
+              <li>
+                <NavLink
+                  to="/account"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `block py-2 px-3 rounded-sm md:p-0 ${
+                      isActive ? "text-cyan-600 font-bold" : "text-gray-900"
+                    } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
+                  }
+                >
+                  Account
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/tasks"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `block py-2 px-3 rounded-sm md:p-0 ${
+                      isActive ? "text-cyan-600 font-bold" : "text-gray-900"
+                    } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
+                  }
+                >
+                  Aufgaben
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/rewards"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `block py-2 px-3 rounded-sm md:p-0 ${
+                      isActive ? "text-cyan-600 font-bold" : "text-gray-900"
+                    } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
+                  }
+                >
+                  Rewards
+                </NavLink>
+              </li>
+            </SignedIn>
           </ul>
         </div>
       </div>
