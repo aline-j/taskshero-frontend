@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useSignIn, SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
+import { useSignIn, SignedOut } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const { signOut } = useAuth();
   const { signIn, setActive } = useSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,6 +18,7 @@ export default function Login() {
       });
       if (signInState.status === "complete") {
         await setActive({ session: signInState.createdSessionId });
+        navigate("/account");
       } else {
         alert("SignInState: " + signInState.status);
       }
@@ -28,20 +30,9 @@ export default function Login() {
 
   return (
     <div className="p-8 bg-gray-50">
-      <h2 className="text-2xl font-bold mb-6">Login</h2>
-
-      {/* Only visible when logged in */}
-      <SignedIn>
-        <button
-          onClick={() => signOut()}
-          className="focus:outline-none text-white bg-amber-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5"
-        >
-          Sign Out
-        </button>
-      </SignedIn>
-
       {/* Only visible when logged out */}
       <SignedOut>
+        <h2 className="text-2xl font-bold mb-6">Login</h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <label className="block text-sm font-medium text-gray-700">
             Email
@@ -67,7 +58,7 @@ export default function Login() {
             type="submit"
             className="focus:outline-none text-white bg-amber-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5"
           >
-            Log in
+            Einloggen
           </button>
         </form>
       </SignedOut>

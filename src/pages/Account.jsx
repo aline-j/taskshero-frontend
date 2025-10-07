@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export default function Profile() {
+export default function Account() {
   const { user, isLoaded } = useUser();
   const { getToken, signOut } = useAuth();
   const { user: clerkUser } = useClerk();
@@ -254,12 +254,6 @@ export default function Profile() {
           Abmelden
         </button>
       </SignedIn>
-
-      <SignedOut>
-        <p className="text-center text-lg text-gray-600 mt-20">
-          Bitte melde dich an, um Aufgaben zu sehen.
-        </p>
-      </SignedOut>
     </>
   );
 }
