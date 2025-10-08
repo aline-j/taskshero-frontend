@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSignUp, SignedOut, useAuth } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -11,10 +12,11 @@ export default function Registration() {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [familyname, setFamilyname] = useState("");
 
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");
+
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -67,10 +69,9 @@ export default function Registration() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            familyname: familyname,
-          }),
         });
+
+        navigate("/account");
       } else {
         alert("Verification failed: " + attempt.status);
       }
@@ -129,20 +130,6 @@ export default function Registration() {
               type="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-
-            <label className="block text-sm font-medium text-gray-700">
-              Familienname
-            </label>
-            <input
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-              placeholder="Euer Familienname"
-              value={familyname}
-              type="text"
-              onChange={(e) => setFamilyname(e.target.value)}
-            />
-            <p className="text-xs text-gray-500">
-              Mindestens 5 Zeichen, muss eindeutig sein.
-            </p>
 
             <button
               type="submit"

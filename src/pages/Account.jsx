@@ -23,7 +23,6 @@ export default function Account() {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    familyname: "",
   });
 
   useEffect(() => {
@@ -53,7 +52,6 @@ export default function Account() {
           setFormData({
             first_name: data.first_name || user?.firstName,
             last_name: data.last_name || user?.lastName,
-            familyname: data.familyname || customUser?.familyname,
           });
         }
       } catch (err) {
@@ -101,9 +99,10 @@ export default function Account() {
       // Hide success message after 3 seconds
       setTimeout(() => setSuccessMessage(""), 3000);
 
-      // Update local state
-      setCustomUser(updatedUser);
-      setIsEditing(false);
+      setFormData({
+        first_name: updatedUser.first_name,
+        last_name: updatedUser.last_name,
+      });
     } catch (err) {
       console.error("handleSave error:", err);
       setErrorMessage("Fehler beim Speichern der Änderungen ❌");
@@ -178,23 +177,6 @@ export default function Account() {
                     Möchtest du dein Passwort ändern?
                   </p>
                 </div>
-              </div>
-
-              {/* Familyname */}
-              <div className="flex flex-col">
-                <p className="text-sm text-gray-500">Familienname</p>
-                <hr className="border-gray-300" />
-                {isEditing ? (
-                  <input
-                    type="text"
-                    name="familyname"
-                    value={formData.familyname}
-                    onChange={handleChange}
-                    className="border border-gray-300 rounded-md px-3 py-2"
-                  />
-                ) : (
-                  <p className="font-medium">{customUser?.familyname}</p>
-                )}
               </div>
             </div>
           </div>
