@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ButtonsSaveCancel from "./ButtonsSaveCancel";
 
 export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
   const [editedTask, setEditedTask] = useState(initialTask);
@@ -9,7 +10,7 @@ export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
   }
 
   return (
-    <form className="flex flex-wrap gap-3 w-full my-4" onSubmit={handleSubmit}>
+    <form className="flex flex-wrap gap-3 w-full my-4">
       <input
         type="text"
         placeholder="Task Title"
@@ -42,21 +43,7 @@ export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
         <option value="Teenager">Teenager</option>
       </select>
 
-      <div className="flex gap-2 mt-2">
-        <button
-          type="submit"
-          className="px-4 py-2 rounded-md bg-blue-600 text-white text-lg hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow transition"
-        >
-          Ändern
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="px-4 py-2 rounded-md bg-gray-300 text-gray-800 text-lg hover:bg-gray-400 hover:-translate-y-0.5 hover:shadow transition"
-        >
-          Abbrechen
-        </button>
-      </div>
+      <ButtonsSaveCancel onSave={handleSubmit} onCancel={onCancel} />
     </form>
   );
 }
