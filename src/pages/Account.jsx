@@ -6,6 +6,7 @@ import {
   useClerk,
 } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
+import ButtonsSaveCancel from "../components/ButtonsSaveCancel";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -16,7 +17,6 @@ export default function Account() {
 
   const [customUser, setCustomUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -66,7 +66,6 @@ export default function Account() {
   }, [isLoaded, user, getToken]);
 
   async function handleSave() {
-    setIsSaving(true);
     setSuccessMessage("");
     setErrorMessage("");
 
@@ -107,8 +106,6 @@ export default function Account() {
       console.error("handleSave error:", err);
       setErrorMessage("Fehler beim Speichern der Änderungen ❌");
       setTimeout(() => setErrorMessage(""), 4000);
-    } finally {
-      setIsSaving(false);
     }
   }
 
@@ -205,25 +202,12 @@ export default function Account() {
             </button>
           ) : (
             <>
-              <button
-                onClick={handleSave}
-                disabled={isSaving}
-                className={`focus:outline-none text-white font-medium rounded-md text-sm px-5 py-2.5 ${
-                  isSaving
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300"
-                }`}
-              >
-                {isSaving ? "Speichern…" : "Speichern"}
-              </button>
-
-              <button
-                onClick={() => setIsEditing(false)}
-                disabled={isSaving}
-                className="focus:outline-none text-gray-700 bg-gray-200 hover:bg-gray-300 font-medium rounded-md text-sm px-5 py-2.5"
-              >
-                Abbrechen
-              </button>
+              {isEditing && (
+                <ButtonsSaveCancel
+                  onSave={handleSave}
+                  onCancel={() => setIsEditing(false)}
+                />
+              )}
             </>
           )}
         </div>

@@ -1,5 +1,6 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
+import ButtonsSaveCancel from "../components/ButtonsSaveCancel";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -96,7 +97,7 @@ export default function Family() {
           </div>
         ) : (
           // Form
-          <form className="space-y-4" onSubmit={handleSave}>
+          <form className="space-y-4">
             {!userFamily && (
               <>
                 <p className="text-center font-bold text-xl mt-6">
@@ -131,24 +132,10 @@ export default function Family() {
             )}
 
             {/* Action Buttons */}
-            <div className="flex justify-center gap-4 mt-8">
-              <button
-                type="submit"
-                className="focus:outline-none text-white font-medium rounded-md text-sm px-5 py-2.5 bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300"
-              >
-                Speichern
-              </button>
-
-              {userFamily && (
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(false)}
-                  className="focus:outline-none text-gray-700 bg-gray-200 hover:bg-gray-300 font-medium rounded-md text-sm px-5 py-2.5"
-                >
-                  Abbrechen
-                </button>
-              )}
-            </div>
+            <ButtonsSaveCancel
+              onSave={handleSave}
+              onCancel={() => setIsEditing(false)}
+            />
           </form>
         )}
       </div>
