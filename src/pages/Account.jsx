@@ -182,7 +182,6 @@ export default function Account() {
           </div>
         </div>
 
-        {/* Action Buttons */}
         {/* Feedback Messages */}
         {successMessage && (
           <p className="text-green-600 text-center font-medium mt-6 transition-opacity duration-500">

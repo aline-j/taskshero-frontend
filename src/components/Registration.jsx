@@ -71,7 +71,7 @@ export default function Registration() {
           },
         });
 
-        navigate("/account");
+        navigate("/family");
       } else {
         alert("Verification failed: " + attempt.status);
       }

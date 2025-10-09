@@ -4,6 +4,7 @@ import Auth from "./pages/Auth";
 import Account from "./pages/Account";
 import Tasks from "./pages/Tasks";
 import Rewards from "./pages/Rewards";
+import Family from "./pages/Family";
 import "./App.css";
 
 function App() {
@@ -24,6 +25,14 @@ function App() {
           element={
             <div className="max-w-screen-xl mx-auto p-4">
               <Account />
+            </div>
+          }
+        />
+        <Route
+          path="/family"
+          element={
+            <div className="max-w-screen-xl mx-auto p-4">
+              <Family />
             </div>
           }
         />
