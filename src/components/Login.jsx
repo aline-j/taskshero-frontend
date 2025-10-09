@@ -18,7 +18,7 @@ export default function Login() {
       });
       if (signInState.status === "complete") {
         await setActive({ session: signInState.createdSessionId });
-        navigate("/account");
+        navigate("/family");
       } else {
         alert("SignInState: " + signInState.status);
       }

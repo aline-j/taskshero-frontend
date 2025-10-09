@@ -101,6 +101,19 @@ export default function Navbar() {
               </li>
               <li>
                 <NavLink
+                  to="/family"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `block py-2 px-3 rounded-sm md:p-0 ${
+                      isActive ? "text-cyan-600 font-bold" : "text-gray-900"
+                    } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
+                  }
+                >
+                  Family
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/tasks"
                   onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) =>
