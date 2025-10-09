@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ButtonsSaveCancel from "./ButtonsSaveCancel";
 
 export default function AddTaskForm({ onAdd, onCancel }) {
   const [newTask, setNewTask] = useState({
@@ -48,21 +49,7 @@ export default function AddTaskForm({ onAdd, onCancel }) {
         <option value="Teenager">Teenager</option>
       </select>
 
-      <div className="flex gap-2 mt-2 lg:mt-0 lg:ml-auto">
-        <button
-          type="submit"
-          className="px-4 py-2 rounded-md bg-green-600 text-white text-md hover:bg-green-700 hover:-translate-y-0.5 hover:shadow transition"
-        >
-          Hinzufügen
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="px-4 py-2 rounded-md bg-gray-300 text-gray-800 text-md hover:bg-gray-400 hover:-translate-y-0.5 hover:shadow transition"
-        >
-          Abbrechen
-        </button>
-      </div>
+      <ButtonsSaveCancel onSave={handleSubmit} onCancel={onCancel} />
     </form>
   );
 }
