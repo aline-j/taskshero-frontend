@@ -48,7 +48,6 @@ export default function AddTaskForm({ onAdd, onCancel }) {
         <option value="Grundschulalter">Grundschulalter</option>
         <option value="Teenager">Teenager</option>
       </select>
-
       <ButtonsSaveCancel onSave={handleSubmit} onCancel={onCancel} />
     </form>
   );
