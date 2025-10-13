@@ -31,7 +31,9 @@ export default function Login({ setShowRegistration }) {
   return (
     <SignedOut>
       {/* Only visible when logged out */}
-      <h2 className="text-5xl font-bold my-20 text-center">Login</h2>
+      <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+        Login
+      </h1>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <label className="block text-sm font-medium text-gray-700">Email</label>
         <input

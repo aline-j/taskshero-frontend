@@ -84,7 +84,9 @@ export default function Registration() {
 
   return (
     <SignedOut>
-      <h2 className="text-5xl font-bold my-20 text-center">Registrierung</h2>
+      <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+        Registrierung
+      </h1>
 
       {!pendingVerification ? (
         <form className="space-y-4" onSubmit={handleSubmit}>

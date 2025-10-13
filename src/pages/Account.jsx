@@ -32,7 +32,7 @@ export default function Account() {
     async function fetchUserData() {
       try {
         const token = await getToken();
-        const res = await fetch(`${BASE_URL}/me`, {
+        const response = await fetch(`${BASE_URL}/me`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -40,12 +40,10 @@ export default function Account() {
           },
         });
 
-        const text = await res.text();
+        const text = await response.text();
         const data = JSON.parse(text || "{}");
 
-        if (!res.ok) {
-          throw new Error(`HTTP error ${res.status}`);
-        }
+        if (!response.ok) throw new Error("HTTP error " + response.status);
 
         if (mounted) {
           setCustomUser(data);
@@ -79,7 +77,7 @@ export default function Account() {
       });
 
       // Update backend DB
-      const res = await fetch(`${BASE_URL}/update-user`, {
+      const response = await fetch(`${BASE_URL}/update-user`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -88,8 +86,9 @@ export default function Account() {
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const updatedUser = await res.json();
+      if (!response.ok) throw new Error("HTTP error " + response.status);
+
+      const updatedUser = await response.json();
 
       setCustomUser(updatedUser);
       setIsEditing(false);
@@ -119,9 +118,9 @@ export default function Account() {
       <SignedIn>
         <div className="flex justify-center text-left">
           <div className="w-full max-w-md flex flex-col overflow-hidden">
-            <h2 className="text-5xl font-bold my-20 text-center">
+            <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
               Dein Account
-            </h2>
+            </h1>
 
             <div className="space-y-8 w-full">
               {/* Firstname */}

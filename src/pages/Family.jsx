@@ -19,7 +19,7 @@ export default function Family() {
     async function fetchFamily() {
       try {
         const token = await getToken();
-        const res = await fetch(`${BASE_URL}/family`, {
+        const response = await fetch(`${BASE_URL}/family`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -27,9 +27,9 @@ export default function Family() {
           },
         });
 
-        if (!res.ok) throw new Error("Fehler beim Abrufen der Familie");
+        if (!response.ok) throw new Error("HTTP error " + response.status);
 
-        const data = await res.json();
+        const data = await response.json();
         setUserFamily(data.family_name);
         setFormData({
           familyname: data.family_name || "",
@@ -81,7 +81,9 @@ export default function Family() {
   return (
     <div className="flex justify-center text-left">
       <div className="w-full max-w-md flex flex-col overflow-hidden">
-        <h2 className="text-5xl font-bold my-20 text-center">Deine Familie</h2>
+        <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+          Deine Familie
+        </h1>
 
         {/* If family exists and not in edit mode */}
         {userFamily && !isEditing ? (

@@ -16,16 +16,16 @@ export default function Tasks() {
   async function getTasks() {
     try {
       const token = await getToken();
-      const res = await fetch(`${BASE_URL}/tasks`, {
+      const response = await fetch(`${BASE_URL}/tasks`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         credentials: "include",
       });
-      if (!res.ok) throw new Error("HTTP error " + res.status);
+      if (!response.ok) throw new Error("HTTP error " + response.status);
 
-      const data = await res.json();
+      const data = await response.json();
       setTasks(data);
     } catch (err) {
       console.error("Error fetching tasks:", err);
@@ -43,7 +43,7 @@ export default function Tasks() {
   async function handleAddTask(newTask) {
     try {
       const token = await getToken();
-      const res = await fetch(`${BASE_URL}/tasks`, {
+      const response = await fetch(`${BASE_URL}/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export default function Tasks() {
         body: JSON.stringify(newTask),
       });
 
-      if (!res.ok) throw new Error("HTTP error " + res.status);
+      if (!response.ok) throw new Error("HTTP error " + response.status);
 
       await getTasks();
       setShowForm(false);
@@ -70,7 +70,9 @@ export default function Tasks() {
   return (
     <div>
       <SignedIn>
-        <h1 className="text-5xl font-bold text-center my-20">Aufgaben Pool</h1>
+        <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+          Aufgaben Pool
+        </h1>
 
         <div className="flex flex-col md:flex-row justify-end items-center gap-4 mb-8 px-4">
           {/* Button to display the Add Task form */}
