@@ -27,7 +27,7 @@ export default function AddTaskForm({ onAdd, onCancel }) {
         value={newTask.title}
         onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
         required
-        className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
       />
 
       <input
@@ -36,13 +36,13 @@ export default function AddTaskForm({ onAdd, onCancel }) {
         value={newTask.points}
         onChange={(e) => setNewTask({ ...newTask, points: e.target.value })}
         required
-        className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
       />
 
       <select
         value={newTask.group}
         onChange={(e) => setNewTask({ ...newTask, group: e.target.value })}
-        className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
       >
         <option value="Kindergartenalter">Kindergartenalter</option>
         <option value="Grundschulalter">Grundschulalter</option>
