@@ -39,7 +39,7 @@ export default function Tasks() {
     }
   }, [isLoaded, isSignedIn]);
 
-  // Callback form AddTaskForm
+  // Callback AddTaskForm
   async function handleAddTask(newTask) {
     try {
       const token = await getToken();
@@ -75,7 +75,7 @@ export default function Tasks() {
         </h1>
 
         <div className="flex flex-col md:flex-row justify-end items-center gap-4 mb-8 px-4">
-          {/* Button to display the Add Task form */}
+          {/* Button to display the AddTaskForm */}
           {!showForm && (
             <button
               onClick={() => setShowForm(true)}

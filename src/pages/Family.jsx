@@ -1,6 +1,7 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import ButtonsSaveCancel from "../components/ButtonsSaveCancel";
+import Children from "../components/Children";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -80,15 +81,13 @@ export default function Family() {
 
   return (
     <div className="flex justify-center text-left">
-      <div className="w-full max-w-md flex flex-col overflow-hidden">
-        <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-          Deine Familie
-        </h1>
-
+      <div>
         {/* If family exists and not in edit mode */}
         {userFamily && !isEditing ? (
           <div className="flex items-center justify-center gap-3 mb-6">
-            <p className="text-xl font-medium">{userFamily}</p>
+            <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+              {userFamily}
+            </h1>
             <button
               onClick={() => setIsEditing(true)}
               className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
@@ -102,6 +101,9 @@ export default function Family() {
           <form className="space-y-4">
             {!userFamily && (
               <>
+                <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+                  Deine Familie
+                </h1>
                 <p className="text-center font-bold text-xl mt-6">
                   Du musst einen Familiennamen definieren!
                 </p>
@@ -140,6 +142,8 @@ export default function Family() {
             />
           </form>
         )}
+
+        <Children />
       </div>
     </div>
   );

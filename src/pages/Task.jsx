@@ -23,7 +23,7 @@ export default function Task({
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          Authorization: `Bearer ${token}`,
         },
       });
       if (!response.ok) throw new Error("HTTP error " + response.status);
@@ -41,7 +41,7 @@ export default function Task({
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(updateTask),
       });
