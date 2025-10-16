@@ -15,6 +15,7 @@ export default function Children() {
   const { getToken, isSignedIn } = useAuth();
   const [children, setChildren] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [familyName, setFamilyName] = useState("");
 
   // Fetches all children associated with the authenticated user from the API.
   // Updates local state with the retrieved list.
@@ -38,12 +39,39 @@ export default function Children() {
     }
   }
 
-  // Fetch children when the user is signed in.
+  // Retrieves the family name of the authenticated user.
+  // Called first, before loading children.
+  async function fetchFamilyName() {
+    try {
+      const token = await getToken();
+      const response = await fetch(`${BASE_URL}/family`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("HTTP error: " + response.status);
+      const data = await response.json();
+      setFamilyName(data.family_name);
+    } catch (err) {
+      console.error("Error fetching family name: ", err);
+    }
+  }
+
+  // First load Family Name
   useEffect(() => {
     if (isSignedIn) {
-      getChildren();
+      fetchFamilyName();
     }
   }, [isSignedIn]);
+
+  // Then only load children if familyName is present
+  useEffect(() => {
+    if (isSignedIn && familyName) {
+      getChildren();
+    }
+  }, [isSignedIn, familyName]);
 
   // Adds a new child via the API and fetches updated data.
   async function handleAddChild(newChild) {
