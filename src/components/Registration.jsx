@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export default function Registration() {
+export default function Registration({ setShowRegistration }) {
   const { getToken } = useAuth();
   const { signUp, setActive } = useSignUp();
 
@@ -12,8 +12,6 @@ export default function Registration() {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [showRegistration, setShowRegistration] = useState(false);
 
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");

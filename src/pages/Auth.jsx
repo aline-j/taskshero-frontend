@@ -11,7 +11,10 @@ export default function Auth() {
         {/* If registration form should be displayed */}
         {showRegistration ? (
           <>
-            <Registration setShowRegistration={setShowRegistration} />
+            <Registration
+              showRegistration={showRegistration}
+              setShowRegistration={setShowRegistration}
+            />
           </>
         ) : (
           <>
