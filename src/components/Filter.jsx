@@ -28,9 +28,7 @@ export default function Filter({ groupFilter, setGroupFilter }) {
     <div className="relative flex flex-col md:flex-row justify-end items-center gap-4 mb-8 px-4">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 
-               focus:outline-none focus:ring-blue-300 font-medium 
-               rounded-md text-md px-5 py-2.5 inline-flex items-center"
+        className="text-white bg-cyan-600 hover:bg-cyan-700 font-medium rounded-md text-md px-5 py-2.5 inline-flex items-center"
       >
         {getLabel(groupFilter)}
         <svg

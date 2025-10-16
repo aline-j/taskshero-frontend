@@ -58,7 +58,7 @@ export default function Login({ setShowRegistration }) {
         <div className="flex justify-center gap-4 mt-8">
           <button
             type="submit"
-            className="focus:outline-none text-white bg-amber-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5"
+            className="text-white bg-amber-400 hover:bg-yellow-500 font-medium rounded-md text-sm px-5 py-2.5"
           >
             Einloggen
           </button>
