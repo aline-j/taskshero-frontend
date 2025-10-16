@@ -195,7 +195,7 @@ export default function Account() {
           {!isEditing ? (
             <button
               onClick={() => setIsEditing(true)}
-              className="mt-12 focus:outline-none border-2 border-gray-300 text-gray-500 hover:bg-gray-500 hover:text-white focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5"
+              className="mt-12 border-2 border-gray-300 text-gray-500 hover:bg-gray-500 hover:text-white font-medium rounded-md text-sm px-5 py-2.5"
             >
               Bearbeiten
             </button>
@@ -213,7 +213,7 @@ export default function Account() {
 
         <button
           onClick={() => signOut()}
-          className="mt-6 focus:outline-none border-2 border-gray-300 text-gray-500 hover:bg-gray-500 hover:text-white focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5"
+          className="mt-6 border-2 border-gray-300 text-gray-500 hover:bg-gray-500 hover:text-white font-medium rounded-md text-sm px-5 py-2.5"
         >
           Abmelden
         </button>

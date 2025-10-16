@@ -98,49 +98,48 @@ export default function Family() {
           </div>
         ) : (
           // Form
-          <form className="space-y-4">
-            {!userFamily && (
-              <>
-                <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-                  Deine Familie
-                </h1>
-                <p className="text-center font-bold text-xl mt-6">
-                  Du musst einen Familiennamen definieren!
-                </p>
-                <p className="text-center font-medium text-md mb-10">
-                  Anschließend kannst du deine Kinder anlegen.
-                </p>
-              </>
-            )}
-            <input
-              className="mt-1 block w-full px-4 py-2 text-center border border-gray-300 rounded-md shadow-sm"
-              placeholder="Euer Familienname"
-              name="familyname"
-              value={formData.familyname}
-              type="text"
-              onChange={handleChange}
-            />
-            <p className="text-xs text-gray-500 text-center">
-              Mindestens 5 Zeichen, muss eindeutig sein.
-            </p>
-
-            {successMessage && (
-              <p className="text-green-600 text-center font-medium mt-6">
-                {successMessage}
+          <div className="w-full max-w-md flex flex-col justify-center overflow-hidden mb-20 mx-auto">
+            <form className="space-y-4">
+              {(!userFamily || isEditing) && (
+                <>
+                  <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+                    Deine Familie
+                  </h1>
+                  <p className="text-center font-bold text-xl mt-6">
+                    Du musst einen Familiennamen definieren!
+                  </p>
+                </>
+              )}
+              <input
+                className="mt-1 block w-full px-4 py-2 text-center border border-gray-300 rounded-md shadow-sm"
+                placeholder="Euer Familienname"
+                name="familyname"
+                value={formData.familyname}
+                type="text"
+                onChange={handleChange}
+              />
+              <p className="text-xs text-gray-500 text-center">
+                Mindestens 5 Zeichen, muss eindeutig sein.
               </p>
-            )}
-            {errorMessage && (
-              <p className="text-red-600 text-center font-medium mt-6">
-                {errorMessage}
-              </p>
-            )}
 
-            {/* Action Buttons */}
-            <ButtonsSaveCancel
-              onSave={handleSave}
-              onCancel={() => setIsEditing(false)}
-            />
-          </form>
+              {successMessage && (
+                <p className="text-green-600 text-center font-medium mt-6">
+                  {successMessage}
+                </p>
+              )}
+              {errorMessage && (
+                <p className="text-red-600 text-center font-medium mt-6">
+                  {errorMessage}
+                </p>
+              )}
+
+              {/* Action Buttons */}
+              <ButtonsSaveCancel
+                onSave={handleSave}
+                onCancel={() => setIsEditing(false)}
+              />
+            </form>
+          </div>
         )}
 
         <Children />

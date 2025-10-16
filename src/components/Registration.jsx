@@ -137,7 +137,7 @@ export default function Registration() {
           <div className="flex justify-center gap-4 mt-8">
             <button
               type="submit"
-              className="focus:outline-none text-white bg-amber-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-md text-sm px-5 py-2.5"
+              className="text-white bg-amber-400 hover:bg-yellow-500 font-medium rounded-md text-sm px-5 py-2.5"
             >
               Account erstellen
             </button>
@@ -162,7 +162,7 @@ export default function Registration() {
             Bestätigungscode
           </label>
           <input
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
             placeholder="Code aus der E-Mail"
             value={code}
             onChange={(e) => setCode(e.target.value)}
@@ -171,7 +171,7 @@ export default function Registration() {
           <div className="flex justify-center gap-4 mt-8">
             <button
               type="submit"
-              className="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-md text-sm px-5 py-2.5"
+              className="text-white bg-green-500 hover:bg-green-600 font-medium rounded-md text-sm px-5 py-2.5"
             >
               Code bestätigen
             </button>
