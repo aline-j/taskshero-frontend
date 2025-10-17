@@ -141,8 +141,7 @@ export default function Family() {
             </form>
           </div>
         )}
-
-        <Children />
+        {userFamily && <Children />}
       </div>
     </div>
   );
