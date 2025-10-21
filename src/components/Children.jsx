@@ -104,7 +104,7 @@ export default function Children() {
             <Child
               key={child.id}
               firstname={child.first_name}
-              birthday={child.birth_day}
+              birthdate={child.birth_date}
               id={child.id}
               getToken={getToken}
               onChildDeleted={(id) => {

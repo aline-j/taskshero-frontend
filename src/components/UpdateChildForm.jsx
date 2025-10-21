@@ -11,7 +11,7 @@ export default function UpdateChildForm({ initialChild, onEdit, onCancel }) {
   // Local state mirrors the existing child’s data for editing
   const [editedChild, setEditedChild] = useState({
     first_name: initialChild.first_name,
-    birth_day: initialChild.birth_day,
+    birth_date: initialChild.birth_date,
     id: initialChild.id,
   });
 
@@ -35,13 +35,13 @@ export default function UpdateChildForm({ initialChild, onEdit, onCancel }) {
         className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
       />
 
-      {/* Input field for birthday (keeps existing value but editable) */}
+      {/* Input field for birthdate (keeps existing value but editable) */}
       <input
         type="text"
         placeholder="Geburtstag des Kindes"
-        value={editedChild.birth_day}
+        value={editedChild.birth_date}
         onChange={(e) =>
-          setEditedChild({ ...editedChild, birth_day: e.target.value })
+          setEditedChild({ ...editedChild, birth_date: e.target.value })
         }
         className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
       />
