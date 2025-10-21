@@ -3,7 +3,7 @@ import UpdateChildForm from "../components/UpdateChildForm";
 
 /**
  * Child component
- * Renders a card for a single child with name and birthday.
+ * Renders a card for a single child with name and birthdate.
  * Offers actions to edit or delete the child via modals.
  * Relies on authentication from Clerk to perform API requests.
  */
@@ -13,7 +13,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 export default function Child({
   initialChild,
   firstname,
-  birthday,
+  birthdate,
   id,
   getToken,
   onChildDeleted = () => {},
@@ -152,7 +152,11 @@ export default function Child({
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
           <div className="bg-white p-6 rounded-md shadow-lg w-96">
             <UpdateChildForm
-              initialChild={{ first_name: firstname, birth_day: birthday, id }}
+              initialChild={{
+                first_name: firstname,
+                birth_date: birthdate,
+                id,
+              }}
               // Trigger API update and close modal
               onEdit={(editedChild) => {
                 handleEdit(editedChild);
