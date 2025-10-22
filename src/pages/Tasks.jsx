@@ -12,9 +12,12 @@ export default function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [groupFilter, setGroupFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   // Get tasks from the API (defined in component scope so it can be reused)
   async function getTasks() {
     try {
+      setIsLoading(true);
       const token = await getToken();
       const response = await fetch(`${BASE_URL}/tasks`, {
         headers: {
@@ -29,6 +32,8 @@ export default function Tasks() {
       setTasks(data);
     } catch (err) {
       console.error("Error fetching tasks:", err);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -42,6 +47,7 @@ export default function Tasks() {
   // Callback AddTaskForm
   async function handleAddTask(newTask) {
     try {
+      setIsLoading(true);
       const token = await getToken();
       const response = await fetch(`${BASE_URL}/tasks`, {
         method: "POST",
@@ -58,6 +64,8 @@ export default function Tasks() {
       setShowForm(false);
     } catch (err) {
       console.error("Error adding task:", err);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -99,34 +107,38 @@ export default function Tasks() {
         <Filter groupFilter={groupFilter} setGroupFilter={setGroupFilter} />
 
         {/* Grid with the filtered tasks */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {filteredTasks.map((task) => (
-            <Task
-              key={task.task_id}
-              title={task.title}
-              points={task.points}
-              group={task.group}
-              task_id={task.task_id}
-              getToken={getToken}
-              onTaskDeleted={(task_id) => {
-                console.log(
-                  "Task",
-                  task_id,
-                  "has been deleted! I will fetch the fresh data..."
-                );
-                getTasks();
-              }}
-              onTaskEdit={(updateTask) => {
-                console.log(
-                  "Task",
-                  updateTask,
-                  "has been updated! I will fetch the fresh data..."
-                );
-                getTasks();
-              }}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <p className="text-center text-gray-500 mt-10">Lade Aufgaben...</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {filteredTasks.map((task) => (
+              <Task
+                key={task.task_id}
+                title={task.title}
+                points={task.points}
+                group={task.group}
+                task_id={task.task_id}
+                getToken={getToken}
+                onTaskDeleted={(task_id) => {
+                  console.log(
+                    "Task",
+                    task_id,
+                    "has been deleted! I will fetch the fresh data..."
+                  );
+                  getTasks();
+                }}
+                onTaskEdit={(updateTask) => {
+                  console.log(
+                    "Task",
+                    updateTask,
+                    "has been updated! I will fetch the fresh data..."
+                  );
+                  getTasks();
+                }}
+              />
+            ))}
+          </div>
+        )}
       </SignedIn>
 
       <SignedOut>
