@@ -11,6 +11,7 @@ export default function Family() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     familyname: "",
@@ -19,6 +20,7 @@ export default function Family() {
   useEffect(() => {
     async function fetchFamily() {
       try {
+        setIsLoading(true);
         const token = await getToken();
         const response = await fetch(`${BASE_URL}/family`, {
           method: "GET",
@@ -38,6 +40,8 @@ export default function Family() {
       } catch (err) {
         console.error(err);
         setUserFamily(null);
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchFamily();
@@ -49,6 +53,7 @@ export default function Family() {
     setErrorMessage("");
 
     try {
+      setIsLoading(true);
       const token = await getToken();
       const response = await fetch(`${BASE_URL}/family`, {
         method: "POST",
@@ -71,6 +76,8 @@ export default function Family() {
       console.error(err);
       setErrorMessage("Fehler beim Speichern der Änderungen ❌");
       setTimeout(() => setErrorMessage(""), 4000);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -83,7 +90,7 @@ export default function Family() {
     <div className="flex justify-center text-left">
       <div>
         {/* If family exists and not in edit mode */}
-        {userFamily && !isEditing ? (
+        {userFamily && !isEditing && !isLoading ? (
           <div className="flex items-center justify-center gap-3 mb-6">
             <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
               {userFamily}
