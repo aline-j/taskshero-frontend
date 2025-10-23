@@ -15,6 +15,8 @@ export default function Account() {
   const { getToken, signOut } = useAuth();
   const { user: clerkUser } = useClerk();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [customUser, setCustomUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -31,6 +33,7 @@ export default function Account() {
 
     async function fetchUserData() {
       try {
+        setIsLoading(true);
         const token = await getToken();
         const response = await fetch(`${BASE_URL}/me`, {
           method: "GET",
@@ -54,6 +57,8 @@ export default function Account() {
         }
       } catch (err) {
         throw new Error(`fetchUserData error: ${err.message}`);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -115,109 +120,113 @@ export default function Account() {
 
   return (
     <>
-      <SignedIn>
-        <div className="flex justify-center text-left">
-          <div className="w-full max-w-md flex flex-col overflow-hidden">
-            <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-              Dein Account
-            </h1>
+      {isLoading ? (
+        <p className="text-center text-gray-500 mt-10">Lade Account...</p>
+      ) : (
+        <SignedIn>
+          <div className="flex justify-center text-left">
+            <div className="w-full max-w-md flex flex-col overflow-hidden">
+              <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+                Dein Account
+              </h1>
 
-            <div className="space-y-8 w-full">
-              {/* Firstname */}
-              <div className="flex flex-col">
-                <p className="text-sm text-gray-500">Vorname</p>
-                <hr className="border-gray-300" />
-                {isEditing ? (
-                  <input
-                    type="text"
-                    name="first_name"
-                    value={formData.first_name}
-                    onChange={handleChange}
-                    className="border border-gray-300 rounded-md px-3 py-2"
-                  />
-                ) : (
-                  <p className="font-medium">{customUser?.first_name}</p>
-                )}
-              </div>
+              <div className="space-y-8 w-full">
+                {/* Firstname */}
+                <div className="flex flex-col">
+                  <p className="text-sm text-gray-500">Vorname</p>
+                  <hr className="border-gray-300" />
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="first_name"
+                      value={formData.first_name}
+                      onChange={handleChange}
+                      className="border border-gray-300 rounded-md px-3 py-2"
+                    />
+                  ) : (
+                    <p className="font-medium">{customUser?.first_name}</p>
+                  )}
+                </div>
 
-              {/* Lastname */}
-              <div className="flex flex-col">
-                <p className="text-sm text-gray-500">Nachname</p>
-                <hr className="border-gray-300" />
-                {isEditing ? (
-                  <input
-                    type="text"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleChange}
-                    className="border border-gray-300 rounded-md px-3 py-2"
-                  />
-                ) : (
-                  <p className="font-medium">{customUser?.last_name}</p>
-                )}
-              </div>
+                {/* Lastname */}
+                <div className="flex flex-col">
+                  <p className="text-sm text-gray-500">Nachname</p>
+                  <hr className="border-gray-300" />
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleChange}
+                      className="border border-gray-300 rounded-md px-3 py-2"
+                    />
+                  ) : (
+                    <p className="font-medium">{customUser?.last_name}</p>
+                  )}
+                </div>
 
-              {/* Mail address */}
-              <div className="flex flex-col">
-                <p className="text-sm text-gray-500">E-Mail-Adresse</p>
-                <hr className="border-gray-300" />
-                <p className="font-medium">{customUser?.email}</p>
-              </div>
+                {/* Mail address */}
+                <div className="flex flex-col">
+                  <p className="text-sm text-gray-500">E-Mail-Adresse</p>
+                  <hr className="border-gray-300" />
+                  <p className="font-medium">{customUser?.email}</p>
+                </div>
 
-              {/* Password */}
-              <div className="flex flex-col">
-                <p className="text-sm text-gray-500">Passwort</p>
-                <hr className="border-gray-300" />
-                <div className="flex items-center justify-between">
-                  <p className="font-medium">
-                    Möchtest du dein Passwort ändern?
-                  </p>
+                {/* Password */}
+                <div className="flex flex-col">
+                  <p className="text-sm text-gray-500">Passwort</p>
+                  <hr className="border-gray-300" />
+                  <div className="flex items-center justify-between">
+                    <p className="font-medium">
+                      Möchtest du dein Passwort ändern?
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Feedback Messages */}
-        {successMessage && (
-          <p className="text-green-600 text-center font-medium mt-6 transition-opacity duration-500">
-            {successMessage}
-          </p>
-        )}
-        {errorMessage && (
-          <p className="text-red-600 text-center font-medium mt-6 transition-opacity duration-500">
-            {errorMessage}
-          </p>
-        )}
-
-        {/* Action Buttons */}
-        <div className="flex justify-center gap-4 mt-8">
-          {!isEditing ? (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="mt-12 border-2 border-gray-300 text-gray-500 hover:bg-gray-500 hover:text-white font-medium rounded-md text-sm px-5 py-2.5"
-            >
-              Bearbeiten
-            </button>
-          ) : (
-            <>
-              {isEditing && (
-                <ButtonsSaveCancel
-                  onSave={handleSave}
-                  onCancel={() => setIsEditing(false)}
-                />
-              )}
-            </>
+          {/* Feedback Messages */}
+          {successMessage && (
+            <p className="text-green-600 text-center font-medium mt-6 transition-opacity duration-500">
+              {successMessage}
+            </p>
           )}
-        </div>
+          {errorMessage && (
+            <p className="text-red-600 text-center font-medium mt-6 transition-opacity duration-500">
+              {errorMessage}
+            </p>
+          )}
 
-        <button
-          onClick={() => signOut()}
-          className="mt-6 border-2 border-gray-300 text-gray-500 hover:bg-gray-500 hover:text-white font-medium rounded-md text-sm px-5 py-2.5"
-        >
-          Abmelden
-        </button>
-      </SignedIn>
+          {/* Action Buttons */}
+          <div className="flex justify-center gap-4 mt-8">
+            {!isEditing ? (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="mt-12 border-2 border-gray-300 text-gray-500 hover:bg-gray-500 hover:text-white font-medium rounded-md text-sm px-5 py-2.5"
+              >
+                Bearbeiten
+              </button>
+            ) : (
+              <>
+                {isEditing && (
+                  <ButtonsSaveCancel
+                    onSave={handleSave}
+                    onCancel={() => setIsEditing(false)}
+                  />
+                )}
+              </>
+            )}
+          </div>
+
+          <button
+            onClick={() => signOut()}
+            className="mt-6 border-2 border-gray-300 text-gray-500 hover:bg-gray-500 hover:text-white font-medium rounded-md text-sm px-5 py-2.5"
+          >
+            Abmelden
+          </button>
+        </SignedIn>
+      )}
     </>
   );
 }

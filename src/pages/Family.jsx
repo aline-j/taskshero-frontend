@@ -88,68 +88,72 @@ export default function Family() {
 
   return (
     <div className="flex justify-center text-left">
-      <div>
-        {/* If family exists and not in edit mode */}
-        {userFamily && !isEditing && !isLoading ? (
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-              {userFamily}
-            </h1>
-            <button
-              onClick={() => setIsEditing(true)}
-              className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
-              title="Bearbeiten"
-            >
-              ✏️
-            </button>
-          </div>
-        ) : (
-          // Form
-          <div className="w-full max-w-md flex flex-col justify-center overflow-hidden mb-20 mx-auto">
-            <form className="space-y-4">
-              {(!userFamily || isEditing) && (
-                <>
-                  <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-                    Deine Familie
-                  </h1>
-                  <p className="text-center font-bold text-xl mt-6">
-                    Du musst einen Familiennamen definieren!
+      {isLoading ? (
+        <p className="text-center text-gray-500 mt-10">Lade Familie...</p>
+      ) : (
+        <div>
+          {/* If family exists and not in edit mode */}
+          {userFamily && !isEditing ? (
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+                {userFamily}
+              </h1>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
+                title="Bearbeiten"
+              >
+                ✏️
+              </button>
+            </div>
+          ) : (
+            // Form
+            <div className="w-full max-w-md flex flex-col justify-center overflow-hidden mb-20 mx-auto">
+              <form className="space-y-4">
+                {(!userFamily || isEditing) && (
+                  <>
+                    <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+                      Deine Familie
+                    </h1>
+                    <p className="text-center font-bold text-xl mt-6">
+                      Du musst einen Familiennamen definieren!
+                    </p>
+                  </>
+                )}
+                <input
+                  className="mt-1 block w-full px-4 py-2 text-center border border-gray-300 rounded-md shadow-sm"
+                  placeholder="Euer Familienname"
+                  name="familyname"
+                  value={formData.familyname}
+                  type="text"
+                  onChange={handleChange}
+                />
+                <p className="text-xs text-gray-500 text-center">
+                  Mindestens 5 Zeichen, muss eindeutig sein.
+                </p>
+
+                {successMessage && (
+                  <p className="text-green-600 text-center font-medium mt-6">
+                    {successMessage}
                   </p>
-                </>
-              )}
-              <input
-                className="mt-1 block w-full px-4 py-2 text-center border border-gray-300 rounded-md shadow-sm"
-                placeholder="Euer Familienname"
-                name="familyname"
-                value={formData.familyname}
-                type="text"
-                onChange={handleChange}
-              />
-              <p className="text-xs text-gray-500 text-center">
-                Mindestens 5 Zeichen, muss eindeutig sein.
-              </p>
+                )}
+                {errorMessage && (
+                  <p className="text-red-600 text-center font-medium mt-6">
+                    {errorMessage}
+                  </p>
+                )}
 
-              {successMessage && (
-                <p className="text-green-600 text-center font-medium mt-6">
-                  {successMessage}
-                </p>
-              )}
-              {errorMessage && (
-                <p className="text-red-600 text-center font-medium mt-6">
-                  {errorMessage}
-                </p>
-              )}
-
-              {/* Action Buttons */}
-              <ButtonsSaveCancel
-                onSave={handleSave}
-                onCancel={() => setIsEditing(false)}
-              />
-            </form>
-          </div>
-        )}
-        {userFamily && <Children />}
-      </div>
+                {/* Action Buttons */}
+                <ButtonsSaveCancel
+                  onSave={handleSave}
+                  onCancel={() => setIsEditing(false)}
+                />
+              </form>
+            </div>
+          )}
+          {userFamily && <Children />}
+        </div>
+      )}
     </div>
   );
 }
