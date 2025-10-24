@@ -100,7 +100,7 @@ export default function Family() {
               </h1>
               <button
                 onClick={() => setIsEditing(true)}
-                className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
+                className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
                 title="Bearbeiten"
               >
                 ✏️

@@ -135,6 +135,14 @@ export default function Tasks() {
                   );
                   getTasks();
                 }}
+                onTaskAssignment={(taskAssignment) => {
+                  console.log(
+                    "Task",
+                    taskAssignment,
+                    "has been assigned! I will fetch the fresh data..."
+                  );
+                  getTasks();
+                }}
               />
             ))}
           </div>
