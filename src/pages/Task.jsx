@@ -1,5 +1,6 @@
 import { useState } from "react";
 import UpdateTaskForm from "../components/UpdateTaskForm";
+import AssignmentTaskForm from "../components/AssignmentTaskForm";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -11,14 +12,16 @@ export default function Task({
   task_id,
   onTaskDeleted = () => {},
   onTaskEdit = () => {},
+  onTaskAssignment = () => {},
   getToken,
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [showAssignmentForm, setShowAssignmentForm] = useState(false);
 
   async function handleDelete(task_id) {
     try {
-      const token = getToken ? await getToken() : null;
+      const token = await getToken();
       const response = await fetch(`${BASE_URL}/tasks/${task_id}`, {
         method: "DELETE",
         headers: {
@@ -36,7 +39,7 @@ export default function Task({
 
   async function handleEdit(updateTask) {
     try {
-      const token = getToken ? await getToken() : null;
+      const token = await getToken();
       const response = await fetch(`${BASE_URL}/task/${updateTask.task_id}`, {
         method: "PUT",
         headers: {
@@ -50,6 +53,25 @@ export default function Task({
       setShowEditForm(false);
     } catch (err) {
       alert("Something went wrong");
+    }
+  }
+
+  async function handleAssignment(taskAssignment) {
+    try {
+      const token = await getToken();
+      const response = await fetch(`${BASE_URL}/assign-task`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(taskAssignment),
+      });
+      if (!response.ok) throw new Error("HTTP error " + response.status);
+      onTaskAssignment(taskAssignment);
+      setShowAssignmentForm(false);
+    } catch (err) {
+      alert("Fehler beim Zuweisen der Aufgabe.");
     }
   }
 
@@ -74,13 +96,19 @@ export default function Task({
         {/* Action Buttons */}
         <div className="absolute bottom-2 right-2 flex gap-2">
           <button
-            className="text-xl p-2 rounded-full transition-all duration-200 hover:bg-white hover:-translate-y-1.5 hover:shadow-lg"
+            className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
+            onClick={() => setShowAssignmentForm(true)}
+          >
+            👥
+          </button>
+          <button
+            className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
             onClick={() => setShowEditForm(true)}
           >
             ✏️
           </button>
           <button
-            className="text-xl p-2 rounded-full transition-all duration-200 hover:bg-white hover:-translate-y-1.5 hover:shadow-lg"
+            className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
             onClick={() => setShowConfirm(true)}
           >
             🗑️
@@ -124,6 +152,19 @@ export default function Task({
               initialTask={{ title, points, group, task_id }}
               onEdit={handleEdit}
               onCancel={() => setShowEditForm(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Assignment Modal */}
+      {showAssignmentForm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-white p-6 rounded-md shadow-lg w-96">
+            <AssignmentTaskForm
+              initialTask={{ title, points, group, task_id }}
+              onEdit={handleAssignment}
+              onCancel={() => setShowAssignmentForm(false)}
             />
           </div>
         </div>
