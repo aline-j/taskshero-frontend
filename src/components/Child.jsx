@@ -1,5 +1,6 @@
 import { useState } from "react";
 import UpdateChildForm from "../components/UpdateChildForm";
+import { useNavigate } from "react-router";
 
 /**
  * Child component
@@ -11,7 +12,6 @@ import UpdateChildForm from "../components/UpdateChildForm";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function Child({
-  initialChild,
   firstname,
   birthdate,
   id,
@@ -25,6 +25,12 @@ export default function Child({
   const [showConfirm, setShowConfirm] = useState(false);
   // Controls the edit form modal
   const [showEditForm, setShowEditForm] = useState(false);
+
+  const navigate = useNavigate();
+
+  const goToTasks = () => {
+    navigate(`/children/${id}/tasks`);
+  };
 
   // Deletes a child by ID from the API and triggers parent refresh callback.
   async function handleDelete(id) {
@@ -183,18 +189,18 @@ export default function Child({
           {firstname}
         </h5>
         <div className="flex justify-center gap-2 mt-8 w-full">
-          <a
-            href="#"
+          <button
+            onClick={goToTasks}
             className="w-1/2 text-center text-white font-medium rounded-md text-sm px-5 py-2.5 bg-cyan-600 hover:bg-cyan-700"
           >
             Aufgaben
-          </a>
-          <a
+          </button>
+          <button
             href="#"
             className="w-1/2 text-center text-white font-medium rounded-md text-sm px-5 py-2.5 bg-amber-500 hover:bg-amber-600"
           >
             Belohnungen
-          </a>
+          </button>
         </div>
       </div>
     </div>
