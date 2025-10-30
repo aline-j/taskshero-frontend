@@ -6,6 +6,7 @@ import Tasks from "./pages/Tasks";
 import Rewards from "./pages/Rewards";
 import Family from "./pages/Family";
 import "./App.css";
+import ChildTasks from "./pages/ChildTasks";
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
           element={
             <div className="max-w-screen-xl mx-auto p-4">
               <Family />
+            </div>
+          }
+        />
+        <Route
+          path="/children/:childId/tasks"
+          element={
+            <div className="max-w-screen-xl mx-auto p-4">
+              <ChildTasks />
             </div>
           }
         />

@@ -56,7 +56,7 @@ export default function Account() {
           });
         }
       } catch (err) {
-        throw new Error(`fetchUserData error: ${err.message}`);
+        console.error("Error fetching tasks:", err);
       } finally {
         setIsLoading(false);
       }
