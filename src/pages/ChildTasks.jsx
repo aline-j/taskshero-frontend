@@ -9,7 +9,6 @@ export default function ChildTasks() {
   const { childId } = useParams();
   const [child, setChild] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [isCompleted, setIsCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // Load child
@@ -65,11 +64,18 @@ export default function ChildTasks() {
   }, [childId, getToken]);
 
   // Mark task as completed
-  async function handleComplete(taskId) {
+  async function handleToggleComplete(taskId) {
     try {
       const token = await getToken();
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.task_id === taskId
+            ? { ...task, completed: !task.completed }
+            : task
+        )
+      );
       const response = await fetch(
-        `${BASE_URL}/children/${childId}/tasks/${taskId}/complete`,
+        `${BASE_URL}/children/${childId}/tasks/${taskId}/togglecomplete`,
         {
           method: "POST",
           headers: {
@@ -80,15 +86,16 @@ export default function ChildTasks() {
       );
 
       if (!response.ok) throw new Error("HTTP-Fehler " + response.status);
-
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.task_id === taskId ? { ...task, completed: true } : task
-        )
-      );
-      setIsCompleted(true);
     } catch (err) {
       console.error("Fehler beim Abschließen der Aufgabe:", err);
+      alert("Ups! Fehler! Wende dich an deine Mama.");
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.task_id === taskId
+            ? { ...task, completed: !task.completed }
+            : task
+        )
+      );
     }
   }
 
@@ -136,7 +143,7 @@ export default function ChildTasks() {
                   <div className="absolute bottom-2 right-2 flex gap-2">
                     <button
                       className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
-                      onClick={() => handleComplete(task.task_id)}
+                      onClick={() => handleToggleComplete(task.task_id)}
                     >
                       ✔️
                     </button>
