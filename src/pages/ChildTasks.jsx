@@ -17,6 +17,7 @@ export default function ChildTasks() {
       try {
         const token = await getToken();
         const response = await fetch(`${BASE_URL}/children/${childId}`, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -41,6 +42,7 @@ export default function ChildTasks() {
         setIsLoading(true);
         const token = await getToken();
         const response = await fetch(`${BASE_URL}/children/${childId}/tasks`, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -61,6 +63,42 @@ export default function ChildTasks() {
     if (childId) fetchTasks();
   }, [childId, getToken]);
 
+  // Mark task as completed
+  async function handleToggleComplete(taskId) {
+    try {
+      const token = await getToken();
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.task_id === taskId
+            ? { ...task, completed: !task.completed }
+            : task
+        )
+      );
+      const response = await fetch(
+        `${BASE_URL}/children/${childId}/tasks/${taskId}/togglecomplete`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("HTTP-Fehler " + response.status);
+    } catch (err) {
+      console.error("Fehler beim Abschließen der Aufgabe:", err);
+      alert("Ups! Fehler! Wende dich an deine Mama.");
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.task_id === taskId
+            ? { ...task, completed: !task.completed }
+            : task
+        )
+      );
+    }
+  }
+
   return (
     <div className="flex justify-center text-left">
       {isLoading ? (
@@ -80,7 +118,9 @@ export default function ChildTasks() {
               {tasks.map((task) => (
                 <div
                   key={task.task_id}
-                  className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md"
+                  className={`relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md ${
+                    task.completed ? "opacity-50" : ""
+                  }`}
                 >
                   {/* Points Badge */}
                   <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
@@ -98,6 +138,16 @@ export default function ChildTasks() {
                   <h3 className="mt-3 mb-1 text-lg text-center font-semibold">
                     {task.title}
                   </h3>
+
+                  {/* Action Buttons */}
+                  <div className="absolute bottom-2 right-2 flex gap-2">
+                    <button
+                      className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
+                      onClick={() => handleToggleComplete(task.task_id)}
+                    >
+                      ✔️
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
