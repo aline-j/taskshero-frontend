@@ -117,6 +117,7 @@ export default function Tasks() {
                 title={task.title}
                 points={task.points}
                 group={task.group}
+                image={task.image}
                 task_id={task.task_id}
                 getToken={getToken}
                 onTaskDeleted={(task_id) => {
