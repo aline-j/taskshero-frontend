@@ -9,6 +9,7 @@ export default function Task({
   title,
   points,
   group,
+  image,
   task_id,
   onTaskDeleted = () => {},
   onTaskEdit = () => {},
@@ -86,8 +87,8 @@ export default function Task({
         {/* Image */}
         <img
           className="w-full h-[160px] object-cover rounded-md"
-          src="/images/tasks/Task-Zimmer-aufraeumen.png"
-          alt={title}
+          src={image}
+          alt={image}
         />
 
         {/* Title */}
@@ -162,7 +163,7 @@ export default function Task({
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
           <div className="bg-white p-6 rounded-md shadow-lg w-96">
             <AssignmentTaskForm
-              initialTask={{ title, points, group, task_id }}
+              initialTask={{ title, points, group, image, task_id }}
               onEdit={handleAssignment}
               onCancel={() => setShowAssignmentForm(false)}
             />

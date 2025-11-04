@@ -53,6 +53,7 @@ export default function ChildTasks() {
 
         const data = await response.json();
         setTasks(data.tasks);
+        console.log(data.tasks);
       } catch (err) {
         console.error("Fehler beim Laden der Aufgaben:", err);
       } finally {
@@ -100,7 +101,7 @@ export default function ChildTasks() {
   }
 
   return (
-    <div className="flex justify-center text-left">
+    <div>
       {isLoading ? (
         <p className="text-center text-gray-500 mt-10">Lade Aufgaben...</p>
       ) : (
@@ -130,7 +131,7 @@ export default function ChildTasks() {
                   {/* Image */}
                   <img
                     className="w-full h-[160px] object-cover rounded-md"
-                    src="/images/tasks/Task-Zimmer-aufraeumen.png"
+                    src={task.image}
                     alt={task.title}
                   />
 
