@@ -140,7 +140,7 @@ export default function Navbar() {
                     } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
                   }
                 >
-                  Rewards
+                  Belohnungen
                 </NavLink>
               </li>
             </SignedIn>

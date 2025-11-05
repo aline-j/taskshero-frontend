@@ -14,7 +14,7 @@ export default function Tasks() {
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Get tasks from the API (defined in component scope so it can be reused)
+  // Get tasks from the API
   async function getTasks() {
     try {
       setIsLoading(true);
@@ -24,7 +24,6 @@ export default function Tasks() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        credentials: "include",
       });
       if (!response.ok) throw new Error("HTTP error " + response.status);
 

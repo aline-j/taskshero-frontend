@@ -1,29 +1,24 @@
 import { useState } from "react";
-import UpdateTaskForm from "../components/UpdateTaskForm";
-import AssignmentTaskForm from "../components/AssignmentTaskForm";
+import UpdateRewardForm from "../components/UpdateRewardForm";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export default function Task({
-  initialTask,
+export default function Reward({
+  cost,
   title,
-  points,
-  group,
   image,
-  task_id,
-  onTaskDeleted = () => {},
-  onTaskEdit = () => {},
-  onTaskAssignment = () => {},
+  reward_id,
   getToken,
+  onRewardDeleted = () => {},
+  onRewardEdit = () => {},
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
-  const [showAssignmentForm, setShowAssignmentForm] = useState(false);
 
-  async function handleDelete(task_id) {
+  async function handleDelete(reward_id) {
     try {
       const token = await getToken();
-      const response = await fetch(`${BASE_URL}/tasks/${task_id}`, {
+      const response = await fetch(`${BASE_URL}/rewards/${reward_id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -31,48 +26,35 @@ export default function Task({
         },
       });
       if (!response.ok) throw new Error("HTTP error " + response.status);
-      onTaskDeleted(task_id);
+      onRewardDeleted(reward_id);
+      console.log(`REWARD_ID = ${reward_id}`);
     } catch (err) {
-      console.error(err);
+      console.log(err);
       alert("Something went wrong");
+    } finally {
+      setShowConfirm(false);
     }
   }
 
-  async function handleEdit(updateTask) {
+  async function handleEdit(updateReward) {
     try {
       const token = await getToken();
-      const response = await fetch(`${BASE_URL}/task/${updateTask.task_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(updateTask),
-      });
+      const response = await fetch(
+        `${BASE_URL}/task/${updateReward.reward_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updateTask),
+        }
+      );
       if (!response.ok) throw new Error("HTTP error " + response.status);
-      onTaskEdit(updateTask);
+      onRewardEdit(updateReward);
       setShowEditForm(false);
     } catch (err) {
       alert("Something went wrong");
-    }
-  }
-
-  async function handleAssignment(taskAssignment) {
-    try {
-      const token = await getToken();
-      const response = await fetch(`${BASE_URL}/assign-task`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(taskAssignment),
-      });
-      if (!response.ok) throw new Error("HTTP error " + response.status);
-      onTaskAssignment(taskAssignment);
-      setShowAssignmentForm(false);
-    } catch (err) {
-      alert("Fehler beim Zuweisen der Aufgabe.");
     }
   }
 
@@ -81,7 +63,7 @@ export default function Task({
       <div className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md">
         {/* Points Badge */}
         <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
-          {points} Punkte
+          {cost} Punkte
         </div>
 
         {/* Image */}
@@ -98,12 +80,6 @@ export default function Task({
         <div className="absolute bottom-2 right-2 flex gap-2">
           <button
             className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
-            onClick={() => setShowAssignmentForm(true)}
-          >
-            👥
-          </button>
-          <button
-            className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
             onClick={() => setShowEditForm(true)}
           >
             ✏️
@@ -117,12 +93,25 @@ export default function Task({
         </div>
       </div>
 
+      {/* Edit Modal */}
+      {showEditForm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-white p-6 rounded-md shadow-lg w-96">
+            <UpdateRewardForm
+              initialReward={{ title, cost, reward_id }}
+              onEdit={handleEdit}
+              onCancel={() => setShowEditForm(false)}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Delete Modal */}
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
           <div className="bg-white p-6 rounded-md shadow-lg w-80 text-center">
             <p className="font-semibold">
-              Bist du sicher, dass du diese Aufgabe löschen möchtest?
+              Bist du sicher, dass du diese Belohnung löschen möchtest?
             </p>
             <p className="text-sm text-gray-600 mt-1">
               Dieser Vorgang kann nicht rückgängig gemacht werden!
@@ -130,7 +119,7 @@ export default function Task({
             <div className="flex justify-around mt-4">
               <button
                 className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
-                onClick={() => handleDelete(task_id)}
+                onClick={() => handleDelete(reward_id)}
               >
                 Ja, löschen
               </button>
@@ -141,32 +130,6 @@ export default function Task({
                 Abbrechen
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Edit Modal */}
-      {showEditForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-96">
-            <UpdateTaskForm
-              initialTask={{ title, points, group, task_id }}
-              onEdit={handleEdit}
-              onCancel={() => setShowEditForm(false)}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Assignment Modal */}
-      {showAssignmentForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-96">
-            <AssignmentTaskForm
-              initialTask={{ title, points, group, image, task_id }}
-              onEdit={handleAssignment}
-              onCancel={() => setShowAssignmentForm(false)}
-            />
           </div>
         </div>
       )}

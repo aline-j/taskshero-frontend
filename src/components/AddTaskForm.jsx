@@ -23,7 +23,7 @@ export default function AddTaskForm({ onAdd, onCancel }) {
     >
       <input
         type="text"
-        placeholder="Task Title"
+        placeholder="Name der Aufgabe"
         value={newTask.title}
         onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
         required
@@ -32,7 +32,7 @@ export default function AddTaskForm({ onAdd, onCancel }) {
 
       <input
         type="number"
-        placeholder="Points"
+        placeholder="Punkte für Aufgabe"
         value={newTask.points}
         onChange={(e) => setNewTask({ ...newTask, points: e.target.value })}
         required
