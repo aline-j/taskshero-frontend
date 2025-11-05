@@ -53,7 +53,6 @@ export default function ChildTasks() {
 
         const data = await response.json();
         setTasks(data.tasks);
-        console.log(data.tasks);
       } catch (err) {
         console.error("Fehler beim Laden der Aufgaben:", err);
       } finally {
