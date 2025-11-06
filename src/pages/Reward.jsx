@@ -1,5 +1,6 @@
 import { useState } from "react";
 import UpdateRewardForm from "../components/UpdateRewardForm";
+import AssignmentRewardForm from "../components/AssignmentRewardForm";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -11,9 +12,11 @@ export default function Reward({
   getToken,
   onRewardDeleted = () => {},
   onRewardEdit = () => {},
+  onRewardAssignment = () => {},
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [showAssignmentForm, setShowAssignmentForm] = useState(false);
 
   async function handleDelete(reward_id) {
     try {
@@ -58,6 +61,25 @@ export default function Reward({
     }
   }
 
+  async function handleAssignment(rewardAssignment) {
+    try {
+      const token = await getToken();
+      const response = await fetch(`${BASE_URL}/assign-reward`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(rewardAssignment),
+      });
+      if (!response.ok) throw new Error("HTTP error " + response.status);
+      onRewardAssignment(rewardAssignment);
+      setShowAssignmentForm(false);
+    } catch (err) {
+      alert("Fehler beim Zuweisen der Belohnung.");
+    }
+  }
+
   return (
     <>
       <div className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md">
@@ -80,6 +102,12 @@ export default function Reward({
         <div className="absolute bottom-2 right-2 flex gap-2">
           <button
             className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
+            onClick={() => setShowAssignmentForm(true)}
+          >
+            👥
+          </button>
+          <button
+            className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
             onClick={() => setShowEditForm(true)}
           >
             ✏️
@@ -92,6 +120,19 @@ export default function Reward({
           </button>
         </div>
       </div>
+
+      {/* Assignment Modal */}
+      {showAssignmentForm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-white p-6 rounded-md shadow-lg w-96">
+            <AssignmentRewardForm
+              initialReward={{ title, cost, reward_id }}
+              onEdit={handleAssignment}
+              onCancel={() => setShowAssignmentForm(false)}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Edit Modal */}
       {showEditForm && (

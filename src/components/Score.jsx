@@ -24,9 +24,9 @@ export default function Score({ child, childId, tasks }) {
 
       let total = 0;
       for (const task of data.tasks) {
-        console.log(task);
-        console.log(task.completed);
-        console.log(task.points);
+        // console.log(task);
+        // console.log(task.completed);
+        // console.log(task.points);
         if (task.completed) {
           total += task.points;
         }

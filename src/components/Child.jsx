@@ -32,6 +32,10 @@ export default function Child({
     navigate(`/children/${id}/tasks`);
   };
 
+  const goToRewards = () => {
+    navigate(`/children/${id}/rewards`);
+  };
+
   // Deletes a child by ID from the API and triggers parent refresh callback.
   async function handleDelete(id) {
     try {
@@ -196,7 +200,7 @@ export default function Child({
             Aufgaben
           </button>
           <button
-            href="#"
+            onClick={goToRewards}
             className="w-1/2 text-center text-white font-medium rounded-md text-sm px-5 py-2.5 bg-amber-500 hover:bg-amber-600"
           >
             Belohnungen
