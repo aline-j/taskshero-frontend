@@ -1,6 +1,7 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import Score from "../components/Score";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -108,6 +109,8 @@ export default function ChildTasks() {
           <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
             {child?.first_name}´s Aufgaben
           </h1>
+
+          <Score childId={childId} child={child} tasks={tasks} />
 
           {tasks.length === 0 ? (
             <p className="text-center text-gray-500">
