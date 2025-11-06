@@ -29,6 +29,7 @@ export default function Rewards() {
 
       const data = await response.json();
       setRewards(data);
+      console.log(data);
     } catch (err) {
       console.log("Error fetching rewards:", err);
     } finally {
