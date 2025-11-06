@@ -5,7 +5,6 @@ import AssignmentTaskForm from "../components/AssignmentTaskForm";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function Task({
-  initialTask,
   title,
   points,
   group,

@@ -135,6 +135,14 @@ export default function Rewards() {
                   console.log("Reward", reward_id, "has been updated!");
                   getRewards();
                 }}
+                onRewardAssignment={(rewardAssignment) => {
+                  console.log(
+                    "Reward",
+                    rewardAssignment,
+                    "has been assigned! I will fetch the fresh data..."
+                  );
+                  getTasks();
+                }}
               />
             ))}
           </div>
