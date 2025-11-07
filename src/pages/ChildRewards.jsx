@@ -10,6 +10,7 @@ export default function ChildRewards() {
   const { childId } = useParams();
   const [child, setChild] = useState(null);
   const [rewards, setRewards] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // Load child
@@ -38,11 +39,11 @@ export default function ChildRewards() {
 
   // Load rewards
   useEffect(() => {
-    async function fetchRewards() {
+    async function fetchTasksAndRewards() {
       try {
         setIsLoading(true);
         const token = await getToken();
-        const response = await fetch(
+        const rewardsResponse = await fetch(
           `${BASE_URL}/children/${childId}/rewards`,
           {
             method: "GET",
@@ -53,20 +54,72 @@ export default function ChildRewards() {
           }
         );
 
-        if (!response.ok) throw new Error("HTTP error " + response.status);
+        if (!rewardsResponse.ok)
+          throw new Error("HTTP error " + rewardsResponse.status);
 
-        const data = await response.json();
-        console.log(data.rewards);
-        setRewards(data.rewards);
+        const rewardsData = await rewardsResponse.json();
+        const tasksResponse = await fetch(
+          `${BASE_URL}/children/${childId}/tasks`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!tasksResponse.ok)
+          throw new Error("HTTP error " + tasksResponse.status);
+
+        const tasksData = await tasksResponse.json();
+        setRewards(rewardsData.rewards);
+        setTasks(tasksData.tasks);
       } catch (err) {
-        console.error("Fehler beim Laden der Belohnungen:", err);
+        console.error("Fehler beim Laden der Belohnungen/Aufgaben:", err);
       } finally {
         setIsLoading(false);
       }
     }
 
-    if (childId) fetchRewards();
+    if (childId) fetchTasksAndRewards();
   }, [childId, getToken]);
+
+  // Mark reward as redeemed
+  async function handleToggleRedeemed(rewardId) {
+    try {
+      const token = await getToken();
+      setRewards((prevRewards) =>
+        prevRewards.map((reward) =>
+          reward.reward_id === rewardId
+            ? { ...reward, redeemed: !reward.redeemed }
+            : reward
+        )
+      );
+      const response = await fetch(
+        `${BASE_URL}/children/${childId}/rewards/${rewardId}/toggleredeemed`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("HTTP-Fehler " + response.status);
+    } catch (err) {
+      console.error("Fehler beim Einlösen der Belohnung:", err);
+      alert("Ups! Fehler! Wende dich an deine Mama.");
+      setRewards((prevRewards) =>
+        prevRewards.map((reward) =>
+          reward.reward_id === rewardId
+            ? { ...reward, redeemed: !reward.redeemed }
+            : reward
+        )
+      );
+    }
+  }
 
   return (
     <div>
@@ -78,7 +131,7 @@ export default function ChildRewards() {
             {child?.first_name}´s Belohnungen
           </h1>
 
-          <Score childId={childId} child={child} rewards={rewards} />
+          <Score tasks={tasks} rewards={rewards} />
 
           {rewards.length === 0 ? (
             <p className="text-center text-gray-500">
@@ -89,7 +142,9 @@ export default function ChildRewards() {
               {rewards.map((reward) => (
                 <div
                   key={reward.reward_id}
-                  className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md"
+                  className={`relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md ${
+                    reward.redeemed ? "opacity-50" : ""
+                  }`}
                 >
                   {/* Cost Badge */}
                   <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
@@ -105,14 +160,15 @@ export default function ChildRewards() {
 
                   {/* Title */}
                   <h3 className="mt-3 mb-1 text-lg text-center font-semibold">
-                    {reward.title}
+                    {/* {reward.title} */}
+                    {reward.redeemed}
                   </h3>
 
                   {/* Action Buttons */}
                   <div className="absolute bottom-2 right-2 flex gap-2">
                     <button
                       className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
-                      onClick={() => handleToggleComplete(reward.reward_id)}
+                      onClick={() => handleToggleRedeemed(reward.reward_id)}
                     >
                       ✔️
                     </button>

@@ -1,13 +1,13 @@
 import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
-import Reward from "./Reward";
+import Reward from "../components/Reward";
 import AddRewardForm from "../components/AddRewardForm";
 import FilterRewards from "../components/FilterRewards";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function Rewards() {
-  const { getToken, isLoaded, isSignedIn } = useAuth();
+  const { getToken, isSignedIn } = useAuth();
   const [rewards, setRewards] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [costFilter, setCostFilter] = useState("all");
@@ -29,7 +29,6 @@ export default function Rewards() {
 
       const data = await response.json();
       setRewards(data);
-      console.log(data);
     } catch (err) {
       console.log("Error fetching rewards:", err);
     } finally {
@@ -39,10 +38,10 @@ export default function Rewards() {
 
   // Fetch when Clerk is loaded and user is signed in
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
+    if (isSignedIn) {
       getRewards();
     }
-  }, [isLoading, isSignedIn]);
+  }, [isSignedIn]);
 
   // Filter logic: if "all", show all rewards, otherwise filter by cost
   const filteredRewards =
@@ -83,6 +82,8 @@ export default function Rewards() {
     }
   }
 
+  const sortedRewards = filteredRewards.toSorted((a, b) => a.cost - b.cost);
+
   return (
     <div>
       <SignedIn>
@@ -119,7 +120,7 @@ export default function Rewards() {
           <p className="text-center text-gray-500 mt-10">Lade Belohnungen...</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {filteredRewards.map((reward) => (
+            {sortedRewards.map((reward) => (
               <Reward
                 key={reward.reward_id}
                 title={reward.title}
@@ -136,12 +137,8 @@ export default function Rewards() {
                   getRewards();
                 }}
                 onRewardAssignment={(rewardAssignment) => {
-                  console.log(
-                    "Reward",
-                    rewardAssignment,
-                    "has been assigned! I will fetch the fresh data..."
-                  );
-                  getTasks();
+                  console.log("Reward", rewardAssignment, "has been assigned!");
+                  getRewards();
                 }}
               />
             ))}

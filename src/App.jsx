@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./shared/Navbar";
 import Auth from "./pages/Auth";
 import Account from "./pages/Account";
@@ -8,12 +8,20 @@ import Family from "./pages/Family";
 import "./App.css";
 import ChildTasks from "./pages/ChildTasks";
 import ChildRewards from "./pages/ChildRewards";
+import { useAuth } from "@clerk/clerk-react";
 
 function App() {
+  const { isSignedIn, isLoaded } = useAuth();
+
+  if (!isLoaded) return null;
   return (
     <>
       <Navbar />
       <Routes>
+        <Route
+          path="/"
+          element={<Navigate to={isSignedIn ? "/family" : "/login"} />}
+        />
         <Route
           path="/login"
           element={

@@ -30,7 +30,6 @@ export default function Reward({
       });
       if (!response.ok) throw new Error("HTTP error " + response.status);
       onRewardDeleted(reward_id);
-      console.log(`REWARD_ID = ${reward_id}`);
     } catch (err) {
       console.log(err);
       alert("Something went wrong");
@@ -42,21 +41,24 @@ export default function Reward({
   async function handleEdit(updateReward) {
     try {
       const token = await getToken();
+      console.log("New reward data");
+      console.log(updateReward);
       const response = await fetch(
-        `${BASE_URL}/task/${updateReward.reward_id}`,
+        `${BASE_URL}/reward/${updateReward.reward_id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(updateTask),
+          body: JSON.stringify(updateReward),
         }
       );
       if (!response.ok) throw new Error("HTTP error " + response.status);
       onRewardEdit(updateReward);
       setShowEditForm(false);
     } catch (err) {
+      console.log(err);
       alert("Something went wrong");
     }
   }

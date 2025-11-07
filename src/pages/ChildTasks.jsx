@@ -10,6 +10,7 @@ export default function ChildTasks() {
   const { childId } = useParams();
   const [child, setChild] = useState(null);
   const [tasks, setTasks] = useState([]);
+  const [rewards, setRewards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // Load child
@@ -38,30 +39,51 @@ export default function ChildTasks() {
 
   // Load tasks
   useEffect(() => {
-    async function fetchTasks() {
+    async function fetchTasksAndRewards() {
       try {
         setIsLoading(true);
         const token = await getToken();
-        const response = await fetch(`${BASE_URL}/children/${childId}/tasks`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const rewardsResponse = await fetch(
+          `${BASE_URL}/children/${childId}/rewards`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        if (!response.ok) throw new Error("HTTP error " + response.status);
+        if (!rewardsResponse.ok)
+          throw new Error("HTTP error " + rewardsResponse.status);
 
-        const data = await response.json();
-        setTasks(data.tasks);
+        const rewardsData = await rewardsResponse.json();
+
+        const tasksResponse = await fetch(
+          `${BASE_URL}/children/${childId}/tasks`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!tasksResponse.ok)
+          throw new Error("HTTP error " + tasksResponse.status);
+
+        const tasksData = await tasksResponse.json();
+        setRewards(rewardsData.rewards);
+        setTasks(tasksData.tasks);
       } catch (err) {
-        console.error("Fehler beim Laden der Aufgaben:", err);
+        console.error("Fehler beim Laden der Belohnungen:", err);
       } finally {
         setIsLoading(false);
       }
     }
 
-    if (childId) fetchTasks();
+    if (childId) fetchTasksAndRewards();
   }, [childId, getToken]);
 
   // Mark task as completed
@@ -110,7 +132,7 @@ export default function ChildTasks() {
             {child?.first_name}´s Aufgaben
           </h1>
 
-          <Score childId={childId} child={child} tasks={tasks} />
+          <Score tasks={tasks} rewards={rewards} />
 
           {tasks.length === 0 ? (
             <p className="text-center text-gray-500">
