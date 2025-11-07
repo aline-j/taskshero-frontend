@@ -12,6 +12,9 @@ export default function ChildRewards() {
   const [rewards, setRewards] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [totalPoints, setTotalPoints] = useState(0);
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Load child
   useEffect(() => {
@@ -87,6 +90,19 @@ export default function ChildRewards() {
 
   // Mark reward as redeemed
   async function handleToggleRedeemed(rewardId) {
+    const reward = rewards.find((reward) => reward.reward_id === rewardId);
+    if (!reward) return;
+
+    // Check totalPoints
+    if (!reward.redeemed && totalPoints < reward.cost) {
+      setErrorMessage(
+        "Deine Punkte reichen noch nicht, um diese Belohnung einzulösen!\n" +
+          "Hierfür musst du noch ein bisschen fleißiger sein."
+      );
+      setTimeout(() => setErrorMessage(""), 4000);
+      return;
+    }
+
     try {
       const token = await getToken();
       setRewards((prevRewards) =>
@@ -131,7 +147,18 @@ export default function ChildRewards() {
             {child?.first_name}´s Belohnungen
           </h1>
 
-          <Score tasks={tasks} rewards={rewards} />
+          <Score
+            tasks={tasks}
+            rewards={rewards}
+            onPointsCalculated={setTotalPoints}
+          />
+
+          {/* Feedback Messages */}
+          {errorMessage && (
+            <p className="text-red-600 text-center font-medium mb-10 transition-opacity duration-500 whitespace-pre-line">
+              {errorMessage}
+            </p>
+          )}
 
           {rewards.length === 0 ? (
             <p className="text-center text-gray-500">

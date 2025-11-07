@@ -1,4 +1,6 @@
-export default function Score({ tasks, rewards }) {
+import { useEffect } from "react";
+
+export default function Score({ tasks, rewards, onPointsCalculated }) {
   const totalTaskPoints = tasks.reduce((acc, cur) => {
     return acc + (cur.completed ? cur.points : 0);
   }, 0);
@@ -8,6 +10,13 @@ export default function Score({ tasks, rewards }) {
   }, 0);
 
   const totalPoints = totalTaskPoints - totalRewardsPoints;
+
+  // Callback when totalPoints changes
+  useEffect(() => {
+    if (onPointsCalculated) {
+      onPointsCalculated(totalPoints);
+    }
+  }, [totalPoints, onPointsCalculated]);
 
   return (
     <div>
