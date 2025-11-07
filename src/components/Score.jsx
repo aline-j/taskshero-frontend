@@ -1,47 +1,13 @@
-import { useAuth } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+export default function Score({ tasks, rewards }) {
+  const totalTaskPoints = tasks.reduce((acc, cur) => {
+    return acc + (cur.completed ? cur.points : 0);
+  }, 0);
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+  const totalRewardsPoints = rewards.reduce((acc, cur) => {
+    return acc + (cur.redeemed ? cur.cost : 0);
+  }, 0);
 
-export default function Score({ child, childId, tasks }) {
-  const { getToken } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [totalPoints, setTotalPoints] = useState(0);
-
-  async function calculateScore() {
-    try {
-      setIsLoading(true);
-      const token = await getToken();
-      const response = await fetch(`${BASE_URL}/children/${childId}/tasks`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) throw new Error("HTTP error " + response.status);
-      const data = await response.json();
-
-      let total = 0;
-      for (const task of data.tasks) {
-        // console.log(task);
-        // console.log(task.completed);
-        // console.log(task.points);
-        if (task.completed) {
-          total += task.points;
-        }
-      }
-      setTotalPoints(total);
-    } catch (err) {
-      console.log("Fehler bei Berechnung des Punktestandes:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    calculateScore();
-  }, [childId, tasks]);
+  const totalPoints = totalTaskPoints - totalRewardsPoints;
 
   return (
     <div>
@@ -49,13 +15,9 @@ export default function Score({ child, childId, tasks }) {
         Punktestand
       </h3>
 
-      {isLoading ? (
-        <p className="text-center text-gray-500">Berechne Punktestand...</p>
-      ) : (
-        <p className="text-center text-5xl font-extrabold text-amber-500 mt-5 mb-10 lg:mb-20">
-          {totalPoints}
-        </p>
-      )}
+      <p className="text-center text-5xl font-extrabold text-amber-500 mt-5 mb-10 lg:mb-20">
+        {totalPoints}
+      </p>
     </div>
   );
 }

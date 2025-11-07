@@ -1,6 +1,6 @@
 import { useAuth, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
-import Task from "./Task";
+import Task from "../components/Task";
 import AddTaskForm from "../components/AddTaskForm";
 import Filter from "../components/Filter";
 
@@ -74,6 +74,8 @@ export default function Tasks() {
       ? tasks
       : tasks.filter((task) => task.group === groupFilter);
 
+  const sortedTasks = filteredTasks.toSorted((a, b) => a.points - b.points);
+
   return (
     <div>
       <SignedIn>
@@ -110,7 +112,7 @@ export default function Tasks() {
           <p className="text-center text-gray-500 mt-10">Lade Aufgaben...</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {filteredTasks.map((task) => (
+            {sortedTasks.map((task) => (
               <Task
                 key={task.task_id}
                 title={task.title}
