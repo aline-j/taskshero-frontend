@@ -160,8 +160,7 @@ export default function ChildRewards() {
 
                   {/* Title */}
                   <h3 className="mt-3 mb-1 text-lg text-center font-semibold">
-                    {/* {reward.title} */}
-                    {reward.redeemed}
+                    {reward.title}
                   </h3>
 
                   {/* Action Buttons */}
