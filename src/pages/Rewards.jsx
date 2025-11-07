@@ -13,6 +13,9 @@ export default function Rewards() {
   const [costFilter, setCostFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   // Get rewards from API
   async function getRewards() {
     try {
@@ -75,8 +78,12 @@ export default function Rewards() {
 
       await getRewards();
       setShowForm(false);
+      setSuccessMessage("Belohnung erfolgreich hinzugefügt ✅");
+      setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
       console.error("Error adding reward:", err);
+      setErrorMessage("Fehler beim Speichern der neuen Belohnung ❌");
+      setTimeout(() => setErrorMessage(""), 4000);
     } finally {
       setIsLoading(false);
     }
@@ -90,6 +97,17 @@ export default function Rewards() {
         <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
           Belohnungen
         </h1>
+        {/* Feedback Messages */}
+        {successMessage && (
+          <p className="text-green-600 text-center font-medium mt-6 transition-opacity duration-500">
+            {successMessage}
+          </p>
+        )}
+        {errorMessage && (
+          <p className="text-red-600 text-center font-medium mt-6 transition-opacity duration-500">
+            {errorMessage}
+          </p>
+        )}
 
         <div className="flex flex-col md:flex-row justify-end items-center gap-4 mb-8 px-4">
           {/* Button to display the AddRewardForm */}
