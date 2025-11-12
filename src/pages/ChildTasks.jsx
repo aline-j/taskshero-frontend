@@ -87,18 +87,18 @@ export default function ChildTasks() {
   }, [childId, getToken]);
 
   // Mark task as completed
-  async function handleToggleComplete(taskId) {
+  async function handleCompleted(taskId) {
     try {
       const token = await getToken();
+
+      // Optimistic UI update
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
-          task.task_id === taskId
-            ? { ...task, completed: !task.completed }
-            : task
+          task.id === taskId ? { ...task, completed: !task.completed } : task
         )
       );
       const response = await fetch(
-        `${BASE_URL}/children/${childId}/tasks/${taskId}/togglecomplete`,
+        `${BASE_URL}/children/${childId}/tasks/${taskId}/completed`,
         {
           method: "POST",
           headers: {
@@ -111,12 +111,11 @@ export default function ChildTasks() {
       if (!response.ok) throw new Error("HTTP-Fehler " + response.status);
     } catch (err) {
       console.error("Fehler beim Abschließen der Aufgabe:", err);
-      alert("Ups! Fehler! Wende dich an deine Mama.");
+
+      // Rollback in case of error
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
-          task.task_id === taskId
-            ? { ...task, completed: !task.completed }
-            : task
+          task.id === taskId ? { ...task, completed: !task.completed } : task
         )
       );
     }
@@ -139,42 +138,71 @@ export default function ChildTasks() {
               Du hast aktuelle keine Aufgaben.
             </p>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {tasks.map((task) => (
-                <div
-                  key={task.task_id}
-                  className={`relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md ${
-                    task.completed ? "opacity-50" : ""
-                  }`}
-                >
-                  {/* Points Badge */}
-                  <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
-                    {task.points} Punkte
-                  </div>
-
-                  {/* Image */}
-                  <img
-                    className="w-full h-[160px] object-cover rounded-md"
-                    src={task.image}
-                    alt={task.title}
-                  />
-
-                  {/* Title */}
-                  <h3 className="mt-3 mb-1 text-lg text-center font-semibold">
-                    {task.title}
-                  </h3>
-
-                  {/* Action Buttons */}
-                  <div className="absolute bottom-2 right-2 flex gap-2">
-                    <button
-                      className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
-                      onClick={() => handleToggleComplete(task.task_id)}
+            <div>
+              {/* Tasks ToDo */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+                {tasks
+                  .filter((task) => !task.completed)
+                  .map((task) => (
+                    <div
+                      key={task.id}
+                      className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md"
                     >
-                      ✔️
-                    </button>
-                  </div>
+                      <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
+                        {task.points} Punkte
+                      </div>
+                      <img
+                        className="w-full h-[160px] object-cover rounded-md"
+                        src={task.image}
+                        alt={task.title}
+                      />
+                      <h3 className="mt-3 mb-1 text-lg text-center font-semibold">
+                        {task.title}
+                      </h3>
+                      <div className="absolute bottom-2 right-2 flex gap-2">
+                        <button
+                          className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
+                          onClick={() => handleCompleted(task.id)}
+                        >
+                          ✔️
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+
+              {/* Tasks already completed */}
+              <h2 className="font-bold my-10 text-center text-2xl lg:my-20">
+                Bereits erledigte Aufgaben
+              </h2>
+              {tasks.filter((task) => task.completed).length === 0 ? (
+                <p className="text-center text-lg text-gray-600 mt-20">
+                  Du hast noch keine Aufgaben erledigt.
+                </p>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+                  {tasks
+                    .filter((task) => task.completed)
+                    .map((task) => (
+                      <div
+                        key={`completed-${task.id}`}
+                        className="relative w-card-width h-[300px] bg-gray-100 shadow rounded-md p-4 flex flex-col sm:w-card-width-md opacity-50"
+                      >
+                        <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
+                          {task.points} Punkte
+                        </div>
+                        <img
+                          className="w-full h-[160px] object-cover rounded-md"
+                          src={task.image}
+                          alt={task.title}
+                        />
+                        <h3 className="mt-3 mb-1 text-lg text-center font-semibold line-through">
+                          {task.title}
+                        </h3>
+                      </div>
+                    ))}
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>
