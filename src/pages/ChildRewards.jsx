@@ -89,15 +89,13 @@ export default function ChildRewards() {
   }, [childId, getToken]);
 
   // Mark reward as redeemed
-  async function handleToggleRedeemed(rewardId) {
-    const reward = rewards.find((reward) => reward.reward_id === rewardId);
+  async function handleRedeemed(rewardId) {
+    const reward = rewards.find((reward) => reward.id === rewardId);
     if (!reward) return;
 
-    // Check totalPoints
     if (!reward.redeemed && totalPoints < reward.cost) {
       setErrorMessage(
-        "Deine Punkte reichen noch nicht, um diese Belohnung einzulösen!\n" +
-          "Hierfür musst du noch ein bisschen fleißiger sein."
+        "Deine Punkte reichen noch nicht, um diese Belohnung einzulösen!\nHierfür musst du noch ein bisschen fleißiger sein."
       );
       setTimeout(() => setErrorMessage(""), 4000);
       return;
@@ -105,15 +103,18 @@ export default function ChildRewards() {
 
     try {
       const token = await getToken();
-      setRewards((prevRewards) =>
-        prevRewards.map((reward) =>
-          reward.reward_id === rewardId
+
+      // Optimistic UI update
+      setRewards((prev) =>
+        prev.map((reward) =>
+          reward.id === rewardId
             ? { ...reward, redeemed: !reward.redeemed }
             : reward
         )
       );
+
       const response = await fetch(
-        `${BASE_URL}/children/${childId}/rewards/${rewardId}/toggleredeemed`,
+        `${BASE_URL}/children/${childId}/rewards/${rewardId}/redeemed`,
         {
           method: "POST",
           headers: {
@@ -127,9 +128,11 @@ export default function ChildRewards() {
     } catch (err) {
       console.error("Fehler beim Einlösen der Belohnung:", err);
       alert("Ups! Fehler! Wende dich an deine Mama.");
-      setRewards((prevRewards) =>
-        prevRewards.map((reward) =>
-          reward.reward_id === rewardId
+
+      // Rollback in case of error
+      setRewards((prev) =>
+        prev.map((reward) =>
+          reward.id === rewardId
             ? { ...reward, redeemed: !reward.redeemed }
             : reward
         )
@@ -165,42 +168,74 @@ export default function ChildRewards() {
               Du hast aktuelle keine Belohnungen.
             </p>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {rewards.map((reward) => (
-                <div
-                  key={reward.reward_id}
-                  className={`relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md ${
-                    reward.redeemed ? "opacity-50" : ""
-                  }`}
-                >
-                  {/* Cost Badge */}
-                  <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
-                    {reward.cost} Punkte
-                  </div>
-
-                  {/* Image */}
-                  <img
-                    className="w-full h-[160px] object-cover rounded-md"
-                    src={reward.image}
-                    alt={reward.title}
-                  />
-
-                  {/* Title */}
-                  <h3 className="mt-3 mb-1 text-lg text-center font-semibold">
-                    {reward.title}
-                  </h3>
-
-                  {/* Action Buttons */}
-                  <div className="absolute bottom-2 right-2 flex gap-2">
-                    <button
-                      className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
-                      onClick={() => handleToggleRedeemed(reward.reward_id)}
+            <div>
+              {/* Available rewards */}
+              <h2 className="font-bold my-10 text-center text-2xl lg:my-20">
+                Noch nicht eingelöste Belohnungen
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+                {rewards
+                  .filter((reward) => !reward.redeemed)
+                  .map((reward) => (
+                    <div
+                      key={reward.id}
+                      className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md"
                     >
-                      ✔️
-                    </button>
-                  </div>
+                      <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
+                        {reward.cost} Punkte
+                      </div>
+                      <img
+                        className="w-full h-[160px] object-cover rounded-md"
+                        src={reward.image}
+                        alt={reward.title}
+                      />
+                      <h3 className="mt-3 mb-1 text-lg text-center font-semibold">
+                        {reward.title}
+                      </h3>
+                      <div className="absolute bottom-2 right-2 flex gap-2">
+                        <button
+                          className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
+                          onClick={() => handleRedeemed(reward.id)}
+                        >
+                          ✔️
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+
+              {/* Rewards already redeemed */}
+              <h2 className="font-bold my-10 text-center text-2xl lg:my-20">
+                Bereits eingelöste Belohnungen
+              </h2>
+              {rewards.filter((reward) => reward.redeemed).length === 0 ? (
+                <p className="text-center text-lg text-gray-600 mt-20">
+                  Du hast noch keine Belohnungen eingelöst.
+                </p>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+                  {rewards
+                    .filter((reward) => reward.redeemed)
+                    .map((reward) => (
+                      <div
+                        key={`redeemed-${reward.id}`}
+                        className="relative w-card-width h-[300px] bg-gray-100 shadow rounded-md p-4 flex flex-col sm:w-card-width-md opacity-50"
+                      >
+                        <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
+                          {reward.cost} Punkte
+                        </div>
+                        <img
+                          className="w-full h-[160px] object-cover rounded-md"
+                          src={reward.image}
+                          alt={reward.title}
+                        />
+                        <h3 className="mt-3 mb-1 text-lg text-center font-semibold line-through">
+                          {reward.title}
+                        </h3>
+                      </div>
+                    ))}
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>
