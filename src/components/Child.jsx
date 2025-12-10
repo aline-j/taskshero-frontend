@@ -14,6 +14,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 export default function Child({
   firstname,
   birthdate,
+  image,
   id,
   getToken,
   onChildDeleted = () => {},
@@ -43,7 +44,6 @@ export default function Child({
       const response = await fetch(`${BASE_URL}/children/${id}`, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -57,20 +57,19 @@ export default function Child({
   }
 
   // Updates a child’s data via API and triggers parent refresh callback.
-  async function handleEdit(updatedChild) {
+  async function handleEdit(formData) {
     try {
       const token = await getToken();
-      const response = await fetch(`${BASE_URL}/children/${updatedChild.id}`, {
+      const response = await fetch(`${BASE_URL}/children/${id}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(updatedChild),
+        body: formData,
       });
 
       if (!response) throw new Error("HTTP error: " + response.status);
-      onChildEdit(updatedChild);
+      onChildEdit(formData);
       setShowEditForm(false);
     } catch (err) {
       console.error(err);
@@ -165,6 +164,7 @@ export default function Child({
               initialChild={{
                 first_name: firstname,
                 birth_date: birthdate,
+                image: image,
                 id,
               }}
               // Trigger API update and close modal
@@ -186,8 +186,8 @@ export default function Child({
       <div className="flex flex-col items-center pb-10">
         <img
           className="w-24 h-24 mb-3 rounded-full shadow-lg"
-          src="/images/avatars/avatar-boy-1.png"
-          alt="Child image"
+          src={image}
+          alt={firstname}
         />
         <h5 className="mt-3 mb-1 text-lg text-center font-semibold">
           {firstname}

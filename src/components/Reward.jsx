@@ -38,24 +38,22 @@ export default function Reward({
     }
   }
 
-  async function handleEdit(updateReward) {
+  async function handleEdit(formData) {
     try {
       const token = await getToken();
-      console.log("New reward data");
-      console.log(updateReward);
       const response = await fetch(
-        `${BASE_URL}/reward/${updateReward.reward_id}`,
+        `${BASE_URL}/reward/${formData.get("reward_id")}`,
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(updateReward),
+          body: formData,
         }
       );
       if (!response.ok) throw new Error("HTTP error " + response.status);
-      onRewardEdit(updateReward);
+      const updatedReward = await response.json();
+      onRewardEdit(updatedReward);
       setShowEditForm(false);
     } catch (err) {
       console.log(err);
@@ -141,7 +139,12 @@ export default function Reward({
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
           <div className="bg-white p-6 rounded-md shadow-lg w-96">
             <UpdateRewardForm
-              initialReward={{ title, cost, reward_id }}
+              initialReward={{
+                title,
+                cost,
+                reward_id,
+                image_mode: "Bildbehalten",
+              }}
               onEdit={handleEdit}
               onCancel={() => setShowEditForm(false)}
             />

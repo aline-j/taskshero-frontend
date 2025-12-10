@@ -37,19 +37,23 @@ export default function Task({
     }
   }
 
-  async function handleEdit(updateTask) {
+  async function handleEdit(formData) {
     try {
       const token = await getToken();
-      const response = await fetch(`${BASE_URL}/task/${updateTask.task_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(updateTask),
-      });
+      const response = await fetch(
+        `${BASE_URL}/task/${formData.get("task_id")}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
       if (!response.ok) throw new Error("HTTP error " + response.status);
-      onTaskEdit(updateTask);
+
+      const updatedTask = await response.json();
+      onTaskEdit(updatedTask);
       setShowEditForm(false);
     } catch (err) {
       alert("Something went wrong");
@@ -149,7 +153,13 @@ export default function Task({
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
           <div className="bg-white p-6 rounded-md shadow-lg w-96">
             <UpdateTaskForm
-              initialTask={{ title, points, group, task_id }}
+              initialTask={{
+                title,
+                points,
+                group,
+                task_id,
+                image_mode: "Bildbehalten",
+              }}
               onEdit={handleEdit}
               onCancel={() => setShowEditForm(false)}
             />

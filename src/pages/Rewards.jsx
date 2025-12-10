@@ -65,13 +65,22 @@ export default function Rewards() {
     try {
       setIsLoading(true);
       const token = await getToken();
+
+      const formData = new FormData();
+      formData.append("title", newReward.title);
+      formData.append("cost", newReward.cost);
+      formData.append("image_mode", newReward.image_mode);
+
+      if (newReward.image_mode === "Bildupload" && newReward.imageFile) {
+        formData.append("file", newReward.imageFile);
+      }
+
       const response = await fetch(`${BASE_URL}/rewards`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newReward),
+        body: formData,
       });
 
       if (!response.ok) throw new Error("HTTP error " + response.status);

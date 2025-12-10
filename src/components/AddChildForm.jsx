@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ButtonsSaveCancel from "./ButtonsSaveCancel";
 
 /**
@@ -12,13 +12,26 @@ export default function AddChildForm({ onAdd, onCancel }) {
   const [newChild, setNewChild] = useState({
     first_name: "",
     birth_date: "",
+    image_mode: "Platzhalterbild",
   });
+  const fileRef = useRef(null);
 
   // Handles form submission.
   // Prevents default behavior and passes the entered data to the parent component.
   function handleSubmit(e) {
     e.preventDefault();
-    onAdd(newChild);
+    onAdd({
+      ...newChild,
+      imageFile:
+        newChild.image_mode === "Bildupload" ? fileRef.current.files[0] : null,
+    });
+
+    // reset after submit
+    setNewChild({
+      first_name: "",
+      birth_date: "",
+      image_mode: "Platzhalterbild",
+    });
   }
 
   return (
@@ -44,10 +57,34 @@ export default function AddChildForm({ onAdd, onCancel }) {
           }
           className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
         />
-      </form>
 
-      {/* Buttons for saving or cancelling */}
-      <ButtonsSaveCancel onSave={handleSubmit} onCancel={onCancel} />
+        <select
+          name="image_mode"
+          value={newChild.image_mode}
+          onChange={(e) =>
+            setNewChild({ ...newChild, image_mode: e.target.value })
+          }
+          className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+        >
+          <option value="Platzhalterbild">Platzhalterbild</option>
+          <option value="Bildupload">Bild hochladen</option>
+        </select>
+
+        {/* Upload field only if needed */}
+        {newChild.image_mode === "Bildupload" && (
+          <input
+            ref={fileRef}
+            name="file"
+            type="file"
+            className="w-full lg:flex-1 p-2 bg-white border rounded-md"
+            required
+            accept="image/*"
+          />
+        )}
+
+        {/* Buttons for saving or cancelling */}
+        <ButtonsSaveCancel onSave={handleSubmit} onCancel={onCancel} />
+      </form>
     </>
   );
 }
