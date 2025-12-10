@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
-import AddChildForm from "./AddChildForm";
-import Child from "./Child";
+import AddChildForm from "../components/AddChildForm";
+import Child from "../components/Child";
 
 /**
  * Children component
@@ -77,13 +77,21 @@ export default function Children() {
   async function handleAddChild(newChild) {
     try {
       const token = await getToken();
+      const formData = new FormData();
+      formData.append("first_name", newChild.first_name);
+      formData.append("birth_date", newChild.birth_date);
+      formData.append("image_mode", newChild.image_mode);
+
+      if (newChild.image_mode === "Bildupload" && newChild.imageFile) {
+        formData.append("file", newChild.imageFile);
+      }
+
       const response = await fetch(`${BASE_URL}/child`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newChild),
+        body: formData,
       });
 
       if (!response.ok) throw new Error("HTTP error " + response.status);
@@ -105,14 +113,15 @@ export default function Children() {
               key={child.id}
               firstname={child.first_name}
               birthdate={child.birth_date}
+              image={child.image}
               id={child.id}
               getToken={getToken}
-              onChildDeleted={(id) => {
-                console.log("Child", id, "has been deleted!");
+              onChildDeleted={() => {
+                console.log("Child has been deleted!");
                 getChildren();
               }}
-              onChildEdit={(updateChild) => {
-                console.log("Child", updateChild, "has been updated!");
+              onChildEdit={() => {
+                console.log("Child has been updated!");
                 getChildren();
               }}
             />

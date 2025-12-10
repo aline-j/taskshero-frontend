@@ -1,15 +1,28 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ButtonsSaveCancel from "./ButtonsSaveCancel";
 
 export default function AddRewardForm({ onAdd, onCancel }) {
   const [newReward, setNewReward] = useState({
     title: "",
     cost: "",
+    image_mode: "Platzhalterbild",
   });
+  const fileRef = useRef(null);
 
   function handleSubmit(e) {
     e.preventDefault();
-    onAdd(newReward);
+    onAdd({
+      ...newReward,
+      imageFile:
+        newReward.image_mode === "Bildupload" ? fileRef.current.files[0] : null,
+    });
+
+    // reset after submit
+    setNewReward({
+      title: "",
+      cost: "",
+      image_mode: "Platzhalterbild",
+    });
   }
 
   return (
@@ -34,6 +47,30 @@ export default function AddRewardForm({ onAdd, onCancel }) {
         required
         className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
       />
+
+      <select
+        name="image_mode"
+        value={newReward.image_mode}
+        onChange={(e) =>
+          setNewReward({ ...newReward, image_mode: e.target.value })
+        }
+        className="w-full lg:flex-1 p-2 bg-white rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+      >
+        <option value="Platzhalterbild">Platzhalterbild</option>
+        <option value="Bildupload">Bild hochladen</option>
+      </select>
+
+      {/* Upload field only if needed */}
+      {newReward.image_mode === "Bildupload" && (
+        <input
+          ref={fileRef}
+          name="file"
+          type="file"
+          className="w-full lg:flex-1 p-2 bg-white border rounded-md"
+          required
+          accept="image/*"
+        />
+      )}
 
       <ButtonsSaveCancel onSave={handleSubmit} onCancel={onCancel} />
     </form>

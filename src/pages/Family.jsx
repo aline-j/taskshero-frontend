@@ -1,7 +1,7 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import ButtonsSaveCancel from "../components/ButtonsSaveCancel";
-import Children from "../components/Children";
+import Children from "./Children";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 

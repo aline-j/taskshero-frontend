@@ -50,14 +50,21 @@ export default function Tasks() {
   async function handleAddTask(newTask) {
     try {
       setIsLoading(true);
+      const formData = new FormData();
+      formData.append("title", newTask.title);
+      formData.append("points", newTask.points);
+      formData.append("group", newTask.group);
+      formData.append("image_mode", newTask.image_mode);
+      if (newTask.image_mode === "Bildupload" && newTask.imageFile) {
+        formData.append("file", newTask.imageFile);
+      }
       const token = await getToken();
       const response = await fetch(`${BASE_URL}/tasks`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newTask),
+        body: formData,
       });
 
       if (!response.ok) throw new Error("HTTP error " + response.status);
@@ -141,27 +148,15 @@ export default function Tasks() {
                 task_id={task.task_id}
                 getToken={getToken}
                 onTaskDeleted={(task_id) => {
-                  console.log(
-                    "Task",
-                    task_id,
-                    "has been deleted! I will fetch the fresh data..."
-                  );
+                  console.log("Task", task_id, "has been deleted!");
                   getTasks();
                 }}
-                onTaskEdit={(updateTask) => {
-                  console.log(
-                    "Task",
-                    updateTask,
-                    "has been updated! I will fetch the fresh data..."
-                  );
+                onTaskEdit={(updatedTask) => {
+                  console.log("Task", updatedTask, "has been updated!");
                   getTasks();
                 }}
                 onTaskAssignment={(taskAssignment) => {
-                  console.log(
-                    "Task",
-                    taskAssignment,
-                    "has been assigned! I will fetch the fresh data..."
-                  );
+                  console.log("Task", taskAssignment, "has been assigned!");
                   getTasks();
                 }}
               />

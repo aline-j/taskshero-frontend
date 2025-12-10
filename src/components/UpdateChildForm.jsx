@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ButtonsSaveCancel from "./ButtonsSaveCancel";
 
 /**
@@ -12,14 +12,26 @@ export default function UpdateChildForm({ initialChild, onEdit, onCancel }) {
   const [editedChild, setEditedChild] = useState({
     first_name: initialChild.first_name,
     birth_date: initialChild.birth_date,
+    image: initialChild.image,
     id: initialChild.id,
   });
+  const fileRef = useRef(null);
+  const [fileName, setFileName] = useState("");
 
   // Handles form submission.
   // Prevents default submission and triggers the edit callback with updated data.
   function handleSubmit(e) {
     e.preventDefault();
-    onEdit(editedChild);
+
+    const formData = new FormData();
+    formData.append("first_name", editedChild.first_name);
+    formData.append("birth_date", editedChild.birth_date);
+    formData.append("image_mode", editedChild.image_mode);
+
+    if (editedChild.image_mode === "Bildupload" && fileRef.current.files[0]) {
+      formData.append("file", fileRef.current.files[0]);
+    }
+    onEdit(formData);
   }
 
   return (
@@ -45,6 +57,44 @@ export default function UpdateChildForm({ initialChild, onEdit, onCancel }) {
         }
         className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
       />
+
+      <select
+        name="image_mode"
+        value={editedChild.image_mode}
+        onChange={(e) =>
+          setEditedChild({ ...editedChild, image_mode: e.target.value })
+        }
+        className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+      >
+        <option value="Bildbehalten">Bild behalten</option>
+        <option value="Platzhalterbild">Platzhalterbild</option>
+        <option value="Bildupload">Bild hochladen</option>
+      </select>
+
+      {/* Upload field only if needed */}
+      {editedChild.image_mode === "Bildupload" && (
+        <div className="w-full">
+          <label
+            htmlFor="fileUpload"
+            className="block w-full p-2 text-center rounded-md border border-gray-300 cursor-pointer bg-gray-100 hover:bg-gray-200 truncate"
+          >
+            {fileName ? fileName : "Bild auswählen"}
+          </label>
+
+          <input
+            id="fileUpload"
+            ref={fileRef}
+            type="file"
+            className="hidden"
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files.length > 0) {
+                setFileName(e.target.files[0].name);
+              }
+            }}
+          />
+        </div>
+      )}
 
       {/* Buttons for saving or cancelling */}
       <ButtonsSaveCancel onSave={handleSubmit} onCancel={onCancel} />
