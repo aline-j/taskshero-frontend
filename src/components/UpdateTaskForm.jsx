@@ -66,6 +66,7 @@ export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
         <option value="Bildbehalten">Bild behalten</option>
         <option value="Platzhalterbild">Platzhalterbild</option>
         <option value="Bildupload">Bild hochladen</option>
+        <option value="Bildgenerierung">Bild generieren</option>
       </select>
 
       {/* Upload field only if needed */}
