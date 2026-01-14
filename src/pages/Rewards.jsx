@@ -1,5 +1,6 @@
 import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { motion, useMotionValue, animate } from "motion/react";
 import Reward from "../components/Reward";
 import AddRewardForm from "../components/AddRewardForm";
 import FilterRewards from "../components/FilterRewards";
@@ -15,6 +16,14 @@ export default function Rewards() {
 
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const focusRef = useRef(null);
+  const [focusId, setFocusId] = useState(null);
+  const [focusCount, setFocusCount] = useState(0);
+
+  useEffect(() => {
+    focusRef.current = focusId;
+  }, [focusId, focusCount]);
 
   // Get rewards from API
   async function getRewards() {
@@ -85,8 +94,11 @@ export default function Rewards() {
 
       if (!response.ok) throw new Error("HTTP error " + response.status);
 
+      const { reward_id: newRewardId } = await response.json();
       await getRewards();
       setShowForm(false);
+      setFocusId(newRewardId);
+      setFocusCount((prev) => prev + 1);
       setSuccessMessage("Belohnung erfolgreich hinzugefügt ✅");
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
@@ -148,26 +160,43 @@ export default function Rewards() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {sortedRewards.map((reward) => (
-              <Reward
+              <div
                 key={reward.reward_id}
-                title={reward.title}
-                cost={reward.cost}
-                image={reward.image}
-                reward_id={reward.reward_id}
-                getToken={getToken}
-                onRewardDeleted={(reward_id) => {
-                  console.log("Reward", reward_id, "has been deleted!");
-                  getRewards();
+                ref={(el) => {
+                  if (!el) return;
+                  if (focusRef.current === reward.reward_id) {
+                    el.scrollIntoView({ block: "center", behavior: "smooth" });
+                    focusRef.current = null;
+                  }
                 }}
-                onRewardEdit={(reward_id) => {
-                  console.log("Reward", reward_id, "has been updated!");
-                  getRewards();
-                }}
-                onRewardAssignment={(rewardAssignment) => {
-                  console.log("Reward", rewardAssignment, "has been assigned!");
-                  getRewards();
-                }}
-              />
+              >
+                <Reward
+                  key={reward.reward_id}
+                  title={reward.title}
+                  cost={reward.cost}
+                  image={reward.image}
+                  reward_id={reward.reward_id}
+                  getToken={getToken}
+                  onRewardDeleted={(reward_id) => {
+                    console.log("Reward", reward_id, "has been deleted!");
+                    getRewards();
+                  }}
+                  onRewardEdit={(reward_id) => {
+                    console.log("Reward", reward_id, "has been updated!");
+                    getRewards();
+                    setFocusId(reward.reward_id);
+                    setFocusCount((prev) => prev + 1);
+                  }}
+                  onRewardAssignment={(rewardAssignment) => {
+                    console.log(
+                      "Reward",
+                      rewardAssignment,
+                      "has been assigned!"
+                    );
+                    getRewards();
+                  }}
+                />
+              </div>
             ))}
           </div>
         )}
