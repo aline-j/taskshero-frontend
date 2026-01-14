@@ -1,5 +1,5 @@
 import { useAuth, SignedIn, SignedOut } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Task from "../components/Task";
 import AddTaskForm from "../components/AddTaskForm";
 import Filter from "../components/Filter";
@@ -7,8 +7,7 @@ import Filter from "../components/Filter";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function Tasks() {
-  const { userId, sessionId, getToken, isLoaded, isSignedIn, signOut } =
-    useAuth();
+  const { getToken, isLoaded, isSignedIn } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [groupFilter, setGroupFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
@@ -16,6 +15,14 @@ export default function Tasks() {
 
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const focusRef = useRef(null);
+  const [focusId, setFocusId] = useState(null);
+  const [focusCount, setFocusCount] = useState(0);
+
+  useEffect(() => {
+    focusRef.current = focusId;
+  }, [focusId, focusCount]);
 
   // Get tasks from the API
   async function getTasks() {
@@ -69,8 +76,11 @@ export default function Tasks() {
 
       if (!response.ok) throw new Error("HTTP error " + response.status);
 
+      const { task_id: newTaskId } = await response.json();
       await getTasks();
       setShowForm(false);
+      setFocusId(newTaskId);
+      setFocusCount((prev) => prev + 1);
       setSuccessMessage("Aufgabe erfolgreich hinzugefügt ✅");
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
@@ -139,27 +149,39 @@ export default function Tasks() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {sortedTasks.map((task) => (
-              <Task
+              <div
                 key={task.task_id}
-                title={task.title}
-                points={task.points}
-                group={task.group}
-                image={task.image}
-                task_id={task.task_id}
-                getToken={getToken}
-                onTaskDeleted={(task_id) => {
-                  console.log("Task", task_id, "has been deleted!");
-                  getTasks();
+                ref={(el) => {
+                  if (!el) return;
+                  if (focusRef.current === task.task_id) {
+                    el.scrollIntoView({ block: "center", behavior: "smooth" });
+                    focusRef.current = null;
+                  }
                 }}
-                onTaskEdit={(updatedTask) => {
-                  console.log("Task", updatedTask, "has been updated!");
-                  getTasks();
-                }}
-                onTaskAssignment={(taskAssignment) => {
-                  console.log("Task", taskAssignment, "has been assigned!");
-                  getTasks();
-                }}
-              />
+              >
+                <Task
+                  title={task.title}
+                  points={task.points}
+                  group={task.group}
+                  image={task.image}
+                  task_id={task.task_id}
+                  getToken={getToken}
+                  onTaskDeleted={(task_id) => {
+                    console.log("Task", task_id, "has been deleted!");
+                    getTasks();
+                  }}
+                  onTaskEdit={(updatedTask) => {
+                    console.log("Task", updatedTask, "has been updated!");
+                    getTasks();
+                    setFocusId(task.task_id);
+                    setFocusCount((prev) => prev + 1);
+                  }}
+                  onTaskAssignment={(taskAssignment) => {
+                    console.log("Task", taskAssignment, "has been assigned!");
+                    getTasks();
+                  }}
+                />
+              </div>
             ))}
           </div>
         )}
