@@ -2,7 +2,7 @@ import { useAuth, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useEffect, useState, useRef } from "react";
 import Task from "../components/Task";
 import AddTaskForm from "../components/AddTaskForm";
-import Filter from "../components/Filter";
+import FilterTasks from "../components/FilterTasks";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -119,7 +119,7 @@ export default function Tasks() {
           </p>
         )}
 
-        <div className="flex flex-col md:flex-row justify-end items-center gap-4 mb-8 px-4">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 px-4">
           {/* Button to display the AddTaskForm */}
           {!showForm && (
             <button
@@ -141,13 +141,16 @@ export default function Tasks() {
         </div>
 
         {/* Dropdown-Filter */}
-        <Filter groupFilter={groupFilter} setGroupFilter={setGroupFilter} />
+        <FilterTasks
+          groupFilter={groupFilter}
+          setGroupFilter={setGroupFilter}
+        />
 
         {/* Grid with the filtered tasks */}
         {isLoading ? (
           <p className="text-center text-gray-500 mt-10">Lade Aufgaben...</p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
             {sortedTasks.map((task) => (
               <div
                 key={task.task_id}

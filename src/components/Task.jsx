@@ -48,7 +48,7 @@ export default function Task({
             Authorization: `Bearer ${token}`,
           },
           body: formData,
-        }
+        },
       );
       if (!response.ok) throw new Error("HTTP error " + response.status);
 
@@ -81,39 +81,48 @@ export default function Task({
 
   return (
     <>
-      <div className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md">
+      <div className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 w-card-width h-[300px] md:h-[320px] sm:w-card-width-md overflow-hidden">
         {/* Points Badge */}
-        <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
-          {points} Punkte
+        <div className="absolute top-2 right-0 z-10 flex items-center gap-1.5 rounded-l-lg bg-black/60 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-white shadow-sm">
+          ⭐ {points}
         </div>
 
         {/* Image */}
         <img
-          className="w-full h-[160px] object-cover rounded-md"
           src={image}
-          alt={image}
+          alt={title}
+          className="h-38 w-full object-cover md:h-48"
         />
 
-        {/* Title */}
-        <h3 className="mt-3 mb-1 text-md text-center font-semibold">{title}</h3>
+        {/* Content */}
+        <div className="p-4 flex flex-col">
+          <h3 className="text-center font-semibold text-slate-800 mb-3">
+            {title}
+          </h3>
+        </div>
 
-        {/* Action Buttons */}
-        <div className="absolute bottom-2 right-2 flex gap-2">
+        {/* Actions */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           <button
-            className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
             onClick={() => setShowAssignmentForm(true)}
+            className="rounded-xl text-white px-3 py-1.5 text-sm font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
+            title="Zuweisen"
           >
             👥
           </button>
+
           <button
-            className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
             onClick={() => setShowEditForm(true)}
+            className="rounded-xl text-white px-3 py-1.5 text-sm font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
+            title="Bearbeiten"
           >
             ✏️
           </button>
+
           <button
-            className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
             onClick={() => setShowConfirm(true)}
+            className="rounded-xl text-white px-3 py-1.5 text-sm font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
+            title="Löschen"
           >
             🗑️
           </button>
@@ -122,26 +131,27 @@ export default function Task({
 
       {/* Delete Modal */}
       {showConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-80 text-center">
-            <p className="font-semibold">
-              Bist du sicher, dass du diese Aufgabe löschen möchtest?
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-96 text-center">
+            <h3 className="text-lg font-semibold text-slate-800">
+              Aufgabe löschen?
+            </h3>
+            <p className="text-sm text-slate-500 mt-2">
+              Dieser Vorgang kann nicht rückgängig gemacht werden.
             </p>
-            <p className="text-sm text-gray-600 mt-1">
-              Dieser Vorgang kann nicht rückgängig gemacht werden!
-            </p>
-            <div className="flex justify-around mt-4">
+
+            <div className="flex justify-end gap-3 mt-6">
               <button
-                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
-                onClick={() => handleDelete(task_id)}
-              >
-                Ja, löschen
-              </button>
-              <button
-                className="px-4 py-2 rounded bg-gray-300 text-gray-800 hover:bg-gray-400"
+                className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800"
                 onClick={() => setShowConfirm(false)}
               >
                 Abbrechen
+              </button>
+              <button
+                className="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white"
+                onClick={() => handleDelete(task_id)}
+              >
+                Löschen
               </button>
             </div>
           </div>
@@ -150,8 +160,8 @@ export default function Task({
 
       {/* Edit Modal */}
       {showEditForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-96">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-[420px]">
             <UpdateTaskForm
               initialTask={{
                 title,
@@ -167,10 +177,9 @@ export default function Task({
         </div>
       )}
 
-      {/* Assignment Modal */}
       {showAssignmentForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-96">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-[420px]">
             <AssignmentTaskForm
               initialTask={{ title, points, group, image, task_id }}
               onEdit={handleAssignment}
