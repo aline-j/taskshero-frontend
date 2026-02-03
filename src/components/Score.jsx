@@ -20,12 +20,8 @@ export default function Score({ tasks, rewards, onPointsCalculated }) {
 
   return (
     <div>
-      <h3 className="font-bold mt-10 text-center text-2xl text-amber-500 lg:mt-20">
-        Dein Punktestand
-      </h3>
-
       <p className="text-center text-5xl lg:text-6xl font-extrabold text-amber-500 mt-5 mb-10 lg:mb-20">
-        {totalPoints}
+        ⭐ {totalPoints}
       </p>
     </div>
   );
