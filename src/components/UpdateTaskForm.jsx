@@ -32,7 +32,12 @@ export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
   return (
     <>
       {isLoading ? (
-        <LoadingThreeDotsJumping />
+        <div className="flex flex-col items-center gap-2">
+          <LoadingThreeDotsJumping />
+          <p className="text-center text-slate-500 mt-20 animate-pulse">
+            Ich aktualisiere diese Aufgabe...
+          </p>
+        </div>
       ) : (
         <form className="flex flex-wrap gap-3 w-full my-4">
           <input

@@ -39,7 +39,12 @@ export default function AddTaskForm({ onAdd, onCancel }) {
   return (
     <>
       {isLoading ? (
-        <LoadingThreeDotsJumping />
+        <div className="flex flex-col items-center gap-2">
+          <LoadingThreeDotsJumping />
+          <p className="text-center text-slate-500 mt-20 animate-pulse">
+            Ich erstelle die neue Aufgabe...
+          </p>
+        </div>
       ) : (
         <form
           onSubmit={handleSubmit}
