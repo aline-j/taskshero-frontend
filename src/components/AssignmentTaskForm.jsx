@@ -16,7 +16,7 @@ export default function AssignmentTaskForm({ initialTask, onCancel }) {
       try {
         setIsLoading(true);
         const token = await getToken();
-        const response = await fetch(`${BASE_URL}/childrenAssignmentTaskForm`, {
+        const response = await fetch(`${BASE_URL}/children`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
