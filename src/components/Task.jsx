@@ -81,12 +81,7 @@ export default function Task({
 
   return (
     <>
-      <div className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 w-card-width h-[300px] md:h-[320px] sm:w-card-width-md overflow-hidden">
-        {/* Points Badge */}
-        <div className="absolute top-2 right-0 z-10 flex items-center gap-1.5 rounded-l-lg bg-black/60 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-white shadow-sm">
-          ⭐ {points}
-        </div>
-
+      <div className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 w-card-width h-[300px] md:h-[350px] sm:w-card-width-md overflow-hidden">
         {/* Image */}
         <img
           src={image}
@@ -96,7 +91,11 @@ export default function Task({
 
         {/* Content */}
         <div className="p-4 flex flex-col">
-          <h3 className="text-center font-semibold text-slate-800 mb-3">
+          {/* Points */}
+          <p className="text-center font-semibold text-lg text-gray-600 mb-3">
+            ⭐ {points}
+          </p>
+          <h3 className="text-center font-semibold text-gray-800 mb-3">
             {title}
           </h3>
         </div>
@@ -105,7 +104,7 @@ export default function Task({
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => setShowAssignmentForm(true)}
-            className="rounded-xl text-white px-3 py-1.5 text-sm font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
+            className="rounded-xl text-white px-3 py-1.5 text-md font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
             title="Zuweisen"
           >
             👥
@@ -113,7 +112,7 @@ export default function Task({
 
           <button
             onClick={() => setShowEditForm(true)}
-            className="rounded-xl text-white px-3 py-1.5 text-sm font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
+            className="rounded-xl text-white px-3 py-1.5 text-md font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
             title="Bearbeiten"
           >
             ✏️
@@ -121,7 +120,7 @@ export default function Task({
 
           <button
             onClick={() => setShowConfirm(true)}
-            className="rounded-xl text-white px-3 py-1.5 text-sm font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
+            className="rounded-xl text-white px-3 py-1.5 text-md font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
             title="Löschen"
           >
             🗑️
@@ -133,16 +132,16 @@ export default function Task({
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-xl p-6 w-96 text-center">
-            <h3 className="text-lg font-semibold text-slate-800">
+            <h3 className="text-lg font-semibold text-gray-800">
               Aufgabe löschen?
             </h3>
-            <p className="text-sm text-slate-500 mt-2">
+            <p className="text-sm text-gray-500 mt-2">
               Dieser Vorgang kann nicht rückgängig gemacht werden.
             </p>
 
             <div className="flex justify-end gap-3 mt-6">
               <button
-                className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800"
+                className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-gray-800"
                 onClick={() => setShowConfirm(false)}
               >
                 Abbrechen

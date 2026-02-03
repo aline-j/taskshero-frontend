@@ -20,7 +20,7 @@ export default function Score({ tasks, rewards, onPointsCalculated }) {
 
   return (
     <div>
-      <p className="text-center text-5xl lg:text-6xl font-extrabold text-amber-500 mt-5 mb-10 lg:mb-20">
+      <p className="text-center text-5xl lg:text-6xl font-extrabold text-amber-500 mb-10 md:mb-0">
         ⭐ {totalPoints}
       </p>
     </div>

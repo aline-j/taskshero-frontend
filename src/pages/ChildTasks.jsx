@@ -11,6 +11,7 @@ export default function ChildTasks() {
   const [tasks, setTasks] = useState([]);
   const [rewards, setRewards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showTasks, setShowTasks] = useState(false);
 
   // Load child
   useEffect(() => {
@@ -96,6 +97,7 @@ export default function ChildTasks() {
           task.id === taskId ? { ...task, completed: !task.completed } : task,
         ),
       );
+
       const response = await fetch(
         `${BASE_URL}/child/${childId}/tasks/${taskId}/completed`,
         {
@@ -121,111 +123,115 @@ export default function ChildTasks() {
   }
 
   return (
-    <div className="min-h-screen md:px-4 py-10 text-left">
+    <div className="h-auto md:px-4 py-10 text-left">
       {isLoading ? (
-        <p className="text-center text-slate-500 mt-20 animate-pulse">
+        <p className="text-center text-gray-500 mt-20 animate-pulse">
           Lade Aufgaben…
         </p>
       ) : (
-        <div className="max-w-7xl mx-auto md:bg-white md:p-14">
+        <div className="max-w-7xl mx-auto md:bg-white md:p-14 border-b-4 border-cyan-600">
           {/* Header */}
-          <header className="mb-12 ">
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-800">
+          <header className="mb-12 text-center">
+            <h1 className="text-3xl md:text-4xl font-bold text-cyan-700">
               Deine Aufgaben
             </h1>
-            <p className="text-slate-500 mt-2">
+            <p className="text-gray-500 mt-2">
               Erledige Aufgaben und sammle Punkte ⭐
             </p>
+
+            <button
+              onClick={() => setShowTasks((prev) => !prev)}
+              className="md:w-auto px-6 py-3 mt-10 text-md border rounded-md bg-gray-100 hover:shadow-md hover:bg-white"
+            >
+              {showTasks ? "Aufgaben ausblenden" : "Aufgaben anzeigen"}
+            </button>
           </header>
 
-          {tasks.length === 0 ? (
-            <p className="text-center text-slate-500">
-              Du hast aktuell keine Aufgaben.
-            </p>
-          ) : (
+          {/* Tasks & Rewards Section */}
+          {showTasks && (
             <>
-              {/* Offene Aufgaben */}
-              <section className="mb-20">
-                <h2 className="text-xl font-semibold text-slate-700 mb-6">
-                  Offene Aufgaben
-                </h2>
+              {tasks.length === 0 ? (
+                <p className="text-center text-gray-500">
+                  Du hast aktuell keine Aufgaben.
+                </p>
+              ) : (
+                <>
+                  {/* Open tasks */}
+                  <section className="mb-20">
+                    <h2 className="text-xl font-semibold text-gray-700 mb-6">
+                      Offene Aufgaben
+                    </h2>
 
-                <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                  {tasks
-                    .filter((task) => !task.completed)
-                    .map((task) => (
-                      <div
-                        key={task.id}
-                        className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
-                      >
-                        {/* Points Badge */}
-                        <div className="absolute top-2 right-0 z-10 flex items-center gap-1.5 rounded-l-lg bg-black/60 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-white shadow-sm">
-                          ⭐ {task.points}
-                        </div>
-
-                        <img
-                          src={task.image}
-                          alt={task.title}
-                          className="h-40 w-full object-cover"
-                        />
-
-                        <div className="p-4 flex flex-col gap-3">
-                          <h3 className="font-semibold text-slate-800 text-center">
-                            {task.title}
-                          </h3>
-
-                          <button
-                            onClick={() => handleCompleted(task.id)}
-                            className="mt-auto w-full rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 transition-colors"
+                    <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                      {tasks
+                        .filter((task) => !task.completed)
+                        .map((task) => (
+                          <div
+                            key={task.id}
+                            className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
                           >
-                            Aufgabe erledigt
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </section>
-
-              {/* Erledigte Aufgaben */}
-              <section>
-                <h2 className="text-xl font-semibold text-slate-700 mb-6">
-                  Bereits erledigt
-                </h2>
-
-                {tasks.filter((task) => task.completed).length === 0 ? (
-                  <p className="text-slate-500">
-                    Du hast noch keine Aufgaben erledigt.
-                  </p>
-                ) : (
-                  <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                    {tasks
-                      .filter((task) => task.completed)
-                      .map((task) => (
-                        <div
-                          key={`completed-${task.id}`}
-                          className="bg-slate-100 rounded-2xl overflow-hidden opacity-60"
-                        >
-                          <div className="relative">
-                            <div className="absolute top-2 right-0 z-10 flex items-center gap-1.5 rounded-l-lg bg-black/60 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-white shadow-sm">
-                              ⭐ {task.points}
-                            </div>
                             <img
                               src={task.image}
                               alt={task.title}
-                              className="h-40 w-full object-cover grayscale"
+                              className="h-40 w-full object-cover"
                             />
-                          </div>
 
-                          <div className="p-4">
-                            <h3 className="text-center text-slate-600 font-medium line-through">
-                              {task.title}
-                            </h3>
+                            <div className="p-4 flex flex-col gap-3">
+                              {/* Points */}
+                              <p className="text-center font-semibold text-lg text-gray-600 mb-3">
+                                ⭐ {task.points}
+                              </p>
+                              <h3 className="font-semibold text-gray-800 text-center">
+                                {task.title}
+                              </h3>
+
+                              <button
+                                onClick={() => handleCompleted(task.id)}
+                                className="mt-auto w-full rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 transition-colors"
+                              >
+                                Aufgabe erledigt
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </section>
+                        ))}
+                    </div>
+                  </section>
+
+                  {/* Completed tasks */}
+                  <section>
+                    <h2 className="text-xl font-semibold text-gray-700 mb-6">
+                      Bereits erledigt
+                    </h2>
+
+                    {tasks.filter((task) => task.completed).length === 0 ? (
+                      <p className="text-gray-500">
+                        Du hast noch keine Aufgaben erledigt.
+                      </p>
+                    ) : (
+                      <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                        {tasks
+                          .filter((task) => task.completed)
+                          .map((task) => (
+                            <div
+                              key={`completed-${task.id}`}
+                              className="bg-slate-100 rounded-2xl overflow-hidden opacity-60"
+                            >
+                              <div className="p-4">
+                                {/* Points */}
+                                <p className="text-center font-semibold text-lg text-gray-600 mb-3">
+                                  ⭐ {task.points}
+                                </p>
+                                <h3 className="text-center text-gray-600 font-medium line-through">
+                                  {task.title}
+                                </h3>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </section>
+                </>
+              )}
             </>
           )}
         </div>

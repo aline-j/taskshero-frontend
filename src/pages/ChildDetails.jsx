@@ -32,14 +32,12 @@ export default function ChildDetails() {
         if (!response.ok) throw new Error("HTTP error " + response.status);
         const data = await response.json();
         setChild(data);
-        console.log(child);
       } catch (err) {
         console.error("Fehler beim Laden des Kindes:", err);
       }
     }
 
     if (childId) fetchChild();
-    console.log(child);
   }, [childId, getToken]);
 
   // Load tasks and rewards
@@ -93,18 +91,25 @@ export default function ChildDetails() {
 
   return (
     <>
-      <div className="flex flex-col items-center text-center">
-        <img
-          className="w-34 h-34 mb-4 rounded-full shadow-lg"
-          src={child?.image}
-          alt={child?.first_name}
-        />
+      <div className="max-w-7xl mx-auto md:p-14">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          {/* Child info */}
+          <div className="flex items-center justify-center lg:justify-start gap-4 min-w-0 my-10 md:my-0">
+            <img
+              className="w-28 h-28 lg:w-32 lg:h-32 rounded-full shadow-lg flex-shrink-0"
+              src={child?.image}
+              alt={child?.first_name}
+            />
+            <h1 className="text-3xl lg:text-5xl font-bold whitespace-nowrap">
+              {child?.first_name}
+            </h1>
+          </div>
 
-        <h1 className="text-4xl font-bold mb-6 lg:text-5xl">
-          {child?.first_name}
-        </h1>
-
-        <Score tasks={tasks} rewards={rewards} />
+          {/* Score */}
+          <div className="flex justify-center lg:justify-end">
+            <Score tasks={tasks} rewards={rewards} />
+          </div>
+        </div>
       </div>
 
       <ChildTasks />
