@@ -1,102 +1,96 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
+
 import Score from "../components/Score";
-import ChildRewards from "./ChildRewards";
 import ChildTasks from "./ChildTasks";
+import ChildRewards from "./ChildRewards";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function ChildDetails() {
   const { getToken } = useAuth();
   const { childId } = useParams();
+
   const [child, setChild] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [rewards, setRewards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Load child
+  // Fetch child, tasks & rewards
   useEffect(() => {
-    async function fetchChild() {
-      try {
-        const token = await getToken();
-        const response = await fetch(`${BASE_URL}/child/${childId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(childId);
+    if (!childId) return;
 
-        if (!response.ok) throw new Error("HTTP error " + response.status);
-        const data = await response.json();
-        setChild(data);
-      } catch (err) {
-        console.error("Fehler beim Laden des Kindes:", err);
-      }
-    }
-
-    if (childId) fetchChild();
-  }, [childId, getToken]);
-
-  // Load tasks and rewards
-  useEffect(() => {
-    async function fetchTasksAndRewards() {
+    async function fetchAll() {
       try {
         setIsLoading(true);
         const token = await getToken();
-        const rewardsResponse = await fetch(
-          `${BASE_URL}/child/${childId}/rewards`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
 
-        if (!rewardsResponse.ok)
-          throw new Error("HTTP error " + rewardsResponse.status);
+        const [childRes, tasksRes, rewardsRes] = await Promise.all([
+          fetch(`${BASE_URL}/child/${childId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${BASE_URL}/child/${childId}/tasks`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${BASE_URL}/child/${childId}/rewards`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
-        const rewardsData = await rewardsResponse.json();
+        if (!childRes.ok || !tasksRes.ok || !rewardsRes.ok) {
+          throw new Error("Error loading data");
+        }
 
-        const tasksResponse = await fetch(
-          `${BASE_URL}/child/${childId}/tasks`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const childData = await childRes.json();
+        const tasksData = await tasksRes.json();
+        const rewardsData = await rewardsRes.json();
 
-        if (!tasksResponse.ok)
-          throw new Error("HTTP error " + tasksResponse.status);
-
-        const tasksData = await tasksResponse.json();
-        setRewards(rewardsData.rewards);
+        setChild(childData);
         setTasks(tasksData.tasks);
+        setRewards(rewardsData.rewards);
       } catch (err) {
-        console.error("Fehler beim Laden der Belohnungen:", err);
+        console.error("Error loading child data:", err);
       } finally {
         setIsLoading(false);
       }
     }
 
-    if (childId) fetchTasksAndRewards();
+    fetchAll();
   }, [childId, getToken]);
+
+  // Point calculation
+  const totalPoints = useMemo(() => {
+    const earned = tasks.reduce(
+      (sum, task) => sum + (task.completed ? task.points : 0),
+      0,
+    );
+
+    const spent = rewards.reduce(
+      (sum, reward) => sum + (reward.redeemed ? reward.cost : 0),
+      0,
+    );
+
+    return earned - spent;
+  }, [tasks, rewards]);
+
+  if (isLoading) {
+    return (
+      <p className="text-center text-gray-500 mt-20 animate-pulse">
+        Lade Daten…
+      </p>
+    );
+  }
 
   return (
     <>
+      {/* Header */}
       <div className="max-w-7xl mx-auto md:p-14">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           {/* Child info */}
           <div className="flex items-center justify-center lg:justify-start gap-4 min-w-0 my-10 md:my-0">
             <img
-              className="w-28 h-28 lg:w-32 lg:h-32 rounded-full shadow-lg flex-shrink-0"
+              className="w-28 h-28 lg:w-32 lg:h-32 rounded-full shadow-lg"
               src={child?.image}
               alt={child?.first_name}
             />
@@ -107,13 +101,20 @@ export default function ChildDetails() {
 
           {/* Score */}
           <div className="flex justify-center lg:justify-end">
-            <Score tasks={tasks} rewards={rewards} />
+            <Score totalPoints={totalPoints} />
           </div>
         </div>
       </div>
 
-      <ChildTasks />
-      <ChildRewards />
+      {/* Tasks */}
+      <ChildTasks tasks={tasks} setTasks={setTasks} />
+
+      {/* Rewards */}
+      <ChildRewards
+        rewards={rewards}
+        setRewards={setRewards}
+        totalPoints={totalPoints}
+      />
     </>
   );
 }
