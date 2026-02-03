@@ -9,6 +9,7 @@ import "./App.css";
 import ChildTasks from "./pages/ChildTasks";
 import ChildRewards from "./pages/ChildRewards";
 import { useAuth } from "@clerk/clerk-react";
+import ChildDetails from "./pages/ChildDetails";
 
 function App() {
   const { isSignedIn, isLoaded } = useAuth();
@@ -47,7 +48,15 @@ function App() {
           }
         />
         <Route
-          path="/children/:childId/tasks"
+          path="/child/:childId/"
+          element={
+            <div className="max-w-screen-xl mx-auto p-4">
+              <ChildDetails />
+            </div>
+          }
+        />
+        <Route
+          path="/child/:childId/tasks"
           element={
             <div className="max-w-screen-xl mx-auto p-4">
               <ChildTasks />
@@ -55,7 +64,7 @@ function App() {
           }
         />
         <Route
-          path="/children/:childId/rewards"
+          path="/child/:childId/rewards"
           element={
             <div className="max-w-screen-xl mx-auto p-4">
               <ChildRewards />

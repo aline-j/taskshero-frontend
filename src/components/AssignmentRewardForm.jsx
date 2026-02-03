@@ -16,7 +16,7 @@ export default function AssignmentRewardForm({ initialReward, onCancel }) {
       try {
         setIsLoading(true);
         const token = await getToken();
-        const response = await fetch(`${BASE_URL}/children`, {
+        const response = await fetch(`${BASE_URL}/child`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export default function AssignmentRewardForm({ initialReward, onCancel }) {
     setSelectedChildren((prev) =>
       prev.includes(childId)
         ? prev.filter((id) => id !== childId)
-        : [...prev, childId]
+        : [...prev, childId],
     );
   };
 

@@ -1,7 +1,6 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import Score from "../components/Score";
+import { useParams } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -12,13 +11,14 @@ export default function ChildTasks() {
   const [tasks, setTasks] = useState([]);
   const [rewards, setRewards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showTasks, setShowTasks] = useState(false);
 
   // Load child
   useEffect(() => {
     async function fetchChild() {
       try {
         const token = await getToken();
-        const response = await fetch(`${BASE_URL}/children/${childId}`, {
+        const response = await fetch(`${BASE_URL}/child/${childId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -37,21 +37,21 @@ export default function ChildTasks() {
     if (childId) fetchChild();
   }, [childId, getToken]);
 
-  // Load tasks
+  // Load tasks and rewards
   useEffect(() => {
     async function fetchTasksAndRewards() {
       try {
         setIsLoading(true);
         const token = await getToken();
         const rewardsResponse = await fetch(
-          `${BASE_URL}/children/${childId}/rewards`,
+          `${BASE_URL}/child/${childId}/rewards`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         if (!rewardsResponse.ok)
@@ -60,14 +60,14 @@ export default function ChildTasks() {
         const rewardsData = await rewardsResponse.json();
 
         const tasksResponse = await fetch(
-          `${BASE_URL}/children/${childId}/tasks`,
+          `${BASE_URL}/child/${childId}/tasks`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         if (!tasksResponse.ok)
@@ -94,18 +94,19 @@ export default function ChildTasks() {
       // Optimistic UI update
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
-          task.id === taskId ? { ...task, completed: !task.completed } : task
-        )
+          task.id === taskId ? { ...task, completed: !task.completed } : task,
+        ),
       );
+
       const response = await fetch(
-        `${BASE_URL}/children/${childId}/tasks/${taskId}/completed`,
+        `${BASE_URL}/child/${childId}/tasks/${taskId}/completed`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) throw new Error("HTTP-Fehler " + response.status);
@@ -115,95 +116,123 @@ export default function ChildTasks() {
       // Rollback in case of error
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
-          task.id === taskId ? { ...task, completed: !task.completed } : task
-        )
+          task.id === taskId ? { ...task, completed: !task.completed } : task,
+        ),
       );
     }
   }
 
   return (
-    <div>
+    <div className="h-auto md:px-4 py-10 text-left">
       {isLoading ? (
-        <p className="text-center text-gray-500 mt-10">Lade Aufgaben...</p>
+        <p className="text-center text-gray-500 mt-20 animate-pulse">
+          Lade Aufgaben…
+        </p>
       ) : (
-        <div>
-          <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-            {child?.first_name}´s Aufgaben
-          </h1>
-
-          <Score tasks={tasks} rewards={rewards} />
-
-          {tasks.length === 0 ? (
-            <p className="text-center text-gray-500">
-              Du hast aktuelle keine Aufgaben.
+        <div className="max-w-7xl mx-auto md:bg-white md:p-14 border-b-4 border-cyan-600">
+          {/* Header */}
+          <header className="mb-12 text-center">
+            <h1 className="text-3xl md:text-4xl font-bold text-cyan-700">
+              Deine Aufgaben
+            </h1>
+            <p className="text-gray-500 mt-2">
+              Erledige Aufgaben und sammle Punkte ⭐
             </p>
-          ) : (
-            <div>
-              {/* Tasks ToDo */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
-                {tasks
-                  .filter((task) => !task.completed)
-                  .map((task) => (
-                    <div
-                      key={task.id}
-                      className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md"
-                    >
-                      <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
-                        {task.points} Punkte
-                      </div>
-                      <img
-                        className="w-full h-[160px] object-cover rounded-md"
-                        src={task.image}
-                        alt={task.title}
-                      />
-                      <h3 className="mt-3 mb-1 text-lg text-center font-semibold">
-                        {task.title}
-                      </h3>
-                      <div className="absolute bottom-2 right-2 flex gap-2">
-                        <button
-                          className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
-                          onClick={() => handleCompleted(task.id)}
-                        >
-                          ✔️
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-              </div>
 
-              {/* Tasks already completed */}
-              <h2 className="font-bold my-10 text-center text-2xl lg:my-20">
-                Bereits erledigte Aufgaben
-              </h2>
-              {tasks.filter((task) => task.completed).length === 0 ? (
-                <p className="text-center text-lg text-gray-600 mt-20">
-                  Du hast noch keine Aufgaben erledigt.
+            <button
+              onClick={() => setShowTasks((prev) => !prev)}
+              className="md:w-auto px-6 py-3 mt-10 text-md border rounded-md bg-gray-100 hover:shadow-md hover:bg-white"
+            >
+              {showTasks ? "Aufgaben ausblenden" : "Aufgaben anzeigen"}
+            </button>
+          </header>
+
+          {/* Tasks & Rewards Section */}
+          {showTasks && (
+            <>
+              {tasks.length === 0 ? (
+                <p className="text-center text-gray-500">
+                  Du hast aktuell keine Aufgaben.
                 </p>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
-                  {tasks
-                    .filter((task) => task.completed)
-                    .map((task) => (
-                      <div
-                        key={`completed-${task.id}`}
-                        className="relative w-card-width h-[300px] bg-gray-100 shadow rounded-md p-4 flex flex-col sm:w-card-width-md opacity-50"
-                      >
-                        <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
-                          {task.points} Punkte
-                        </div>
-                        <img
-                          className="w-full h-[160px] object-cover rounded-md"
-                          src={task.image}
-                          alt={task.title}
-                        />
-                        <h3 className="mt-3 mb-1 text-lg text-center font-semibold line-through">
-                          {task.title}
-                        </h3>
+                <>
+                  {/* Open tasks */}
+                  <section className="mb-20">
+                    <h2 className="text-xl font-semibold text-gray-700 mb-6">
+                      Offene Aufgaben
+                    </h2>
+
+                    <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                      {tasks
+                        .filter((task) => !task.completed)
+                        .map((task) => (
+                          <div
+                            key={task.id}
+                            className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+                          >
+                            <img
+                              src={task.image}
+                              alt={task.title}
+                              className="h-40 w-full object-cover"
+                            />
+
+                            <div className="p-4 flex flex-col gap-3">
+                              {/* Points */}
+                              <p className="text-center font-semibold text-lg text-gray-600 mb-3">
+                                ⭐ {task.points}
+                              </p>
+                              <h3 className="font-semibold text-gray-800 text-center">
+                                {task.title}
+                              </h3>
+
+                              <button
+                                onClick={() => handleCompleted(task.id)}
+                                className="mt-auto w-full rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 transition-colors"
+                              >
+                                Aufgabe erledigt
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </section>
+
+                  {/* Completed tasks */}
+                  <section>
+                    <h2 className="text-xl font-semibold text-gray-700 mb-6">
+                      Bereits erledigt
+                    </h2>
+
+                    {tasks.filter((task) => task.completed).length === 0 ? (
+                      <p className="text-gray-500">
+                        Du hast noch keine Aufgaben erledigt.
+                      </p>
+                    ) : (
+                      <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                        {tasks
+                          .filter((task) => task.completed)
+                          .map((task) => (
+                            <div
+                              key={`completed-${task.id}`}
+                              className="bg-slate-100 rounded-2xl overflow-hidden opacity-60"
+                            >
+                              <div className="p-4">
+                                {/* Points */}
+                                <p className="text-center font-semibold text-lg text-gray-600 mb-3">
+                                  ⭐ {task.points}
+                                </p>
+                                <h3 className="text-center text-gray-600 font-medium line-through">
+                                  {task.title}
+                                </h3>
+                              </div>
+                            </div>
+                          ))}
                       </div>
-                    ))}
-                </div>
+                    )}
+                  </section>
+                </>
               )}
-            </div>
+            </>
           )}
         </div>
       )}

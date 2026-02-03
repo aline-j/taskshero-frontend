@@ -34,7 +34,7 @@ export default function UpdateTaskForm({ initialTask, onEdit, onCancel }) {
       {isLoading ? (
         <div className="flex flex-col items-center gap-2">
           <LoadingThreeDotsJumping />
-          <p className="text-center text-slate-500 mt-20 animate-pulse">
+          <p className="text-center text-gray-500 mt-20 animate-pulse">
             Ich aktualisiere diese Aufgabe...
           </p>
         </div>
