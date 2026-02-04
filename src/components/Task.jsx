@@ -93,7 +93,7 @@ export default function Task({
           className="h-38 w-full object-cover md:h-48"
         />
 
-        {/* Content */}
+        {/* Title */}
         <div className="p-3 h-20 flex flex-col justify-center">
           <h3 className="font-medium md:font-semibold text-md text-gray-800 text-center overflow-hidden">
             {title}
