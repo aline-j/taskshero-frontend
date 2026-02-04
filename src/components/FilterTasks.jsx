@@ -22,7 +22,7 @@ export default function FilterTasks({ groupFilter, setGroupFilter }) {
             className={`px-4 py-2 rounded-md font-medium transition-colors ${
               groupFilter === option.value
                 ? "bg-cyan-600 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-cyan-500 hover:text-white"
+                : "bg-gray-200 text-gray-800 hover:bg-cyan-500 hover:text-white"
             }`}
           >
             {option.label}
@@ -52,7 +52,7 @@ export default function FilterTasks({ groupFilter, setGroupFilter }) {
                 className={`w-full text-left px-4 py-2 hover:bg-cyan-600 hover:text-white ${
                   groupFilter === option.value
                     ? "bg-cyan-500 text-white"
-                    : "text-gray-700"
+                    : "text-gray-800"
                 }`}
               >
                 {option.label}

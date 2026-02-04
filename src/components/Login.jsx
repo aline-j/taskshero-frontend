@@ -35,7 +35,7 @@ export default function Login({ setShowRegistration }) {
         Login
       </h1>
       <form className="space-y-4" onSubmit={handleSubmit}>
-        <label className="block text-sm font-medium text-gray-700">Email</label>
+        <label className="block text-sm font-medium text-gray-800">Email</label>
         <input
           className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
           placeholder="Deine Email-Adresse"
@@ -43,7 +43,7 @@ export default function Login({ setShowRegistration }) {
           type="email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-gray-800">
           Passwort
         </label>
         <input

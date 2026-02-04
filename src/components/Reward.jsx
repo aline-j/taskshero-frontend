@@ -49,7 +49,7 @@ export default function Reward({
             Authorization: `Bearer ${token}`,
           },
           body: formData,
-        }
+        },
       );
       if (!response.ok) throw new Error("HTTP error " + response.status);
       const updatedReward = await response.json();

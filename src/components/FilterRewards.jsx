@@ -50,7 +50,7 @@ export default function FilterRewards({ costFilter, setCostFilter }) {
 
       {isOpen && (
         <div className="absolute top-full bg-white rounded-md shadow z-10">
-          <ul className="py-2 px-4 text-md text-gray-700">
+          <ul className="py-2 px-4 text-md text-gray-800">
             <li>
               <button
                 onClick={() => handleSelect("all")}
