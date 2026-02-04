@@ -49,7 +49,7 @@ export default function Registration({ setShowRegistration }) {
     } catch (err) {
       console.error(err);
       alert(
-        "Etwas ist schiefgelaufen: " + err.errors?.[0]?.message ?? err.message
+        "Etwas ist schiefgelaufen: " + err.errors?.[0]?.message ?? err.message,
       );
     }
   }
@@ -88,7 +88,7 @@ export default function Registration({ setShowRegistration }) {
 
       {!pendingVerification ? (
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-800">
             Vorname
           </label>
           <input
@@ -99,7 +99,7 @@ export default function Registration({ setShowRegistration }) {
             onChange={(e) => setFirstname(e.target.value)}
           />
 
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-800">
             Nachname
           </label>
           <input
@@ -110,7 +110,7 @@ export default function Registration({ setShowRegistration }) {
             onChange={(e) => setLastname(e.target.value)}
           />
 
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-800">
             Email
           </label>
           <input
@@ -121,7 +121,7 @@ export default function Registration({ setShowRegistration }) {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-800">
             Passwort
           </label>
           <input
@@ -156,7 +156,7 @@ export default function Registration({ setShowRegistration }) {
         </form>
       ) : (
         <form className="space-y-4" onSubmit={handleVerify}>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-800">
             Bestätigungscode
           </label>
           <input

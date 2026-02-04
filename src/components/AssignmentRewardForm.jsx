@@ -16,7 +16,7 @@ export default function AssignmentRewardForm({ initialReward, onCancel }) {
       try {
         setIsLoading(true);
         const token = await getToken();
-        const response = await fetch(`${BASE_URL}/child`, {
+        const response = await fetch(`${BASE_URL}/children`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export default function AssignmentRewardForm({ initialReward, onCancel }) {
 
       {/* Feedback message */}
       {message && (
-        <p className="text-center text-sm text-gray-700 mt-1">{message}</p>
+        <p className="text-center text-sm text-gray-800 mt-1">{message}</p>
       )}
 
       {/* Buttons */}
@@ -131,7 +131,7 @@ export default function AssignmentRewardForm({ initialReward, onCancel }) {
         <button
           type="button"
           onClick={onCancel}
-          className="text-gray-700 bg-gray-200 hover:bg-gray-300 font-medium rounded-md text-sm px-5 py-2.5"
+          className="text-gray-800 bg-gray-200 hover:bg-gray-300 font-medium rounded-md text-sm px-5 py-2.5"
         >
           Abbrechen
         </button>

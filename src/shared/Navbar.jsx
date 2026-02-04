@@ -81,7 +81,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) =>
                     `block py-2 px-3 rounded-sm md:p-0 ${
-                      isActive ? "text-cyan-600 font-bold" : "text-gray-900"
+                      isActive ? "text-cyan-600 font-bold" : "text-gray-800"
                     } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
                   }
                 >
@@ -97,7 +97,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) =>
                     `block py-2 px-3 rounded-sm md:p-0 ${
-                      isActive ? "text-cyan-600 font-bold" : "text-gray-900"
+                      isActive ? "text-cyan-600 font-bold" : "text-gray-800"
                     } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
                   }
                 >
@@ -110,7 +110,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) =>
                     `block py-2 px-3 rounded-sm md:p-0 ${
-                      isActive ? "text-cyan-600 font-bold" : "text-gray-900"
+                      isActive ? "text-cyan-600 font-bold" : "text-gray-800"
                     } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
                   }
                 >
@@ -123,7 +123,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) =>
                     `block py-2 px-3 rounded-sm md:p-0 ${
-                      isActive ? "text-cyan-600 font-bold" : "text-gray-900"
+                      isActive ? "text-cyan-600 font-bold" : "text-gray-800"
                     } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
                   }
                 >
@@ -136,7 +136,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) =>
                     `block py-2 px-3 rounded-sm md:p-0 ${
-                      isActive ? "text-cyan-600 font-bold" : "text-gray-900"
+                      isActive ? "text-cyan-600 font-bold" : "text-gray-800"
                     } hover:bg-gray-100 md:hover:bg-transparent md:hover:text-cyan-600 font-bold`
                   }
                 >

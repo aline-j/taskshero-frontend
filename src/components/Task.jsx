@@ -81,7 +81,11 @@ export default function Task({
 
   return (
     <>
-      <div className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 w-card-width h-[300px] md:h-[350px] sm:w-card-width-md overflow-hidden">
+      <div className="relative flex flex-col bg-white rounded-md shadow-md hover:shadow-xl">
+        {/* Points */}
+        <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-gray-700 px-2 py-1 text-sm md:text-md font-semibold text-white">
+          ⭐ {points}
+        </div>
         {/* Image */}
         <img
           src={image}
@@ -90,21 +94,17 @@ export default function Task({
         />
 
         {/* Content */}
-        <div className="p-4 flex flex-col">
-          {/* Points */}
-          <p className="text-center font-semibold text-lg text-gray-600 mb-3">
-            ⭐ {points}
-          </p>
-          <h3 className="text-center font-semibold text-gray-800 mb-3">
+        <div className="p-3 h-20 flex flex-col justify-center">
+          <h3 className="font-medium md:font-semibold text-md text-gray-800 text-center overflow-hidden">
             {title}
           </h3>
         </div>
 
         {/* Actions */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+        <div className="flex h-12 justify-center items-center gap-3">
           <button
             onClick={() => setShowAssignmentForm(true)}
-            className="rounded-xl text-white px-3 py-1.5 text-md font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
+            className="rounded-md px-2 md:px-4 md:py-2 text-md font-medium transition-transform duration-200 hover:scale-200"
             title="Zuweisen"
           >
             👥
@@ -112,7 +112,7 @@ export default function Task({
 
           <button
             onClick={() => setShowEditForm(true)}
-            className="rounded-xl text-white px-3 py-1.5 text-md font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
+            className="rounded-md px-2 md:px-4 md:py-2 text-md font-medium transition-transform duration-200 hover:scale-200"
             title="Bearbeiten"
           >
             ✏️
@@ -120,7 +120,7 @@ export default function Task({
 
           <button
             onClick={() => setShowConfirm(true)}
-            className="rounded-xl text-white px-3 py-1.5 text-md font-medium transition-transform duration-200 transform scale-100 hover:scale-200"
+            className="rounded-md px-2 md:px-4 md:py-2 text-md font-medium transition-transform duration-200 hover:scale-200"
             title="Löschen"
           >
             🗑️
@@ -131,7 +131,7 @@ export default function Task({
       {/* Delete Modal */}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl p-6 w-96 text-center">
+          <div className="bg-white rounded-md shadow-xl p-6 w-96 text-center">
             <h3 className="text-lg font-semibold text-gray-800">
               Aufgabe löschen?
             </h3>
@@ -141,13 +141,13 @@ export default function Task({
 
             <div className="flex justify-end gap-3 mt-6">
               <button
-                className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-gray-800"
+                className="px-4 py-2 rounded-md bg-slate-200 hover:bg-slate-300 text-gray-800"
                 onClick={() => setShowConfirm(false)}
               >
                 Abbrechen
               </button>
               <button
-                className="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white"
+                className="px-4 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white"
                 onClick={() => handleDelete(task_id)}
               >
                 Löschen
@@ -160,7 +160,7 @@ export default function Task({
       {/* Edit Modal */}
       {showEditForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl p-6 w-[420px]">
+          <div className="bg-white rounded-md shadow-xl p-6 w-[420px]">
             <UpdateTaskForm
               initialTask={{
                 title,
@@ -178,7 +178,7 @@ export default function Task({
 
       {showAssignmentForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl p-6 w-[420px]">
+          <div className="bg-white rounded-md shadow-xl p-6 w-[420px]">
             <AssignmentTaskForm
               initialTask={{ title, points, group, image, task_id }}
               onEdit={handleAssignment}
