@@ -1,12 +1,15 @@
 import { useState, useRef } from "react";
 import ButtonsSaveCancel from "./ButtonsSaveCancel";
+import LoadingThreeDotsJumping from "./LoadingThreeDotsJumping";
 
 export default function UpdateRewardForm({ initialReward, onEdit, onCancel }) {
   const [editedReward, setEditedReward] = useState(initialReward);
   const fileRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setIsLoading(true);
 
     const formData = new FormData();
     formData.append("reward_id", editedReward.reward_id);
@@ -17,58 +20,73 @@ export default function UpdateRewardForm({ initialReward, onEdit, onCancel }) {
     if (editedReward.image_mode === "Bildupload" && fileRef.current.files[0]) {
       formData.append("file", fileRef.current.files[0]);
     }
-    onEdit(formData);
+    try {
+      await onEdit(formData);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
-    <form className="flex flex-wrap gap-3 w-full my-4">
-      <input
-        type="text"
-        placeholder="Name der Belohnung"
-        value={editedReward.title}
-        onChange={(e) =>
-          setEditedReward({ ...editedReward, title: e.target.value })
-        }
-        className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-      />
+    <>
+      {isLoading ? (
+        <div className="flex flex-col items-center gap-2">
+          <LoadingThreeDotsJumping />
+          <p className="text-center text-gray-500 mt-20 animate-pulse">
+            Ich aktualisiere diese Aufgabe...
+          </p>
+        </div>
+      ) : (
+        <form className="flex flex-wrap gap-3 w-full my-4">
+          <input
+            type="text"
+            placeholder="Name der Belohnung"
+            value={editedReward.title}
+            onChange={(e) =>
+              setEditedReward({ ...editedReward, title: e.target.value })
+            }
+            className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+          />
 
-      <input
-        type="number"
-        placeholder="Punkte für Belohnung"
-        value={editedReward.cost}
-        onChange={(e) =>
-          setEditedReward({ ...editedReward, cost: e.target.value })
-        }
-        className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-      />
+          <input
+            type="number"
+            placeholder="Punkte für Belohnung"
+            value={editedReward.cost}
+            onChange={(e) =>
+              setEditedReward({ ...editedReward, cost: e.target.value })
+            }
+            className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+          />
 
-      <select
-        name="image_mode"
-        value={editedReward.image_mode}
-        onChange={(e) =>
-          setEditedReward({ ...editedReward, image_mode: e.target.value })
-        }
-        className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-      >
-        <option value="Bildbehalten">Bild behalten</option>
-        <option value="Platzhalterbild">Platzhalterbild</option>
-        <option value="Bildupload">Bild hochladen</option>
-        <option value="Bildgenerierung">Bild generieren</option>
-      </select>
+          <select
+            name="image_mode"
+            value={editedReward.image_mode}
+            onChange={(e) =>
+              setEditedReward({ ...editedReward, image_mode: e.target.value })
+            }
+            className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+          >
+            <option value="Bildbehalten">Bild behalten</option>
+            <option value="Platzhalterbild">Platzhalterbild</option>
+            <option value="Bildupload">Bild hochladen</option>
+            <option value="Bildgenerierung">Bild generieren</option>
+          </select>
 
-      {/* Upload field only if needed */}
-      {editedReward.image_mode === "Bildupload" && (
-        <input
-          ref={fileRef}
-          name="file"
-          type="file"
-          className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-          required
-          accept="image/*"
-        />
+          {/* Upload field only if needed */}
+          {editedReward.image_mode === "Bildupload" && (
+            <input
+              ref={fileRef}
+              name="file"
+              type="file"
+              className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+              required
+              accept="image/*"
+            />
+          )}
+
+          <ButtonsSaveCancel onSave={handleSubmit} onCancel={onCancel} />
+        </form>
       )}
-
-      <ButtonsSaveCancel onSave={handleSubmit} onCancel={onCancel} />
-    </form>
+    </>
   );
 }
