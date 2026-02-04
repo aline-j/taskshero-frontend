@@ -82,39 +82,46 @@ export default function Reward({
 
   return (
     <>
-      <div className="relative w-card-width h-[300px] bg-white shadow rounded-md p-4 flex flex-col sm:w-card-width-md">
+      <div className="relative flex flex-col bg-white rounded-md shadow-md hover:shadow-xl">
         {/* Points Badge */}
-        <div className="absolute top-2 right-2 bg-amber-400 text-black text-xs font-semibold px-2 py-1 rounded-full">
-          {cost} Punkte
+        <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-gray-700 px-2 py-1 text-sm md:text-md font-semibold text-white">
+          ⭐ {cost}
         </div>
 
         {/* Image */}
         <img
-          className="w-full h-[160px] object-cover rounded-md"
+          className="h-38 w-full object-cover md:h-48"
           src={image}
           alt={image}
         />
 
         {/* Title */}
-        <h3 className="mt-3 mb-1 text-md text-center font-semibold">{title}</h3>
+        <div className="p-3 h-20 flex flex-col justify-center">
+          <h3 className="font-medium md:font-semibold text-md text-gray-800 text-center overflow-hidden">
+            {title}
+          </h3>
+        </div>
 
-        {/* Action Buttons */}
-        <div className="absolute bottom-2 right-2 flex gap-2">
+        {/* Actions */}
+        <div className="flex h-12 justify-center items-center gap-3">
           <button
-            className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
+            className="rounded-md px-2 md:px-4 md:py-2 text-md font-medium transition-transform duration-200 hover:scale-200"
             onClick={() => setShowAssignmentForm(true)}
+            title="Zuweisen"
           >
             👥
           </button>
           <button
-            className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
+            className="rounded-md px-2 md:px-4 md:py-2 text-md font-medium transition-transform duration-200 hover:scale-200"
             onClick={() => setShowEditForm(true)}
+            title="Bearbeiten"
           >
             ✏️
           </button>
           <button
-            className="text-xl p-1 rounded-full transition-transform duration-200 hover:-translate-y-0.5"
+            className="rounded-md px-2 md:px-4 md:py-2 text-md font-medium transition-transform duration-200 hover:scale-200"
             onClick={() => setShowConfirm(true)}
+            title="Löschen"
           >
             🗑️
           </button>

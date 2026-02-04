@@ -118,6 +118,7 @@ export default function Rewards() {
         <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
           Belohnungen
         </h1>
+
         {/* Feedback Messages */}
         {successMessage && (
           <p className="text-green-600 text-center font-medium mt-6 transition-opacity duration-500">
@@ -130,7 +131,7 @@ export default function Rewards() {
           </p>
         )}
 
-        <div className="flex flex-col md:flex-row justify-end items-center gap-4 mb-8 px-4">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 px-4">
           {/* Button to display the AddRewardForm */}
           {!showForm && (
             <button
@@ -158,7 +159,7 @@ export default function Rewards() {
         {isLoading ? (
           <p className="text-center text-gray-500 mt-10">Lade Belohnungen...</p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 mt-20 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
             {sortedRewards.map((reward) => (
               <div
                 key={reward.reward_id}
@@ -191,7 +192,7 @@ export default function Rewards() {
                     console.log(
                       "Reward",
                       rewardAssignment,
-                      "has been assigned!"
+                      "has been assigned!",
                     );
                     getRewards();
                   }}

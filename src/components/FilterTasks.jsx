@@ -21,8 +21,8 @@ export default function FilterTasks({ groupFilter, setGroupFilter }) {
             onClick={() => setGroupFilter(option.value)}
             className={`px-4 py-2 rounded-md font-medium transition-colors ${
               groupFilter === option.value
-                ? "bg-cyan-600 text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-cyan-500 hover:text-white"
+                ? "bg-cyan-700 text-white"
+                : "bg-gray-200 text-gray-800 hover:bg-cyan-600 hover:text-white"
             }`}
           >
             {option.label}
@@ -34,7 +34,7 @@ export default function FilterTasks({ groupFilter, setGroupFilter }) {
       <div className="sm:hidden relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full bg-cyan-600 text-white font-medium rounded-md px-5 py-2.5 inline-flex justify-between items-center"
+          className="w-full bg-cyan-700 text-white font-medium rounded-md px-5 py-2.5 inline-flex justify-between items-center"
         >
           {options.find((o) => o.value === groupFilter)?.label || "Filter"}
           <FiChevronDown className="ml-2 w-5 h-5" />
@@ -49,9 +49,9 @@ export default function FilterTasks({ groupFilter, setGroupFilter }) {
                   setGroupFilter(option.value);
                   setIsOpen(false);
                 }}
-                className={`w-full text-left px-4 py-2 hover:bg-cyan-600 hover:text-white ${
+                className={`w-full text-left px-4 py-2 hover:bg-cyan-700 hover:text-white ${
                   groupFilter === option.value
-                    ? "bg-cyan-500 text-white"
+                    ? "bg-cyan-600 text-white"
                     : "text-gray-800"
                 }`}
               >
