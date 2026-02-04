@@ -85,7 +85,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
         )}
 
         {/* Rewards */}
-        {rewards.length === 0 ? (
+        {rewards.filter((r) => !r.redeemed).length === 0 ? (
           <p className="text-center text-gray-500">
             Du hast aktuell keine Belohnungen.
           </p>
@@ -134,39 +134,33 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
             </section>
 
             {/* Redeemed rewards */}
-            <section>
-              {rewards.filter((r) => r.redeemed).length === 0 ? (
-                <p className="text-gray-500">
-                  Du hast noch keine Belohnungen eingelöst.
-                </p>
-              ) : (
-                <>
-                  <h2 className="text-xl font-semibold text-gray-800 mb-6">
-                    Bereits eingelöst
-                  </h2>
+            {rewards.filter((r) => r.redeemed).length > 0 && (
+              <section className="mb-20">
+                <h2 className="text-xl font-semibold text-gray-800 mb-6">
+                  Bereits eingelöst
+                </h2>
 
-                  <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                    {rewards
-                      .filter((reward) => reward.redeemed)
-                      .map((reward) => (
-                        <div
-                          key={`redeemed-${reward.id}`}
-                          className="bg-slate-100 rounded-md overflow-hidden opacity-60"
-                        >
-                          <div className="p-4">
-                            <p className="text-center font-semibold text-lg text-gray-600 mb-3">
-                              ⭐ {reward.cost}
-                            </p>
-                            <h3 className="text-center text-gray-600 font-medium line-through">
-                              {reward.title}
-                            </h3>
-                          </div>
+                <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory">
+                  {rewards
+                    .filter((reward) => reward.redeemed)
+                    .map((reward) => (
+                      <div
+                        key={`redeemed-${reward.id}`}
+                        className="min-w-[180px] sm:min-w-[220px] md:bg-slate-100 bg-white rounded-md opacity-60 snap-start flex-shrink-0"
+                      >
+                        <div className="p-4">
+                          <p className="text-center font-semibold text-lg text-gray-600 mb-3">
+                            ⭐ {reward.cost}
+                          </p>
+                          <h3 className="text-center text-gray-600 font-medium line-through">
+                            {reward.title}
+                          </h3>
                         </div>
-                      ))}
-                  </div>
-                </>
-              )}
-            </section>
+                      </div>
+                    ))}
+                </div>
+              </section>
+            )}
           </>
         )}
       </div>
