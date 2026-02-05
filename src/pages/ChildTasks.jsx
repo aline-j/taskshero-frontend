@@ -2,14 +2,15 @@ import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa6";
+import CompletedRedeemedAnimation from "../components/CompletedRedeemedAnimation";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function ChildTasks({ tasks, setTasks }) {
   const { getToken } = useAuth();
   const { childId } = useParams();
-
   const [isLoading, setIsLoading] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
 
   // Complete task
   async function handleCompleted(taskId) {
@@ -23,6 +24,9 @@ export default function ChildTasks({ tasks, setTasks }) {
           task.id === taskId ? { ...task, completed: !task.completed } : task,
         ),
       );
+
+      // Start animation for completed task
+      setShowAnimation(true);
 
       const response = await fetch(
         `${BASE_URL}/child/${childId}/tasks/${taskId}/completed`,
@@ -53,7 +57,14 @@ export default function ChildTasks({ tasks, setTasks }) {
   }
 
   return (
-    <div className="h-auto md:px-4 py-10 text-left">
+    <div className="h-auto md:px-4 py-10 text-left relative">
+      {/* Animation for completed task */}
+      <CompletedRedeemedAnimation
+        trigger={showAnimation}
+        onClose={() => setShowAnimation(false)}
+        title="🎉 Du bist so fleißig! 🎉"
+        text="Die Punkte hast du dir verdient!"
+      />
       <div className="max-w-7xl mx-auto md:bg-white md:rounded-b-md md:shadow-md md:px-14 md:py-6">
         {/* Header */}
         <header className="mb-12 text-center">

@@ -3,15 +3,16 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { FaGift } from "react-icons/fa6";
+import CompletedRedeemedAnimation from "../components/CompletedRedeemedAnimation";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function ChildRewards({ rewards, setRewards, totalPoints }) {
   const { getToken } = useAuth();
   const { childId } = useParams();
-
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showAnimation, setShowAnimation] = useState(false);
 
   // Redeem reward
   async function handleRedeemed(rewardId) {
@@ -37,6 +38,9 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
           r.id === rewardId ? { ...r, redeemed: !r.redeemed } : r,
         ),
       );
+
+      // Start animation for redeemed reward
+      setShowAnimation(true);
 
       const response = await fetch(
         `${BASE_URL}/child/${childId}/rewards/${rewardId}/redeemed`,
@@ -68,6 +72,12 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
 
   return (
     <div className="h-auto md:px-4 py-5 text-left">
+      <CompletedRedeemedAnimation
+        trigger={showAnimation}
+        onClose={() => setShowAnimation(false)}
+        title="🎉 Viel Spaß mit deiner Belohnung 🎉"
+        text="Das hast du gut ausgesucht"
+      />
       <div className="max-w-7xl mx-auto md:bg-white md:rounded-b-md md:shadow-md md:px-14 md:py-6">
         {/* Header */}
         <header className="mb-12 text-center">
