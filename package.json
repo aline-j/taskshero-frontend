@@ -13,7 +13,7 @@
     "@clerk/clerk-react": "^5.48.1",
     "@tailwindcss/vite": "^4.1.13",
     "axios": "^1.12.2",
-    "framer-motion": "^12.30.0",
+    "framer-motion": "^12.31.0",
     "motion": "^12.26.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
