@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { FaGift } from "react-icons/fa6";
+import { HiMiniSpeakerWave } from "react-icons/hi2";
 import CompletedRedeemedAnimation from "../components/CompletedRedeemedAnimation";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -70,6 +71,28 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
     }
   }
 
+  // Speaks the provided text using the voice stored in localStorage.
+  // Uses the Web Speech API with adjusted rate, pitch, and volume.
+  function handleSpeak(text) {
+    let currentVoice;
+    const currentVoiceName = localStorage.getItem("voice");
+    const synth = window.speechSynthesis;
+    const voices = synth.getVoices();
+    for (const voice of voices) {
+      if (voice.name === currentVoiceName) {
+        currentVoice = voice;
+      }
+    }
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = currentVoice;
+    utterance.lang = "de-DE";
+    utterance.rate = 0.9;
+    utterance.pitch = 1.2;
+    utterance.volume = 1;
+
+    window.speechSynthesis.speak(utterance);
+  }
+
   return (
     <div className="h-auto md:px-4 py-5 text-left">
       <CompletedRedeemedAnimation
@@ -116,18 +139,26 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
                   .map((reward) => (
                     <div
                       key={reward.id}
-                      className="relative flex flex-col bg-white rounded-md shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+                      className="group relative flex flex-col bg-white rounded-b-md shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
                     >
                       {/* Points Badge */}
-                      <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-amber-600 px-2 py-1 text-sm font-semibold text-white">
+                      <div className="absolute top-0 right-0 z-10 flex items-center gap-2 rounded-l-md bg-amber-600 px-2 py-1 text-sm font-semibold text-white">
                         <FaStar />
                         <span>{reward.cost}</span>
                       </div>
-                      <img
-                        src={reward.image}
-                        alt={reward.title}
-                        className="h-40 w-full object-cover"
-                      />
+
+                      {/* Adds voice support: Clicking on the reward image will have the title read aloud. */}
+                      <div
+                        onClick={() => handleSpeak(reward.title)}
+                        className="relative"
+                      >
+                        <img
+                          src={reward.image}
+                          alt={reward.title}
+                          className="h-40 w-full object-cover"
+                        />
+                        <HiMiniSpeakerWave className="absolute bottom-1 right-1 text-white opacity-0 group-hover:opacity-100" />
+                      </div>
 
                       <div className="p-3 mt-2 flex flex-col flex-1 gap-3">
                         <h3 className="font-medium text-md text-gray-800 text-center flex-1">
