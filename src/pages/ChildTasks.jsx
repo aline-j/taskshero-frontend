@@ -30,7 +30,7 @@ export default function ChildTasks({ tasks, setTasks }) {
       setShowAnimation(true);
 
       const response = await fetch(
-        `${BASE_URL}/child/${childId}/tasks/${taskId}/completed`,
+        `${BASE_URL}/children/${childId}/tasks/${taskId}/completed`,
         {
           method: "POST",
           headers: {

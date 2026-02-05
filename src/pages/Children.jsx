@@ -87,7 +87,7 @@ export default function Children() {
         formData.append("file", newChild.imageFile);
       }
 
-      const response = await fetch(`${BASE_URL}/child`, {
+      const response = await fetch(`${BASE_URL}/children`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
