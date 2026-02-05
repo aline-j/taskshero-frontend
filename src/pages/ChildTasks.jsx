@@ -1,6 +1,7 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+import { FaStar } from "react-icons/fa6";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -53,14 +54,15 @@ export default function ChildTasks({ tasks, setTasks }) {
 
   return (
     <div className="h-auto md:px-4 py-10 text-left">
-      <div className="max-w-7xl mx-auto md:bg-white md:p-14 border-b-4 border-cyan-600">
+      <div className="max-w-7xl mx-auto md:bg-white md:rounded-b-md md:shadow-md md:px-14 md:py-6">
         {/* Header */}
         <header className="mb-12 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-cyan-700">
             Deine Aufgaben
           </h1>
-          <p className="text-gray-500 mt-2">
-            Erledige Aufgaben und sammle Punkte ⭐
+          <p className="flex items-center justify-center text-gray-500 mt-2 gap-2">
+            <span>Erledige Aufgaben und sammle Punkte</span>
+            <FaStar />
           </p>
         </header>
 
@@ -71,7 +73,7 @@ export default function ChildTasks({ tasks, setTasks }) {
         ) : (
           <>
             {/* Open tasks */}
-            <section className="mb-20">
+            <section className="mb-14">
               <h2 className="text-xl font-semibold text-gray-800 mb-6">
                 Offene Aufgaben
               </h2>
@@ -85,8 +87,9 @@ export default function ChildTasks({ tasks, setTasks }) {
                       className="relative flex flex-col bg-white rounded-b-md shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
                     >
                       {/* Points Badge */}
-                      <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-gray-700 px-2 py-1 text-sm font-semibold text-white">
-                        ⭐ {task.points}
+                      <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-cyan-700 px-2 py-1 text-sm font-semibold text-white">
+                        <FaStar />
+                        <span>{task.points}</span>
                       </div>
                       <img
                         src={task.image}
@@ -102,7 +105,7 @@ export default function ChildTasks({ tasks, setTasks }) {
                         <button
                           disabled={isLoading}
                           onClick={() => handleCompleted(task.id)}
-                          className="w-full rounded-md bg-cyan-600 hover:bg-cyan-700 text-white font-medium text-md py-2 md:mt-4"
+                          className="w-full rounded-md bg-cyan-600 hover:bg-cyan-700 text-white font-medium text-sm py-1 md:mt-4"
                         >
                           erledigt
                         </button>
@@ -114,7 +117,7 @@ export default function ChildTasks({ tasks, setTasks }) {
 
             {/* Completed tasks */}
             {tasks.filter((t) => t.completed).length > 0 && (
-              <section className="mb-20">
+              <section>
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">
                   Bereits erledigt
                 </h2>
@@ -124,12 +127,15 @@ export default function ChildTasks({ tasks, setTasks }) {
                     .map((task) => (
                       <div
                         key={`completed-${task.id}`}
-                        className="min-w-[180px] sm:min-w-[220px] md:bg-slate-100 bg-white rounded-md opacity-60 snap-start flex-shrink-0"
+                        className="min-w-[180px] sm:min-w-[220px] md:bg-slate-100 bg-white rounded-md opacity-60"
                       >
                         <div className="p-4">
-                          <p className="text-center font-semibold text-lg text-gray-600 mb-3">
-                            ⭐ {task.points}
-                          </p>
+                          <div className="flex items-center justify-center gap-2 mb-3 text-gray-600">
+                            <FaStar className="text-lg" />
+                            <span className="font-semibold text-lg">
+                              {task.points}
+                            </span>
+                          </div>
                           <h3 className="text-center text-gray-600 font-medium line-through">
                             {task.title}
                           </h3>

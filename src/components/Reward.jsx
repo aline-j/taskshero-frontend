@@ -1,6 +1,10 @@
 import { useState } from "react";
 import UpdateRewardForm from "../components/UpdateRewardForm";
 import AssignmentRewardForm from "../components/AssignmentRewardForm";
+import { MdEdit } from "react-icons/md";
+import { FaUserGroup } from "react-icons/fa6";
+import { MdDelete } from "react-icons/md";
+import { FaStar } from "react-icons/fa6";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -84,8 +88,9 @@ export default function Reward({
     <>
       <div className="relative flex flex-col bg-white rounded-md shadow-md hover:shadow-xl">
         {/* Points Badge */}
-        <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-gray-700 px-2 py-1 text-sm md:text-md font-semibold text-white">
-          ⭐ {cost}
+        <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-amber-600 px-2 py-1 text-sm md:text-md font-semibold text-white">
+          <FaStar />
+          <span>{cost}</span>
         </div>
 
         {/* Image */}
@@ -97,7 +102,7 @@ export default function Reward({
 
         {/* Title */}
         <div className="p-3 h-20 flex flex-col justify-center">
-          <h3 className="font-medium md:font-semibold text-md text-gray-800 text-center overflow-hidden">
+          <h3 className="font-medium md:font-semibold text-md text-gray-800 text-center">
             {title}
           </h3>
         </div>
@@ -109,21 +114,21 @@ export default function Reward({
             onClick={() => setShowAssignmentForm(true)}
             title="Zuweisen"
           >
-            👥
+            <FaUserGroup />
           </button>
           <button
             className="rounded-md px-2 md:px-4 md:py-2 text-md font-medium transition-transform duration-200 hover:scale-200"
             onClick={() => setShowEditForm(true)}
             title="Bearbeiten"
           >
-            ✏️
+            <MdEdit />
           </button>
           <button
             className="rounded-md px-2 md:px-4 md:py-2 text-md font-medium transition-transform duration-200 hover:scale-200"
             onClick={() => setShowConfirm(true)}
             title="Löschen"
           >
-            🗑️
+            <MdDelete />
           </button>
         </div>
       </div>

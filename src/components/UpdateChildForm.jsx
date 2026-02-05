@@ -37,7 +37,7 @@ export default function UpdateChildForm({ initialChild, onEdit, onCancel }) {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-full max-w-lg p-6">
+      <div className="w-full max-w-md p-6">
         {isLoading ? (
           <div className="flex flex-col items-center gap-2">
             <LoadingThreeDotsJumping />
@@ -82,7 +82,7 @@ export default function UpdateChildForm({ initialChild, onEdit, onCancel }) {
               <div className="w-full">
                 <label
                   htmlFor="fileUpload"
-                  className="block w-full p-2 text-center rounded-md border border-gray-300 cursor-pointer bg-gray-100 hover:bg-gray-200 truncate"
+                  className="block w-full bg-white p-2 text-center rounded-md border border-gray-300 cursor-pointer hover:bg-gray-200 truncate"
                 >
                   {fileName || "Bild auswählen"}
                 </label>

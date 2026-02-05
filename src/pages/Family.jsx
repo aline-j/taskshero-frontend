@@ -2,6 +2,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import ButtonsSaveCancel from "../components/ButtonsSaveCancel";
 import Children from "./Children";
+import { MdEdit } from "react-icons/md";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -87,7 +88,7 @@ export default function Family() {
   }
 
   return (
-    <div className="flex justify-center text-left">
+    <div className="flex justify-center text-left h-screen">
       {isLoading ? (
         <p className="text-center text-gray-500 mt-10">Lade Familie...</p>
       ) : (
@@ -103,7 +104,7 @@ export default function Family() {
                 className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
                 title="Bearbeiten"
               >
-                ✏️
+                <MdEdit />
               </button>
             </div>
           ) : (

@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
-
 import Score from "../components/Score";
 import ChildTasks from "./ChildTasks";
 import ChildRewards from "./ChildRewards";
 import UpdateChildForm from "../components/UpdateChildForm";
+import { MdEdit } from "react-icons/md";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -109,12 +109,12 @@ export default function ChildDetails() {
   return (
     <>
       {/* Header */}
-      <div className="max-w-7xl mx-auto md:p-14">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+      <div className="max-w-7xl mx-auto md:px-14 md:pt-4">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 text-gray-800">
           {/* Child info */}
           <div className="flex items-center justify-center lg:justify-start gap-4 min-w-0 my-10 md:my-0">
             <img
-              className="w-28 h-28 lg:w-32 lg:h-32 rounded-full shadow-lg"
+              className="w-28 h-28 lg:w-32 lg:h-32 rounded-full"
               src={child?.image}
               alt={child?.first_name}
             />
@@ -126,7 +126,7 @@ export default function ChildDetails() {
               className="text-xl p-1 rounded-full transition-transform duration-200 transform scale-x-[-1] hover:-translate-y-0.5"
               title="Bearbeiten"
             >
-              ✏️
+              <MdEdit />
             </button>
           </div>
 

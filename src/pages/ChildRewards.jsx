@@ -1,6 +1,8 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+import { FaStar } from "react-icons/fa6";
+import { FaGift } from "react-icons/fa6";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -19,7 +21,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
     if (!reward.redeemed && totalPoints < reward.cost) {
       setErrorMessage(
         "Deine Punkte reichen noch nicht, um diese Belohnung einzulösen!\n" +
-          "Erledige noch ein paar Aufgaben ⭐",
+          "Erledige noch ein paar Aufgaben ★",
       );
       setTimeout(() => setErrorMessage(""), 4000);
       return;
@@ -65,15 +67,16 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
   }
 
   return (
-    <div className="h-auto md:px-4 py-10 md:mt-10 text-left">
-      <div className="max-w-7xl mx-auto md:bg-white md:p-14 border-b-4 border-amber-600">
+    <div className="h-auto md:px-4 py-5 text-left">
+      <div className="max-w-7xl mx-auto md:bg-white md:rounded-b-md md:shadow-md md:px-14 md:py-6">
         {/* Header */}
         <header className="mb-12 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-amber-600">
             Deine Belohnungen
           </h1>
-          <p className="text-gray-500 mt-2">
-            Sammle Punkte und löse sie gegen tolle Belohnungen ein 🎁
+          <p className="flex items-center justify-center text-gray-500 mt-2 gap-2">
+            <span>Sammle Punkte und löse sie gegen tolle Belohnungen ein </span>
+            <FaGift />
           </p>
         </header>
 
@@ -92,7 +95,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
         ) : (
           <>
             {/* Available rewards */}
-            <section className="mb-20">
+            <section className="mb-14">
               <h2 className="text-xl font-semibold text-gray-800 mb-6">
                 Verfügbare Belohnungen
               </h2>
@@ -106,8 +109,9 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
                       className="relative flex flex-col bg-white rounded-md shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
                     >
                       {/* Points Badge */}
-                      <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-gray-700 px-2 py-1 text-sm font-semibold text-white">
-                        ⭐ {reward.cost}
+                      <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-amber-600 px-2 py-1 text-sm font-semibold text-white">
+                        <FaStar />
+                        <span>{reward.cost}</span>
                       </div>
                       <img
                         src={reward.image}
@@ -123,7 +127,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
                         <button
                           disabled={isLoading}
                           onClick={() => handleRedeemed(reward.id)}
-                          className="w-full rounded-md bg-amber-500 hover:bg-amber-600 text-white font-medium text-md py-2 md:mt-4"
+                          className="w-full rounded-md bg-amber-500 hover:bg-amber-600 text-white font-medium text-sm py-2 md:mt-4"
                         >
                           Einlösen
                         </button>
@@ -135,7 +139,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
 
             {/* Redeemed rewards */}
             {rewards.filter((r) => r.redeemed).length > 0 && (
-              <section className="mb-20">
+              <section>
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">
                   Bereits eingelöst
                 </h2>
@@ -146,12 +150,15 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
                     .map((reward) => (
                       <div
                         key={`redeemed-${reward.id}`}
-                        className="min-w-[180px] sm:min-w-[220px] md:bg-slate-100 bg-white rounded-md opacity-60 snap-start flex-shrink-0"
+                        className="min-w-[180px] sm:min-w-[220px] md:bg-slate-100 bg-white rounded-md opacity-60"
                       >
                         <div className="p-4">
-                          <p className="text-center font-semibold text-lg text-gray-600 mb-3">
-                            ⭐ {reward.cost}
-                          </p>
+                          <div className="flex items-center justify-center gap-2 mb-3 text-gray-600">
+                            <FaStar className="text-lg" />
+                            <span className="font-semibold text-lg">
+                              {reward.cost}
+                            </span>
+                          </div>
                           <h3 className="text-center text-gray-600 font-medium line-through">
                             {reward.title}
                           </h3>
