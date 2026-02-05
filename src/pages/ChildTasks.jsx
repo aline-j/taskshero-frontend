@@ -105,7 +105,7 @@ export default function ChildTasks({ tasks, setTasks }) {
                         <button
                           disabled={isLoading}
                           onClick={() => handleCompleted(task.id)}
-                          className="w-full rounded-md bg-cyan-600 hover:bg-cyan-700 text-white font-medium text-sm py-1 md:mt-4"
+                          className="w-full rounded-md bg-cyan-600 hover:bg-cyan-700 text-white font-medium text-md py-1 md:mt-4"
                         >
                           erledigt
                         </button>

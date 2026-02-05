@@ -127,7 +127,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
                         <button
                           disabled={isLoading}
                           onClick={() => handleRedeemed(reward.id)}
-                          className="w-full rounded-md bg-amber-500 hover:bg-amber-600 text-white font-medium text-sm py-2 md:mt-4"
+                          className="w-full rounded-md bg-amber-500 hover:bg-amber-600 text-white font-medium text-md py-2 md:mt-4"
                         >
                           Einlösen
                         </button>
