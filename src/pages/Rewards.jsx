@@ -1,9 +1,9 @@
 import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
 import { useEffect, useState, useRef } from "react";
-import { motion, useMotionValue, animate } from "motion/react";
 import Reward from "../components/Reward";
 import AddRewardForm from "../components/AddRewardForm";
 import FilterRewards from "../components/FilterRewards";
+import { MdAdd } from "react-icons/md";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -136,9 +136,10 @@ export default function Rewards() {
           {!showForm && (
             <button
               onClick={() => setShowForm(true)}
-              className="md:w-auto px-6 py-3 text-md border rounded-md hover:shadow-md hover:bg-white"
+              className="md:w-auto px-6 py-3 text-md border rounded-md hover:shadow-md hover:bg-white flex items-center gap-2"
             >
-              Neue Belohnung hinzufügen
+              <MdAdd />
+              <span>Belohnung hinzufügen</span>
             </button>
           )}
 

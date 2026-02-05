@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import AddChildForm from "../components/AddChildForm";
 import Child from "../components/Child";
+import { FaUserPlus } from "react-icons/fa";
 
 /**
  * Children component
@@ -133,9 +134,10 @@ export default function Children() {
           {!showForm && (
             <button
               onClick={() => setShowForm(true)}
-              className="md:w-auto px-6 py-3 text-md border rounded-md hover:shadow-md hover:bg-white"
+              className="md:w-auto px-6 py-3 text-md border rounded-md hover:shadow-md hover:bg-white flex items-center gap-2"
             >
-              Kind hinzufügen
+              <FaUserPlus />
+              <span>Kind hinzufügen</span>
             </button>
           )}
 

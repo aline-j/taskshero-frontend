@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import Task from "../components/Task";
 import AddTaskForm from "../components/AddTaskForm";
 import FilterTasks from "../components/FilterTasks";
+import { MdAdd } from "react-icons/md";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -124,9 +125,10 @@ export default function Tasks() {
           {!showForm && (
             <button
               onClick={() => setShowForm(true)}
-              className="md:w-auto px-6 py-3 text-md border rounded-md hover:shadow-md hover:bg-white"
+              className="md:w-auto px-6 py-3 text-md border rounded-md hover:shadow-md hover:bg-white flex items-center gap-2"
             >
-              Neue Aufgabe hinzufügen
+              <MdAdd />
+              <span>Aufgabe hinzufügen</span>
             </button>
           )}
 
