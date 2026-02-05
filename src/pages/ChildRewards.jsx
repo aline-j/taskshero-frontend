@@ -44,7 +44,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
       setShowAnimation(true);
 
       const response = await fetch(
-        `${BASE_URL}/child/${childId}/rewards/${rewardId}/redeemed`,
+        `${BASE_URL}/children/${childId}/rewards/${rewardId}/redeemed`,
         {
           method: "POST",
           headers: {

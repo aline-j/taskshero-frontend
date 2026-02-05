@@ -29,13 +29,13 @@ export default function ChildDetails() {
         const token = await getToken();
 
         const [childRes, tasksRes, rewardsRes] = await Promise.all([
-          fetch(`${BASE_URL}/child/${childId}`, {
+          fetch(`${BASE_URL}/children/${childId}`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch(`${BASE_URL}/child/${childId}/tasks`, {
+          fetch(`${BASE_URL}/children/${childId}/tasks`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch(`${BASE_URL}/child/${childId}/rewards`, {
+          fetch(`${BASE_URL}/children/${childId}/rewards`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -65,7 +65,7 @@ export default function ChildDetails() {
     try {
       const token = await getToken();
 
-      const res = await fetch(`${BASE_URL}/child/${childId}`, {
+      const res = await fetch(`${BASE_URL}/children/${childId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
