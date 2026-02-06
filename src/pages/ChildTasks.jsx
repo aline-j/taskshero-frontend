@@ -118,7 +118,7 @@ export default function ChildTasks({ tasks, setTasks }) {
                   .map((task) => (
                     <div
                       key={task.id}
-                      className="group relative flex flex-col bg-white rounded-b-md shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+                      className="group relative flex flex-col bg-white rounded-b-md shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden"
                     >
                       {/* Points Badge */}
                       <div className="absolute top-0 right-0 z-10 flex items-center gap-2 rounded-l-md bg-cyan-700 px-2 py-1 text-sm font-semibold text-white">

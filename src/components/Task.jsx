@@ -85,7 +85,7 @@ export default function Task({
 
   return (
     <>
-      <div className="group relative flex flex-col bg-white rounded-md shadow-md hover:shadow-xl">
+      <div className="group relative flex flex-col bg-white rounded-md shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300">
         {/* Points */}
         <div className="absolute top-0 right-0 flex items-center gap-2 rounded-l-md bg-cyan-700 px-2 py-1 text-sm md:text-md font-semibold text-white">
           <FaStar />
