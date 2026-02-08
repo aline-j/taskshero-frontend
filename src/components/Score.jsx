@@ -15,7 +15,7 @@ export default function Score({ totalPoints }) {
     motionVal.set(0);
     const controls = animate(motionVal, totalPoints, {
       type: "tween",
-      duration: 0.6,
+      duration: 1,
       ease: [0.16, 1, 0.3, 1],
 
       onUpdate: (latest) => {
@@ -74,7 +74,7 @@ export default function Score({ totalPoints }) {
           transform: "translate(-50%, -50%)",
         }}
       >
-        <div className="flex items-center justify-center font-extrabold mb-10 md:mb-0 gap-3">
+        <div className="flex items-center justify-center font-extrabold 0 gap-3">
           {displayValue}
         </div>
       </div>

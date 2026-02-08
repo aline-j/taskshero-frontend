@@ -94,7 +94,7 @@ export default function ChildTasks({ tasks, setTasks }) {
           <h1 className="text-3xl md:text-4xl font-bold text-cyan-700">
             Deine Aufgaben
           </h1>
-          <p className="flex items-center justify-center text-gray-500 mt-2 gap-2">
+          <p className="flex flex-col md:flex-row items-center justify-center text-gray-500 mt-2 gap-2">
             <span>Erledige Aufgaben und sammle Punkte</span>
             <FaStar />
           </p>
@@ -128,7 +128,7 @@ export default function ChildTasks({ tasks, setTasks }) {
 
                       {/* Adds voice support: Clicking on the task image will have the title read aloud. */}
                       <div
-                        onClick={() => handleSpeak(task.title)}
+                        onClick={() => handleSpeak(task.description)}
                         className="relative"
                       >
                         <img
@@ -136,7 +136,7 @@ export default function ChildTasks({ tasks, setTasks }) {
                           alt={task.title}
                           className="h-38 w-full object-cover md:h-48"
                         />
-                        <HiMiniSpeakerWave className="absolute bottom-1 right-1 text-white opacity-0 group-hover:opacity-100" />
+                        <HiMiniSpeakerWave className="absolute bottom-1 right-1 text-white opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity" />
                       </div>
 
                       <div className="p-3 mt-2 flex flex-col flex-1 gap-3">

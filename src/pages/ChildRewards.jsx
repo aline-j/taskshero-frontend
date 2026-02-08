@@ -107,7 +107,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
           <h1 className="text-3xl md:text-4xl font-bold text-amber-600">
             Deine Belohnungen
           </h1>
-          <p className="flex items-center justify-center text-gray-500 mt-2 gap-2">
+          <p className="flex flex-col md:flex-row items-center justify-center text-gray-500 mt-2 gap-2">
             <span>Sammle Punkte und löse sie gegen tolle Belohnungen ein </span>
             <FaGift />
           </p>
@@ -149,7 +149,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
 
                       {/* Adds voice support: Clicking on the reward image will have the title read aloud. */}
                       <div
-                        onClick={() => handleSpeak(reward.title)}
+                        onClick={() => handleSpeak(reward.description)}
                         className="relative"
                       >
                         <img

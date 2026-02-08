@@ -112,7 +112,7 @@ export default function ChildDetails() {
       <div className="max-w-7xl mx-auto md:px-14 md:pt-4">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 text-gray-800">
           {/* Child info */}
-          <div className="flex items-center justify-center lg:justify-start gap-4 min-w-0 my-10 md:my-0">
+          <div className="flex items-center justify-center lg:justify-start gap-4 min-w-0 md:my-0">
             <img
               className="w-28 h-28 lg:w-32 lg:h-32 rounded-full"
               src={child?.image}
