@@ -1,3 +1,4 @@
+import { ChildrenProvider } from "./context/ChildrenContext";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./shared/Navbar";
 import Auth from "./pages/Auth";
@@ -17,77 +18,79 @@ function App() {
   if (!isLoaded) return null;
   return (
     <>
-      <Navbar />
-      <Routes>
-        <Route
-          path="/"
-          element={<Navigate to={isSignedIn ? "/family" : "/login"} />}
-        />
-        <Route
-          path="/login"
-          element={
-            <div className="max-w-screen-xl mx-auto p-4">
-              <Auth />
-            </div>
-          }
-        />
-        <Route
-          path="/account"
-          element={
-            <div className="max-w-screen-xl mx-auto p-4">
-              <Account />
-            </div>
-          }
-        />
-        <Route
-          path="/family"
-          element={
-            <div className="max-w-screen-xl mx-auto p-4">
-              <Family />
-            </div>
-          }
-        />
-        <Route
-          path="/child/:childId/"
-          element={
-            <div className="max-w-screen-xl mx-auto p-4">
-              <ChildDetails />
-            </div>
-          }
-        />
-        <Route
-          path="/child/:childId/tasks"
-          element={
-            <div className="max-w-screen-xl mx-auto p-4">
-              <ChildTasks />
-            </div>
-          }
-        />
-        <Route
-          path="/child/:childId/rewards"
-          element={
-            <div className="max-w-screen-xl mx-auto p-4">
-              <ChildRewards />
-            </div>
-          }
-        />
-        <Route
-          path="/tasks"
-          element={
-            <div className="max-w-screen-xl mx-auto p-4">
-              <Tasks />
-            </div>
-          }
-        />
-        <Route
-          path="/rewards"
-          element={
-            <div className="max-w-screen-xl mx-auto p-4">
-              <Rewards />
-            </div>
-          }
-        />
-      </Routes>
+      <ChildrenProvider>
+        <Navbar />
+        <Routes>
+          <Route
+            path="/"
+            element={<Navigate to={isSignedIn ? "/family" : "/login"} />}
+          />
+          <Route
+            path="/login"
+            element={
+              <div className="max-w-screen-xl mx-auto p-4">
+                <Auth />
+              </div>
+            }
+          />
+          <Route
+            path="/account"
+            element={
+              <div className="max-w-screen-xl mx-auto p-4">
+                <Account />
+              </div>
+            }
+          />
+          <Route
+            path="/family"
+            element={
+              <div className="max-w-screen-xl mx-auto p-4">
+                <Family />
+              </div>
+            }
+          />
+          <Route
+            path="/child/:childId/"
+            element={
+              <div className="max-w-screen-xl mx-auto p-4">
+                <ChildDetails />
+              </div>
+            }
+          />
+          <Route
+            path="/child/:childId/tasks"
+            element={
+              <div className="max-w-screen-xl mx-auto p-4">
+                <ChildTasks />
+              </div>
+            }
+          />
+          <Route
+            path="/child/:childId/rewards"
+            element={
+              <div className="max-w-screen-xl mx-auto p-4">
+                <ChildRewards />
+              </div>
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <div className="max-w-screen-xl mx-auto p-4">
+                <Tasks />
+              </div>
+            }
+          />
+          <Route
+            path="/rewards"
+            element={
+              <div className="max-w-screen-xl mx-auto p-4">
+                <Rewards />
+              </div>
+            }
+          />
+        </Routes>
+      </ChildrenProvider>
     </>
   );
 }
