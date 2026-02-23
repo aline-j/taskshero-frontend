@@ -130,7 +130,7 @@ export default function Navbar() {
                       absolute top-full left-1/2 z-50
                       hidden md:group-hover:block
                       bg-white shadow-lg
-                      min-w-[120px] mt-4
+                      min-w-[120px] pt-4
                       transform -translate-x-1/2 p-4"
                   >
                     {children.map((child) => (
