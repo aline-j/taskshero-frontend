@@ -40,8 +40,8 @@ export default function Children() {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto p-4">
-      <div className="flex flex-wrap justify-center gap-4">
+    <div className="max-w-screen-xl mx-auto">
+      <div className="flex justify-center gap-4">
         {children.map((child) => (
           <Child
             key={child.id}

@@ -88,7 +88,7 @@ export default function Family() {
   }
 
   return (
-    <div className="flex justify-center text-left h-screen">
+    <>
       {isLoading ? (
         <p className="text-center text-gray-500 mt-10">Lade Familie...</p>
       ) : (
@@ -155,6 +155,6 @@ export default function Family() {
           {userFamily && <Children />}
         </div>
       )}
-    </div>
+    </>
   );
 }
