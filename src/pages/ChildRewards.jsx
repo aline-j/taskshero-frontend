@@ -157,7 +157,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
                           alt={reward.title}
                           className="h-40 w-full object-cover"
                         />
-                        <HiMiniSpeakerWave className="absolute bottom-1 right-1 text-white opacity-0 group-hover:opacity-100" />
+                        <HiMiniSpeakerWave className="absolute bottom-1 right-1 text-white opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity" />
                       </div>
 
                       <div className="p-3 mt-2 flex flex-col flex-1 gap-3">
