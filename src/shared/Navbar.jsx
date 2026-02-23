@@ -123,15 +123,15 @@ export default function Navbar() {
                   </NavLink>
                 </div>
 
+                {/* Desktop Dropdown */}
                 {hasChildren && (
                   <ul
                     className="
                       absolute top-full left-1/2 z-50
                       hidden md:group-hover:block
                       bg-white shadow-lg
-                      min-w-[120px]
-                      transform -translate-x-1/2 p-4
-                    "
+                      min-w-[120px] mt-4
+                      transform -translate-x-1/2 p-4"
                   >
                     {children.map((child) => (
                       <li key={child.id}>
@@ -141,6 +141,27 @@ export default function Navbar() {
                           className={({ isActive }) =>
                             `block px-4 py-2 font-bold ${
                               isActive ? "text-cyan-600" : "text-gray-800"
+                            } hover:text-cyan-600`
+                          }
+                        >
+                          {child.first_name}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {/* Mobile Dropdown */}
+                {hasChildren && (
+                  <ul className="flex flex-col gap-1 mb-2 md:hidden">
+                    {children.map((child) => (
+                      <li key={child.id}>
+                        <NavLink
+                          to={`/child/${child.id}`}
+                          onClick={() => setIsMenuOpen(false)}
+                          className={({ isActive }) =>
+                            `block px-2 py-1 font-medium ${
+                              isActive ? "text-cyan-600" : "text-gray-700"
                             } hover:text-cyan-600`
                           }
                         >
