@@ -12,6 +12,7 @@ import ChildRewards from "./pages/ChildRewards";
 import { useAuth } from "@clerk/clerk-react";
 import ChildDetails from "./pages/ChildDetails";
 import LandingPage from "./pages/LandingPage";
+import Footer from "./components/Footer";
 
 function App() {
   const { isSignedIn, isLoaded } = useAuth();
@@ -95,6 +96,7 @@ function App() {
             }
           />
         </Routes>
+        <Footer />
       </ChildrenProvider>
     </>
   );
