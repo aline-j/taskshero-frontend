@@ -11,6 +11,7 @@ import ChildTasks from "./pages/ChildTasks";
 import ChildRewards from "./pages/ChildRewards";
 import { useAuth } from "@clerk/clerk-react";
 import ChildDetails from "./pages/ChildDetails";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const { isSignedIn, isLoaded } = useAuth();
@@ -23,7 +24,11 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Navigate to={isSignedIn ? "/family" : "/login"} />}
+            element={
+              <div className="max-w-screen-xl mx-auto p-4">
+                <LandingPage />
+              </div>
+            }
           />
           <Route
             path="/login"

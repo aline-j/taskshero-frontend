@@ -151,7 +151,7 @@ export default function Navbar() {
                   </ul>
                 )}
 
-                {/* Mobile Dropdown */}
+                {/* Mobile Children Menu */}
                 {hasChildren && (
                   <ul className="flex flex-col gap-1 mb-2 md:hidden">
                     {children.map((child) => (
