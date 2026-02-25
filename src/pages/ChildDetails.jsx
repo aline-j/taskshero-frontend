@@ -107,7 +107,7 @@ export default function ChildDetails() {
   }
 
   return (
-    <>
+    <div className="min-h-screen">
       {/* Header */}
       <div className="max-w-7xl mx-auto md:px-14 md:pt-4">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 text-gray-800">
@@ -154,6 +154,6 @@ export default function ChildDetails() {
         setRewards={setRewards}
         totalPoints={totalPoints}
       />
-    </>
+    </div>
   );
 }
