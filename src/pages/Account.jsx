@@ -119,7 +119,7 @@ export default function Account() {
   }
 
   return (
-    <>
+    <div className="h-screen">
       {isLoading ? (
         <p className="text-center text-gray-500 mt-10">Lade Account...</p>
       ) : (
@@ -227,6 +227,6 @@ export default function Account() {
           </button>
         </SignedIn>
       )}
-    </>
+    </div>
   );
 }

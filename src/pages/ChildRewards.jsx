@@ -191,7 +191,7 @@ export default function ChildRewards({ rewards, setRewards, totalPoints }) {
                     .map((reward) => (
                       <div
                         key={`redeemed-${reward.id}`}
-                        className="min-w-[180px] sm:min-w-[220px] md:bg-slate-100 bg-white rounded-md opacity-60"
+                        className="min-w-[180px] sm:min-w-[220px] md:bg-gray-100 bg-white rounded-md opacity-60"
                       >
                         <div className="p-4">
                           <div className="flex items-center justify-center gap-2 mb-3 text-gray-600">

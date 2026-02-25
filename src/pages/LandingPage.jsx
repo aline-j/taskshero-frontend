@@ -45,7 +45,7 @@ export default function LandingPage() {
 
           <button
             onClick={handleStart}
-            className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-md text-lg font-medium shadow-md hover:shadow-xl transition-all"
+            className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-3 rounded-md text-lg font-medium shadow-md hover:shadow-xl transition-all"
           >
             Jetzt starten
           </button>
@@ -99,7 +99,7 @@ export default function LandingPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="py-20 px-6 bg-white">
+      <section className="py-20 px-6 bg-white md:rounded-b-md md:shadow-md">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-14">So funktioniert es</h2>
 
@@ -121,7 +121,7 @@ export default function LandingPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-24 px-6 text-center bg-cyan-600 text-white">
+      <section className="py-24 px-6 text-center bg-cyan-600 text-white md:rounded-b-md md:shadow-md">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
           Starte noch heute mit TasksHero
         </h2>

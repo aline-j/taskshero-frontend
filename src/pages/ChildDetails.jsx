@@ -112,7 +112,7 @@ export default function ChildDetails() {
       <div className="max-w-7xl mx-auto md:px-14 md:pt-4">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 text-gray-800">
           {/* Child info */}
-          <div className="flex items-center justify-center lg:justify-start gap-4 min-w-0 md:my-0">
+          <div className="flex items-center justify-center lg:justify-start gap-4 min-w-0 md:my-0 pt-6 md:pt-0">
             <img
               className="w-28 h-28 lg:w-32 lg:h-32 rounded-full"
               src={child?.image}
@@ -123,7 +123,7 @@ export default function ChildDetails() {
             </h1>
             <button
               onClick={() => setIsEditing(true)}
-              className="text-xl p-1 rounded-full transition-transform duration-200 transform hover:scale-200"
+              className="text-gray-500 hover:text-cyan-600 transition"
               title="Bearbeiten"
             >
               <MdEdit />
