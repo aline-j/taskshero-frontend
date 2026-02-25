@@ -81,101 +81,103 @@ export default function Registration({ setShowRegistration }) {
   }
 
   return (
-    <SignedOut>
-      <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-        Registrierung
-      </h1>
+    <div className="min-h-screen">
+      <SignedOut>
+        <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
+          Registrierung
+        </h1>
 
-      {!pendingVerification ? (
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <label className="block text-sm font-medium text-gray-800">
-            Vorname
-          </label>
-          <input
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-            placeholder="Dein Vorname"
-            value={firstname}
-            type="text"
-            onChange={(e) => setFirstname(e.target.value)}
-          />
+        {!pendingVerification ? (
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <label className="block text-sm font-medium text-gray-800">
+              Vorname
+            </label>
+            <input
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+              placeholder="Dein Vorname"
+              value={firstname}
+              type="text"
+              onChange={(e) => setFirstname(e.target.value)}
+            />
 
-          <label className="block text-sm font-medium text-gray-800">
-            Nachname
-          </label>
-          <input
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-            placeholder="Dein Nachname"
-            value={lastname}
-            type="text"
-            onChange={(e) => setLastname(e.target.value)}
-          />
+            <label className="block text-sm font-medium text-gray-800">
+              Nachname
+            </label>
+            <input
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+              placeholder="Dein Nachname"
+              value={lastname}
+              type="text"
+              onChange={(e) => setLastname(e.target.value)}
+            />
 
-          <label className="block text-sm font-medium text-gray-800">
-            Email
-          </label>
-          <input
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-            placeholder="Deine Email-Adresse"
-            value={email}
-            type="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            <label className="block text-sm font-medium text-gray-800">
+              Email
+            </label>
+            <input
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+              placeholder="Deine Email-Adresse"
+              value={email}
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-          <label className="block text-sm font-medium text-gray-800">
-            Passwort
-          </label>
-          <input
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-            placeholder="Dein Passwort"
-            value={password}
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {/* Action Button */}
-          <div className="flex justify-center gap-4 mt-8">
-            <button
-              type="submit"
-              className="text-white bg-amber-400 hover:bg-yellow-500 font-medium rounded-md text-sm px-5 py-2.5"
-            >
-              Account erstellen
-            </button>
-          </div>
-
-          {/* Different text depending on registration status */}
-          <div className="flex justify-center gap-4 mt-8">
-            <p className="text-sm text-center text-gray-600 mt-4">
-              Schon einen Account?{" "}
+            <label className="block text-sm font-medium text-gray-800">
+              Passwort
+            </label>
+            <input
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+              placeholder="Dein Passwort"
+              value={password}
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {/* Action Button */}
+            <div className="flex justify-center gap-4 mt-8">
               <button
-                onClick={() => setShowRegistration(false)}
-                className="text-amber-500 hover:underline"
+                type="submit"
+                className="text-white bg-amber-400 hover:bg-yellow-500 font-medium rounded-md text-sm px-5 py-2.5"
               >
-                Hier geht es zum Login
+                Account erstellen
               </button>
-            </p>
-          </div>
-        </form>
-      ) : (
-        <form className="space-y-4" onSubmit={handleVerify}>
-          <label className="block text-sm font-medium text-gray-800">
-            Bestätigungscode
-          </label>
-          <input
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
-            placeholder="Code aus der E-Mail"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
-          {/* Action Button */}
-          <div className="flex justify-center gap-4 mt-8">
-            <button
-              type="submit"
-              className="text-white bg-green-500 hover:bg-green-600 font-medium rounded-md text-sm px-5 py-2.5"
-            >
-              Code bestätigen
-            </button>
-          </div>
-        </form>
-      )}
-    </SignedOut>
+            </div>
+
+            {/* Different text depending on registration status */}
+            <div className="flex justify-center gap-4 mt-8">
+              <p className="text-sm text-center text-gray-600 mt-4">
+                Schon einen Account?{" "}
+                <button
+                  onClick={() => setShowRegistration(false)}
+                  className="text-amber-500 hover:underline"
+                >
+                  Hier geht es zum Login
+                </button>
+              </p>
+            </div>
+          </form>
+        ) : (
+          <form className="space-y-4" onSubmit={handleVerify}>
+            <label className="block text-sm font-medium text-gray-800">
+              Bestätigungscode
+            </label>
+            <input
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+              placeholder="Code aus der E-Mail"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+            {/* Action Button */}
+            <div className="flex justify-center gap-4 mt-8">
+              <button
+                type="submit"
+                className="text-white bg-green-500 hover:bg-green-600 font-medium rounded-md text-sm px-5 py-2.5"
+              >
+                Code bestätigen
+              </button>
+            </div>
+          </form>
+        )}
+      </SignedOut>
+    </div>
   );
 }

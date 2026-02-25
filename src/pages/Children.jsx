@@ -1,11 +1,15 @@
 import { useChildren } from "../context/ChildrenContext";
 import { useState } from "react";
+import { useAuth } from "@clerk/clerk-react";
 import AddChildForm from "../components/AddChildForm";
 import Child from "../components/Child";
 import { FaUserPlus } from "react-icons/fa";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export default function Children() {
   const { children, reloadChildren, isLoading } = useChildren();
+  const { getToken } = useAuth();
   const [showForm, setShowForm] = useState(false);
 
   async function handleAddChild(newChild) {
