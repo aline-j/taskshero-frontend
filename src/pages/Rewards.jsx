@@ -114,7 +114,7 @@ export default function Rewards() {
   const sortedRewards = filteredRewards.toSorted((a, b) => a.cost - b.cost);
 
   return (
-    <div>
+    <div className="min-h-screen">
       <SignedIn>
         <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
           <motion.span

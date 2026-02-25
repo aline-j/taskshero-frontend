@@ -103,7 +103,7 @@ export default function Tasks() {
   const sortedTasks = filteredTasks.toSorted((a, b) => a.points - b.points);
 
   return (
-    <div>
+    <div className="min-h-screen">
       <SignedIn>
         <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
           <motion.span

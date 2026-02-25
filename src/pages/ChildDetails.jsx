@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 import Score from "../components/Score";
-import ChildTasks from "./ChildTasks";
-import ChildRewards from "./ChildRewards";
+import ChildTasks from "../components/ChildTasks";
+import ChildRewards from "../components/ChildRewards";
 import UpdateChildForm from "../components/UpdateChildForm";
 import { MdEdit } from "react-icons/md";
 
