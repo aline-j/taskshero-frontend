@@ -4,6 +4,7 @@ import Reward from "../components/Reward";
 import AddRewardForm from "../components/AddRewardForm";
 import FilterRewards from "../components/FilterRewards";
 import { MdAdd } from "react-icons/md";
+import { motion } from "motion/react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -116,7 +117,14 @@ export default function Rewards() {
     <div>
       <SignedIn>
         <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-          Belohnungen
+          <motion.span
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-amber-500 text-xl md:text-2xl block mb-2 font-medium uppercase"
+          >
+            Such dir was Schönes aus
+          </motion.span>
+          <span className="text-gray-800">Eure Belohnungen</span>
         </h1>
 
         {/* Feedback Messages */}

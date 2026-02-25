@@ -4,6 +4,7 @@ import Task from "../components/Task";
 import AddTaskForm from "../components/AddTaskForm";
 import FilterTasks from "../components/FilterTasks";
 import { MdAdd } from "react-icons/md";
+import { motion } from "motion/react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -105,7 +106,14 @@ export default function Tasks() {
     <div>
       <SignedIn>
         <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-          Aufgaben Pool
+          <motion.span
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-cyan-600 text-xl md:text-2xl block mb-2 font-medium uppercase"
+          >
+            Was erledigen wir als nächstes?
+          </motion.span>
+          <span className="text-gray-800">Eure Aufgaben</span>
         </h1>
 
         {/* Feedback Messages */}

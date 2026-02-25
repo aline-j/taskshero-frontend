@@ -88,24 +88,26 @@ export default function Family() {
   }
 
   return (
-    <>
+    <div className="h-screen">
       {isLoading ? (
         <p className="text-center text-gray-500 mt-10">Lade Familie...</p>
       ) : (
         <div>
           {/* If family exists and not in edit mode */}
           {userFamily && !isEditing ? (
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <h1 className="text-4xl font-bold my-10 text-center lg:text-5xl lg:my-20">
-                {userFamily}
+            <div className="text-center my-16">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-800">
+                <span className="inline-flex items-center gap-3">
+                  Familie {userFamily}
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="p-2 rounded-full text-gray-400 hover:text-cyan-600 hover:bg-gray-100 transition"
+                    title="Bearbeiten"
+                  >
+                    <MdEdit size={20} />
+                  </button>
+                </span>
               </h1>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="text-xl p-1 rounded-full transition-transform duration-200 transform hover:scale-200"
-                title="Bearbeiten"
-              >
-                <MdEdit />
-              </button>
             </div>
           ) : (
             // Form
@@ -117,7 +119,8 @@ export default function Family() {
                       Deine Familie
                     </h1>
                     <p className="text-center font-bold text-xl mt-6">
-                      Du musst einen Familiennamen definieren!
+                      Lege zuerst deine Familie an, um Kinder und Aufgaben zu
+                      verwalten.
                     </p>
                   </>
                 )}
@@ -155,6 +158,6 @@ export default function Family() {
           {userFamily && <Children />}
         </div>
       )}
-    </>
+    </div>
   );
 }
