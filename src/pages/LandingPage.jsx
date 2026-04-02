@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { FaStar } from "react-icons/fa6";
 
 import { useNavigate } from "react-router-dom";

@@ -3,8 +3,8 @@ import ButtonsSaveCancel from "./ButtonsSaveCancel";
 import LoadingThreeDotsJumping from "./LoadingThreeDotsJumping";
 
 const synth = window.speechSynthesis;
-const voices = synth.getVoices();
 let currentVoice = null;
+const voices = synth.getVoices();
 for (const voice of voices) {
   if (voice.name === "Helena") {
     currentVoice = voice;
