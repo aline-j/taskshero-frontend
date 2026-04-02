@@ -27,7 +27,7 @@ export default function Rewards() {
       if (!response.ok) throw new Error("HTTP error " + response.status);
       const data = await response.json();
       setFamilyName(data.family_name);
-    } catch (_) {
+    } catch {
       setFamilyName(null);
     }
   }
@@ -75,7 +75,7 @@ export default function Rewards() {
       getFamilyName();
       getRewards();
     }
-  }, [isSignedIn, getRewards]);
+  }, [isSignedIn, getRewards, getFamilyName]);
 
   // Filter logic: if "all", show all rewards, otherwise filter by cost
   const filteredRewards =

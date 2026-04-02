@@ -3,7 +3,6 @@ import ButtonsSaveCancel from "./ButtonsSaveCancel";
 import LoadingThreeDotsJumping from "./LoadingThreeDotsJumping";
 
 const synth = window.speechSynthesis;
-const voices = synth.getVoices();
 // If you need to use a specific voice, assign it where needed
 
 export default function UpdateChildForm({ initialChild, onEdit, onCancel }) {

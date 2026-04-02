@@ -5,7 +5,7 @@ import Task from "../components/Task";
 import AddTaskForm from "../components/AddTaskForm";
 import FilterTasks from "../components/FilterTasks";
 import { MdAdd } from "react-icons/md";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -27,7 +27,7 @@ export default function Tasks() {
       if (!response.ok) throw new Error("HTTP error " + response.status);
       const data = await response.json();
       setFamilyName(data.family_name);
-    } catch (_) {
+    } catch {
       setFamilyName(null);
     }
   }
@@ -74,7 +74,7 @@ export default function Tasks() {
       getFamilyName();
       getTasks();
     }
-  }, [isLoaded, isSignedIn, getTasks]);
+  }, [isLoaded, isSignedIn, getTasks, getFamilyName]);
 
   // Callback AddTaskForm
   async function handleAddTask(newTask) {
