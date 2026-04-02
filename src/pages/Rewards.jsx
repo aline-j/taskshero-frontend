@@ -7,7 +7,7 @@ import FilterRewards from "../components/FilterRewards";
 import { MdAdd } from "react-icons/md";
 
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+  const getFamilyName = useCallback(async () => {
 
 export default function Rewards() {
   const { getToken, isSignedIn } = useAuth();
@@ -41,7 +41,7 @@ export default function Rewards() {
   const focusRef = useRef(null);
   const [focusId, setFocusId] = useState(null);
   const [focusCount, setFocusCount] = useState(0);
-
+  const getRewards = useCallback(async () => {
   useEffect(() => {
     focusRef.current = focusId;
   }, [focusId, focusCount]);

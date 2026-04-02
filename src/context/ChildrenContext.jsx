@@ -1,8 +1,6 @@
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
+import ChildrenContext from "./ChildrenContextObject";
 import { useAuth } from "@clerk/clerk-react";
-
-const ChildrenContext = createContext(null);
-
 
 
 export function ChildrenProvider({ children }) {

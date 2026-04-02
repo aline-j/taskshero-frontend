@@ -1,5 +1,6 @@
 import { useAuth, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useEffect, useState, useRef } from "react";
+import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import Task from "../components/Task";
 import AddTaskForm from "../components/AddTaskForm";
@@ -14,7 +15,7 @@ export default function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [familyName, setFamilyName] = useState(null);
   // Get family name from API
-  async function getFamilyName() {
+  const getFamilyName = useCallback(async () => {
     try {
       const token = await getToken();
       const response = await fetch(`${BASE_URL}/family`, {
@@ -30,7 +31,7 @@ export default function Tasks() {
     } catch {
       setFamilyName(null);
     }
-  }
+  }, [getToken]);
   const [groupFilter, setGroupFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +48,7 @@ export default function Tasks() {
   }, [focusId, focusCount]);
 
   // Get tasks from the API
-  async function getTasks() {
+  const getTasks = useCallback(async () => {
     try {
       setIsLoading(true);
       const token = await getToken();
@@ -66,7 +67,7 @@ export default function Tasks() {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [getToken]);
 
   // Fetch when Clerk is loaded and the user is signed in
   useEffect(() => {
