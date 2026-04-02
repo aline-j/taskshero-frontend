@@ -1,5 +1,6 @@
 import { useAuth, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import Task from "../components/Task";
 import AddTaskForm from "../components/AddTaskForm";
 import FilterTasks from "../components/FilterTasks";
@@ -11,6 +12,25 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 export default function Tasks() {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const [tasks, setTasks] = useState([]);
+  const [familyName, setFamilyName] = useState(null);
+  // Get family name from API
+  async function getFamilyName() {
+    try {
+      const token = await getToken();
+      const response = await fetch(`${BASE_URL}/family`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error("HTTP error " + response.status);
+      const data = await response.json();
+      setFamilyName(data.family_name);
+    } catch (err) {
+      setFamilyName(null);
+    }
+  }
   const [groupFilter, setGroupFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,9 +71,10 @@ export default function Tasks() {
   // Fetch when Clerk is loaded and the user is signed in
   useEffect(() => {
     if (isLoaded && isSignedIn) {
+      getFamilyName();
       getTasks();
     }
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, getTasks]);
 
   // Callback AddTaskForm
   async function handleAddTask(newTask) {
@@ -116,87 +137,110 @@ export default function Tasks() {
           <span className="text-gray-800">Eure Aufgaben</span>
         </h1>
 
-        {/* Feedback Messages */}
-        {successMessage && (
-          <p className="text-green-600 text-center font-medium mt-6 transition-opacity duration-500">
-            {successMessage}
-          </p>
-        )}
-        {errorMessage && (
-          <p className="text-red-600 text-center font-medium mt-6 transition-opacity duration-500">
-            {errorMessage}
-          </p>
-        )}
-
-        <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 px-4">
-          {/* Button to display the AddTaskForm */}
-          {!showForm && (
-            <button
-              onClick={() => setShowForm(true)}
-              className="md:w-auto px-6 py-3 text-md border rounded-md hover:shadow-md hover:bg-white flex items-center gap-2"
-            >
-              <MdAdd />
-              <span>Aufgabe hinzufügen</span>
-            </button>
-          )}
-
-          {/* AddTaskForm component */}
-          {showForm && (
-            <AddTaskForm
-              onAdd={handleAddTask}
-              onCancel={() => setShowForm(false)}
-              className="w-full md:w-auto"
-            />
-          )}
-        </div>
-
-        {/* Dropdown-Filter */}
-        <FilterTasks
-          groupFilter={groupFilter}
-          setGroupFilter={setGroupFilter}
-        />
-
-        {/* Grid with the filtered tasks */}
-        {isLoading ? (
-          <p className="text-center text-gray-500 mt-10">Lade Aufgaben...</p>
-        ) : (
-          <div className="grid grid-cols-2 mt-20 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
-            {sortedTasks.map((task) => (
-              <div
-                key={task.task_id}
-                ref={(el) => {
-                  if (!el) return;
-                  if (focusRef.current === task.task_id) {
-                    el.scrollIntoView({ block: "center", behavior: "smooth" });
-                    focusRef.current = null;
-                  }
-                }}
-              >
-                <Task
-                  title={task.title}
-                  points={task.points}
-                  group={task.group}
-                  image={task.image}
-                  task_id={task.task_id}
-                  getToken={getToken}
-                  onTaskDeleted={(task_id) => {
-                    console.log("Task", task_id, "has been deleted!");
-                    getTasks();
-                  }}
-                  onTaskEdit={(updatedTask) => {
-                    console.log("Task", updatedTask, "has been updated!");
-                    getTasks();
-                    setFocusId(task.task_id);
-                    setFocusCount((prev) => prev + 1);
-                  }}
-                  onTaskAssignment={(taskAssignment) => {
-                    console.log("Task", taskAssignment, "has been assigned!");
-                    getTasks();
-                  }}
-                />
-              </div>
-            ))}
+        {/* If no last name is set, show a message */}
+        {!familyName ? (
+          <div className="text-center mt-10">
+            <p className="text-lg font-semibold mb-4 text-red-600">
+              Um Aufgaben zu sehen, lege zuerst einen Familiennamen fest.
+            </p>
+            <Link to="/family" className="text-cyan-600 underline font-bold">
+              Zur Familienseite
+            </Link>
           </div>
+        ) : (
+          <>
+            {/* Feedback Messages */}
+            {successMessage && (
+              <p className="text-green-600 text-center font-medium mt-6 transition-opacity duration-500">
+                {successMessage}
+              </p>
+            )}
+            {errorMessage && (
+              <p className="text-red-600 text-center font-medium mt-6 transition-opacity duration-500">
+                {errorMessage}
+              </p>
+            )}
+
+            <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 px-4">
+              {/* Button to display the AddTaskForm */}
+              {!showForm && (
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="md:w-auto px-6 py-3 text-md border rounded-md hover:shadow-md hover:bg-white flex items-center gap-2"
+                >
+                  <MdAdd />
+                  <span>Aufgabe hinzufügen</span>
+                </button>
+              )}
+
+              {/* AddTaskForm component */}
+              {showForm && (
+                <AddTaskForm
+                  onAdd={handleAddTask}
+                  onCancel={() => setShowForm(false)}
+                  className="w-full md:w-auto"
+                />
+              )}
+            </div>
+
+            {/* Dropdown-Filter */}
+            <FilterTasks
+              groupFilter={groupFilter}
+              setGroupFilter={setGroupFilter}
+            />
+
+            {/* Grid with the filtered tasks */}
+            {isLoading ? (
+              <p className="text-center text-gray-500 mt-10">
+                Lade Aufgaben...
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 mt-20 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
+                {sortedTasks.map((task) => (
+                  <div
+                    key={task.task_id}
+                    ref={(el) => {
+                      if (!el) return;
+                      if (focusRef.current === task.task_id) {
+                        el.scrollIntoView({
+                          block: "center",
+                          behavior: "smooth",
+                        });
+                        focusRef.current = null;
+                      }
+                    }}
+                  >
+                    <Task
+                      title={task.title}
+                      points={task.points}
+                      group={task.group}
+                      image={task.image}
+                      task_id={task.task_id}
+                      getToken={getToken}
+                      onTaskDeleted={(task_id) => {
+                        console.log("Task", task_id, "has been deleted!");
+                        getTasks();
+                      }}
+                      onTaskEdit={(updatedTask) => {
+                        console.log("Task", updatedTask, "has been updated!");
+                        getTasks();
+                        setFocusId(task.task_id);
+                        setFocusCount((prev) => prev + 1);
+                      }}
+                      onTaskAssignment={(taskAssignment) => {
+                        console.log(
+                          "Task",
+                          taskAssignment,
+                          "has been assigned!",
+                        );
+                        getTasks();
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </SignedIn>
 
