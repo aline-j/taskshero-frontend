@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
 const ChildrenContext = createContext(null);
@@ -11,7 +11,7 @@ export function ChildrenProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
 
 
-  async function fetchChildren() {
+  const fetchChildren = useCallback(async () => {
     const { fetchChildrenFromApi } = await import("./fetchChildrenFromApi");
     try {
       setIsLoading(true);
@@ -23,7 +23,7 @@ export function ChildrenProvider({ children }) {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [getToken]);
 
   useEffect(() => {
     if (isSignedIn) {

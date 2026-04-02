@@ -3,14 +3,8 @@ import ButtonsSaveCancel from "./ButtonsSaveCancel";
 import LoadingThreeDotsJumping from "./LoadingThreeDotsJumping";
 
 const synth = window.speechSynthesis;
-let currentVoice = null;
 const voices = synth.getVoices();
-for (const voice of voices) {
-  if (voice.name === "Helena") {
-    currentVoice = voice;
-    break;
-  }
-}
+// If you need to use a specific voice, assign it where needed
 
 export default function UpdateChildForm({ initialChild, onEdit, onCancel }) {
   const [editedChild, setEditedChild] = useState(() => ({

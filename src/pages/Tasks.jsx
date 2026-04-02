@@ -27,7 +27,7 @@ export default function Tasks() {
       if (!response.ok) throw new Error("HTTP error " + response.status);
       const data = await response.json();
       setFamilyName(data.family_name);
-    } catch (err) {
+    } catch (_) {
       setFamilyName(null);
     }
   }
