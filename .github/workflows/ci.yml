@@ -1,4 +1,3 @@
-# Simple CI for Vite/React
 name: CI
 
 on:

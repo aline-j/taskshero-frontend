@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { motion, useMotionValue, animate } from "motion/react";
+import { useMotionValue, animate } from "motion/react";
 
 export default function Score({ totalPoints }) {
   const [displayValue, setDisplayValue] = useState(totalPoints);

@@ -37,7 +37,7 @@ export default function AssignmentTaskForm({ initialTask, onCancel }) {
     }
 
     getChildren();
-  }, []);
+  }, [getToken]);
 
   // Checkbox-Handler
   const handleCheckboxChange = (childId) => {

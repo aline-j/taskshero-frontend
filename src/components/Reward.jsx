@@ -79,7 +79,7 @@ export default function Reward({
       if (!response.ok) throw new Error("HTTP error " + response.status);
       onRewardAssignment(rewardAssignment);
       setShowAssignmentForm(false);
-    } catch (err) {
+    } catch {
       alert("Fehler beim Zuweisen der Belohnung.");
     }
   }

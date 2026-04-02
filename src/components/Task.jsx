@@ -59,7 +59,7 @@ export default function Task({
       const updatedTask = await response.json();
       onTaskEdit(updatedTask);
       setShowEditForm(false);
-    } catch (err) {
+    } catch {
       alert("Something went wrong");
     }
   }
@@ -78,7 +78,7 @@ export default function Task({
       if (!response.ok) throw new Error("HTTP error " + response.status);
       onTaskAssignment(taskAssignment);
       setShowAssignmentForm(false);
-    } catch (err) {
+    } catch {
       alert("Fehler beim Zuweisen der Aufgabe.");
     }
   }

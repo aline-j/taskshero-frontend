@@ -19,7 +19,7 @@ export default function CompletedRedeemedAnimation({
 
       return () => clearTimeout(timer);
     }
-  }, [trigger]);
+  }, [trigger, onClose]);
 
   if (!visible) return null;
 

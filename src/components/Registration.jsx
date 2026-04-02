@@ -49,7 +49,7 @@ export default function Registration({ setShowRegistration }) {
     } catch (err) {
       console.error(err);
       alert(
-        "Etwas ist schiefgelaufen: " + err.errors?.[0]?.message ?? err.message,
+        "Etwas ist schiefgelaufen: " + (err.errors?.[0]?.message ?? err.message),
       );
     }
   }

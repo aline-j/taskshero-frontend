@@ -4,9 +4,11 @@ import LoadingThreeDotsJumping from "./LoadingThreeDotsJumping";
 
 const synth = window.speechSynthesis;
 const voices = synth.getVoices();
+let currentVoice = null;
 for (const voice of voices) {
   if (voice.name === "Helena") {
     currentVoice = voice;
+    break;
   }
 }
 

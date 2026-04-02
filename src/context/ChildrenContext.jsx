@@ -3,26 +3,19 @@ import { useAuth } from "@clerk/clerk-react";
 
 const ChildrenContext = createContext(null);
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+
 
 export function ChildrenProvider({ children }) {
   const { getToken, isSignedIn } = useAuth();
   const [childrenList, setChildrenList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+
   async function fetchChildren() {
+    const { fetchChildrenFromApi } = await import("./fetchChildrenFromApi");
     try {
       setIsLoading(true);
-      const token = await getToken();
-      const res = await fetch(`${BASE_URL}/children`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) throw new Error("HTTP error " + res.status);
-
-      const data = await res.json();
+      const data = await fetchChildrenFromApi(getToken);
       setChildrenList(data.children);
     } catch (err) {
       console.error("Error loading children:", err);
@@ -38,7 +31,7 @@ export function ChildrenProvider({ children }) {
     } else {
       setChildrenList([]);
     }
-  }, [isSignedIn]);
+  }, [isSignedIn, fetchChildren]);
 
   return (
     <ChildrenContext.Provider

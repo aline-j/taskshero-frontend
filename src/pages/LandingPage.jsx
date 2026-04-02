@@ -1,5 +1,5 @@
 import { FaStar } from "react-icons/fa6";
-import { motion } from "motion/react";
+
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 
